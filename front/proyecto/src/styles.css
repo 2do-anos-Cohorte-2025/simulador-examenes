@@ -1,1 +1,85 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  background-color: #e7cba2;
+}
+
+
+/* Configuraciones para el uso global */
+
+/* Logo */
+.logo-container {
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  border: 2px solid #c4866d;
+}
+
+.logo-left {
+  width: 50%;
+  cursor: pointer;
+  background-color: #c4866d;
+  color: #fff;
+  margin: 2px;
+  align-self: center;
+}
+
+.logo-right {
+  width: 50%;
+  margin: 2px;
+  color: #202808;
+  align-self: center;
+  cursor: pointer;
+}
+
+.logo-right-text,
+.logo-left-text {
+  text-align: center;
+
+}
+
+
+/* Inputs */
+
+.search-input {
+  width: inherit;
+  color: #fff;
+  background-color: #6a784d;
+  border: 2px solid #fff;
+  outline: thick double #c4866d;
+}
+
+.search-input::placeholder {
+  color: #fff;
+}
+
+
+
+
+/* Botones */
+.btn-primary {
+  background-color: #6a784d;
+  color: #fff;
+  border: 1px solid #000;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #7f905d;
+
+}
+
+
+.btn-secondary {
+  background-color: #dec59e;
+  color: #fff;
+  border: 1px solid #202808;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background-color: #bfa987;
+
+}

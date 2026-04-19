@@ -10,4 +10,6 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'proyecto';
+  arrowUrl: string = 'assets/icons/arrow-up.svg';
+  checkUrl: string = 'assets/icons/checkbox.svg';
 }
