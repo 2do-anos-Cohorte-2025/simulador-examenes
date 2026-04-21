@@ -59,3 +59,20 @@ Estudiantes y personas en proceso de aprendizaje autodidacta
 - Aleatoriedad de preguntas en cada intento
 - Historial de intentos
 - Ejecución de examen con temporizador
+---
+## Notas 
+Las actividades:
+	- Definir un modelo inicial
+	- Definir endpoint de prueba
+	- Crear una tabla para evaluar la conexión con la base de datos
+
+Fueron asignadas y realizadas por el integrante **[CristianPasquevich](https://github.com/CristianPasquevich)** pero por 
+
+motivos personales no contaba con disposición a una computadora impidiéndole realizar los commits
+
+por lo cual se tomó la medida de que **[CristianPasquevich](https://github.com/CristianPasquevich)** y **[lucia8307](https://github.com/lucia8307)** realizaran una 
+
+reunión (vía Discord) en la cual de manera conjunta editaron el código y realizaron los commits desde la cuenta de **[lucia8307](https://github.com/lucia8307)**
+
+
+
