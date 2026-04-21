@@ -39,7 +39,10 @@ Estudiantes y personas en proceso de aprendizaje autodidacta
 - Crear y activar entorno virtual: “cd back”, “python -m venv venv”
 - Activar el entorno virtual “\Scripts\activate”
 - Instalar dependencias principales: “pip install django djangorestframework”
-- Crear requerimientos pip freeze > requirements.txt
+- Instalar la librería "python-dotenv" con "pip install python-dotenv"
+- Crear requerimientos "pip freeze > requirements.txt"
+- Instalar requerimientos "pip install -r requirements.txt"
+- Duplicar y renombrar el archivo ".env_modelo" a ".env"
 - Ejecutar servidor: “python manage.py runserver”
 
 
