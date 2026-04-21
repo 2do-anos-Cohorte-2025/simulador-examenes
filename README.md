@@ -11,7 +11,7 @@ Estudiantes y personas en proceso de aprendizaje autodidacta
 	Back - Django, DRF
 	BD - MySQL
 ## Instalación
- **Requisitos previos: Node, npm, Python 3.8 o superior, pip (gestor de paquetes), entorno virtual (venv)**
+ 	Requisitos previos: Node, npm, Python 3.8 o superior, pip (gestor de paquetes), entorno virtual (venv)
 ## - 1. Front:
 - En la carpeta de “front” abrir una terminal integrada y pegar el siguiente comando para la instalación de Angular
 “npm install -g @angular/cli@17“
