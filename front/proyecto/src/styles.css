@@ -6,39 +6,6 @@ body {
 
 /* Configuraciones para el uso global */
 
-/* Logo */
-.logo-container {
-  width: 150px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-around;
-  align-items: center;
-  border: 2px solid #c4866d;
-}
-
-.logo-left {
-  width: 50%;
-  cursor: pointer;
-  background-color: #c4866d;
-  color: #fff;
-  margin: 2px;
-  align-self: center;
-}
-
-.logo-right {
-  width: 50%;
-  margin: 2px;
-  color: #202808;
-  align-self: center;
-  cursor: pointer;
-}
-
-.logo-right-text,
-.logo-left-text {
-  text-align: center;
-
-}
 
 
 /* Inputs */
