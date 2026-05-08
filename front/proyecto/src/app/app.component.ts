@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/header/header.component';
 import { FooterComponent } from './shared/footer/footer.component';
-import { HeroComponent } from './shared/hero/hero.component';
-import { TestCardComponent } from './features/test-card/test-card.component';
-import { TestInfoComponent } from './features/test-info/test-info.component';
+import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { InicioComponent } from './views/inicio/inicio.component';
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent,FooterComponent, HeroComponent, TestCardComponent, TestInfoComponent],
+  imports: [RouterOutlet,DashboardComponent, InicioComponent, HeaderComponent,FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

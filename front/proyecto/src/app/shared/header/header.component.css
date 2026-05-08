@@ -2,3 +2,10 @@
     min-width: 100px; 
     width:100%;
 }
+
+.header-top{background-color: #abb491;}
+
+
+.navbar a {
+    color:#000;
+}
