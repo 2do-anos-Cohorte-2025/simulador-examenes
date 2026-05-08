@@ -1,0 +1,13 @@
+.card {
+  background-color: #d8c29d;
+  border: none;
+}
+
+input,
+textarea {
+  background-color: #f5e6ca;
+}
+
+button {
+  margin-top: 10px;
+}
