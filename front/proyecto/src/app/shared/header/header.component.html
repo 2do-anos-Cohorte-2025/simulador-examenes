@@ -9,7 +9,7 @@
         <div class="collapse navbar-collapse " id="navbarTogglerDemo02">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Inicio</a>
+              <a class="nav-link" aria-currentWhenActive="page" routerLink="/inicio" routerLinkActive="active">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Popular</a>
@@ -27,10 +27,10 @@
           <div class="navbar-sesion d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link" href="#">Iniciar Sesión</a>
+                <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">Registrarse</a>
+                <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registrarse</a>
 
               </li>
             </ul>
@@ -47,7 +47,7 @@
         <app-logo></app-logo>
       </div>
 
-      <div class="p-2 w-50 w-sm-100">
+      <div class="p-2 w-25 w-sm-100 ms-auto">
         <form class="d-flex w-sm-100 search-form" role="search" >
           <input class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search" />
         </form>
