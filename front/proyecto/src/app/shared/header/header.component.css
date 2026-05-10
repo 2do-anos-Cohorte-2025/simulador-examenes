@@ -1,11 +1,20 @@
-.search-form{
-    min-width: 100px; 
-    width:100%;
+.search-form {
+    min-width: 100px;
+    width: 100%;
+    max-width: 450px;
 }
 
-.header-top{background-color: #abb491;}
+.header-top {
+    background-color: #abb491;
+}
 
 
 .navbar a {
-    color:#000;
+    color: #000;
+}
+
+.navbar a.active {
+    font-weight: 700;
+    color: #3b3b2f !important;
+    border-bottom: 2px solid #3b3b2f;
 }
