@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'simulador_db',
+        'NAME': 'simulador-examen',
         'USER': 'root',
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': 'localhost',
+        'PASSWORD': '123456789',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
