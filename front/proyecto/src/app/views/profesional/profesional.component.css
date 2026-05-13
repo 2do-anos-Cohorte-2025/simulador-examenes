@@ -1,0 +1,41 @@
+/* ===== Función pensada a futuro si queremos añadir más información sobre cada integrante más que el Github ===== */
+
+.profile-container{
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 30px;
+}
+
+.profile-card{
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.profile-image{
+  width: 400px;
+  object-fit: cover;
+}
+
+.profile-content{
+  flex: 1;
+  padding: 40px;
+}
+
+.profile-content h1{
+  color: #202808;
+  margin-bottom: 15px;
+}
+
+.profile-content h3{
+  color: #6c757d;
+  margin-bottom: 20px;
+}

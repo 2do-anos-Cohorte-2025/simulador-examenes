@@ -1,0 +1,41 @@
+<!-- Función pensada a futuro si queremos añadir más información sobre cada integrante más que el Github -->
+
+<div
+  class="profile-container"
+  *ngIf="id && profesionales[id]"
+>
+
+  <div class="profile-card">
+
+    <img
+      [src]="profesionales[id].imagen"
+      [alt]="profesionales[id].nombre"
+      class="profile-image"
+    >
+
+    <div class="profile-content">
+
+      <h1>
+        {{ profesionales[id].nombre }}
+      </h1>
+
+      <h3>
+        {{ profesionales[id].rol }}
+      </h3>
+
+      <p>
+        {{ profesionales[id].descripcion }}
+      </p>
+
+      <a
+        routerLink="/quienes-somos"
+        class="btn btn-secondary"
+      >
+        Volver
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
