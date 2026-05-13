@@ -47,22 +47,95 @@ Estudiantes y personas en proceso de aprendizaje autodidacta
 
 
 
-## 🔧 Requerimientos funcionales
-- Registro e inicio de sesión de usuarios
-- Crear, editar y eliminar examenes
-- Resolver examenes
-- Calificación automática (aprobado/desaprobado, puntaje, respuestas correctas/incorrectas)
-- Clasificar exámenes por materia, nivel o tema.
-- Buscador de examenes
----
+## Requerimientos funcionales
+- RF-01 | Registro de usuarios: Descripción: El sistema deberá permitir que el usuario no registrado cree una cuenta ingresando nombre completo, correo electrónico válido y contraseña de mínimo 8 caracteres, para acceder a las funcionalidades de la plataforma.
+Actor: Visitante / Usuario no registrado.
+Prioridad: Must Have.
+Criterio de aceptación: El usuario puede registrarse, recibir un correo de confirmación. Si ingresa datos incorrectos, el sistema muestra un mensaje de error.
 
-## 🌱 Requerimientos no funcionales
-- Diseño responsive
-- Tiempos de carga breves
-- Aleatoriedad de preguntas en cada intento
-- Historial de intentos
-- Ejecución de examen con temporizador
----
+
+- RF-02 | Inicio de sesión: Descripción: El sistema deberá permitir que el usuario registrado inicie sesión con su correo y contraseña, para acceder a su cuenta y sus datos.
+Actor: Usuario registrado.
+Prioridad: Must Have.
+Criterio de aceptación: El usuario ingresa correctamente y es redirigido a la pantalla principal. Tras 3 intentos fallidos el acceso se bloquea temporalmente.
+
+- RF-03 | Crear exámenes: Descripción: El sistema deberá permitir que el usuario autenticado cree un examen con título, materia, nivel de dificultad y preguntas con opciones de respuesta, para que otros usuarios puedan resolverlo.
+Actor: Usuario autenticado (docente/creador).
+Prioridad: Must Have.
+Criterio de aceptación: El examen creado aparece en el listado público y puede ser resuelto por otros usuarios.
+
+- RF-04 | Editar Exámenes: Descripción: El sistema deberá permitir que el usuario autenticado modifique los datos de un examen propio, para corregir o actualizar su contenido. Actor: Usuario autenticado (creador del examen).
+Prioridad: Should Have.
+Criterio de aceptación: Los cambios realizados se reflejan de inmediato en el examen publicado. 
+
+
+- RF-05 | Eliminar exámenes: Descripción: El sistema deberá permitir que el usuario autenticado elimine un examen de su autoría, para quitarlo de la plataforma cuando ya no sea necesario.
+Actor: Usuario autenticado (creador del examen).
+Prioridad: Should Have.
+Criterio de aceptación: El examen eliminado deja de aparecer en el listado y no puede volver a resolverse.
+
+
+- RF-06 | Resolver exámenes: Descripción: El sistema deberá permitir que el usuario autenticado seleccione y responda un examen disponible, para poner a prueba sus conocimientos.
+Actor: Usuario autenticado (estudiante).
+Prioridad: Must Have.
+Criterio de aceptación: El usuario puede completar el examen y sus respuestas quedan guardadas. En cada intento el orden de las preguntas es diferente.
+
+
+- RF-07 | Calificación automática: Descripción: El sistema deberá permitir que el usuario visualice su resultado de forma automática al finalizar un examen, para conocer su puntaje, estado (aprobado/desaprobado) y cuáles fueron sus respuestas correctas e incorrectas.
+Actor: Sistema (automático al finalizar el intento).
+Prioridad: Must Have.
+Criterio de aceptación: El resultado se muestra inmediatamente al terminar y el puntaje coincide con las respuestas dadas.
+
+
+- RF-08 | Buscar y filtrar exámenes: Descripción: El sistema deberá permitir que el usuario autenticado busque exámenes por texto libre y los filtre por materia, nivel o tema, para encontrar fácilmente el contenido que necesita.
+Actor: Usuario autenticado.
+Prioridad: Must Have.
+Criterio de aceptación: La búsqueda devuelve resultados en menos de 2 segundos y los filtros reducen correctamente los resultados mostrados.
+
+
+- RF-09 | Historial de Intentos: Descripción: El sistema deberá permitir que el usuario autenticado consulte un historial de los exámenes que realizó, para hacer un seguimiento de su progreso.
+Actor: Usuario autenticado.
+Prioridad: Should Have.
+Criterio de aceptación: El historial muestra los intentos ordenados por fecha con puntaje y estado de cada uno.
+
+
+- RF-10 | Temporizador por examen: Descripción: El sistema deberá permitir que el creador configure un tiempo límite para su examen, para simular condiciones reales de evaluación.
+Actor: Creador (configura) / Sistema (ejecuta).
+Prioridad: Should Have.
+Criterio de aceptación: El contador es visible durante todo el examen y al llegar a 0 se envían automáticamente las respuestas registradas hasta ese momento.
+
+
+## Requerimientos no funcionales
+
+- RNF-01 | Rendimiento. Descripción: El sistema deberá responder las solicitudes principales en menos de 2 segundos bajo condiciones normales de uso.
+Métrica: Tiempo de respuesta menor o igual a 2 segundos.
+Prioridad: Must Have.
+Método de verificación: Pruebas de carga con, por ejemplo, DevTools del navegador. 
+
+
+- RNF-02 | Seguridad. Descripción: El sistema deberá almacenar las contraseñas de los usuarios utilizando un algoritmo de hash seguro, y todas las comunicaciones deberán realizarse mediante HTTPS, para proteger los datos de los usuarios.
+Métrica: 0 contraseñas en texto plano. 100% de conexiones por HTTPS.
+Prioridad: Must Have.
+Método de verificación: Revisión de código y auditoría de base de datos.
+
+
+- RNF-03 | Disponibilidad. Descripción: El sistema deberá mantenerse disponible al menos el 99% del tiempo mensual, para garantizar que los usuarios puedan acceder a la plataforma cuando lo necesiten.
+Métrica: Máximo 7 horas de inactividad por mes. Prioridad: Must Have.
+Método de verificación: Monitoreo continuo con UptimeRobot o herramienta equivalente.
+
+
+- RNF-04 | Compatibilidad con navegadores. Descripción: La plataforma deberá funcionar correctamente en las últimas dos versiones de Chrome, Firefox, Edge y Safari, para garantizar el acceso desde cualquier dispositivo.
+Métrica: 0 errores críticos en los navegadores indicados.
+Prioridad: Should Have.
+Método de verificación: Pruebas manuales en cada navegador.
+
+
+- RNF-05 | Diseño responsive. Descripción: El sistema deberá visualizarse y funcionar correctamente en dispositivos móviles, tablets y computadoras de escritorio, para que los usuarios puedan acceder desde cualquier dispositivo.
+Métrica: Funcional en pantallas desde 320px de ancho en adelante.
+Prioridad: Must Have.
+Método de verificación: Pruebas en distintos dispositivos y con el emulador de Chrome DevTools.
+
+
 ## Notas 
 Las actividades:
 	- Definir un modelo inicial

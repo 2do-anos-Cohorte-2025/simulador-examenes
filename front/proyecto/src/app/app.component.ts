@@ -1,16 +1,20 @@
 import { Component } from '@angular/core';
-import { RouterOutlet} from '@angular/router';
+import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './shared/header/header.component';
+import { FooterComponent } from './shared/footer/footer.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { InicioComponent } from './views/inicio/inicio.component';
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet , DashboardComponent],
+  imports: [RouterOutlet,DashboardComponent, InicioComponent, HeaderComponent,FooterComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'proyecto';
-  arrowUrl: string = 'assets/icons/arrow-up.svg';
-  checkUrl: string = 'assets/icons/checkbox.svg';
+ 
 }

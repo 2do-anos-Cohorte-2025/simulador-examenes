@@ -1,0 +1,140 @@
+.team-section{
+  min-height: 100vh;
+  background-color: #f8f9fa;
+  padding: 50px 20px;
+}
+
+.team-title{
+  font-size: 3rem;
+  font-weight: bold;
+  color: #202808;
+}
+
+.team-subtitle{
+  color: #6c757d;
+  margin-top: 10px;
+}
+
+.team-container{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.team-card{
+  width: 320px;
+  background-color: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.team-card:hover{
+  transform: translateY(-5px);
+}
+
+.team-image{
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 30px auto 20px;
+  display: block;
+  border: 5px solid #abb491;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.team-content{
+  padding: 20px;
+  text-align: center;
+}
+
+.team-role{
+  color: #6c757d;
+  margin-bottom: 20px;
+}
+
+.mission-section{
+  padding: 40px 20px 80px;
+}
+
+.custom-accordion{
+  max-width: 900px;
+  margin: auto;
+}
+
+.accordion-item{
+  border: none;
+  margin-bottom: 20px;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+.custom-accordion-button{
+  background-color: #536815 !important;
+  color: white !important;
+  font-size: 1.3rem;
+  font-weight: 600;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.custom-accordion-button span{
+  width: 100%;
+  text-align: center;
+}
+
+.custom-accordion-button:not(.collapsed){
+  background-color: #627737 !important;
+  color: white !important;
+  box-shadow: none;
+}
+
+.custom-accordion-button:focus{
+  box-shadow: none;
+  border: none;
+}
+
+.custom-accordion-body{
+  background-color: white;
+  color: #495057;
+  text-align: center;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  padding: 30px;
+}
+
+.accordion-button::after{
+  filter: brightness(0) invert(1);
+}
+
+.footer-container{
+    background-color: #abb491;
+}
+
+.search-form {
+    min-width: 100px;
+    width: 100%;
+    max-width: 450px;
+}
+
+.header-top {
+    background-color: #abb491;
+}
+
+.navbar a {
+    color: #000;
+}
+
+.navbar a.active {
+    font-weight: 700;
+    color: #3b3b2f !important;
+    border-bottom: 2px solid #3b3b2f;
+}
