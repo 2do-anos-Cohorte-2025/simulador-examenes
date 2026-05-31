@@ -10,6 +10,9 @@ import { ExamFormComponent } from '../../components/exam-form/exam-form.componen
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  // Variable temporal hasta integrar autenticación real con token
+  usuarioLogueado=false
+
   mostrarFormulario = false;
   mostrarExamenes = false;
   mostrarResultados = false;
@@ -32,6 +35,15 @@ export class DashboardComponent {
   this.mostrarFormulario = false;
   this.mostrarExamenes = false;
   this.mostrarResultados = true;
+  }
+
+  iniciarSesion() {
+  this.usuarioLogueado = true;
+  }
+
+  cerrarSesion() {
+  this.usuarioLogueado = false;
+  this.mostrarFormulario = false;
   }
 
 }

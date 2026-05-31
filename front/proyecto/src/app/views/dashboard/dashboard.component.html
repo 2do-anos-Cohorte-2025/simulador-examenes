@@ -1,5 +1,15 @@
 <h1>Dashboard del Profesor</h1>
 
+<div class="mb-3">
+  <button class="btn btn-success me-2" (click)="iniciarSesion()">
+    Simular login
+  </button>
+
+  <button class="btn btn-danger" (click)="cerrarSesion()">
+    Cerrar sesión
+  </button>
+</div>
+
 <div class="alert alert-info mb-4">
   Bienvenido Profesor.
   Desde aquí puede crear exámenes, revisar exámenes existentes y consultar resultados.
@@ -28,8 +38,15 @@
 </div>
 <p>Bienvenido al panel de creación de exámenes.</p>
 
-<app-exam-form *ngIf="mostrarFormulario"></app-exam-form>
+<div *ngIf="mostrarFormulario">
 
+  <app-exam-form *ngIf="usuarioLogueado"></app-exam-form>
+
+  <div *ngIf="!usuarioLogueado" class="alert alert-warning mt-4">
+    Debe iniciar sesión para crear un examen.
+  </div>
+
+</div>
 <div *ngIf="mostrarExamenes" class="mt-4">
 
   <h3>Mis Exámenes</h3>
