@@ -1,14 +1,19 @@
 from rest_framework import serializers
-from .models import Exam, CustomUser, Pregunta, Opcion, IntentoExamen, RespuestaUsuario, TestConnection
+from .models import Usuario, Profesor, Examen, Pregunta, Opcion, IntentoExamen, RespuestaUsuario, TestConnection
 
-class ExamSerializer(serializers.ModelSerializer):
+class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Exam
+        model = Usuario
         fields = '__all__'
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class ProfesorSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = Profesor
+        fields = '__all__'
+
+class ExamenSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Examen
         fields = '__all__'
 
 class OpcionSerializer(serializers.ModelSerializer):
@@ -34,4 +39,4 @@ class RespuestaUsuarioSerializer(serializers.ModelSerializer):
 class TestConnectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TestConnection
-        fields = '__all__'
+        fields = '__all__'        

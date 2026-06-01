@@ -1,9 +1,9 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-
 from .views import (
-    ExamViewSet,
-    CustomUserViewSet,
+    UsuarioViewSet,
+    ProfesorViewSet,
+    ExamenViewSet,
     PreguntaViewSet,
     OpcionViewSet,
     IntentoExamenViewSet,
@@ -11,10 +11,11 @@ from .views import (
     TestConnectionViewSet
 )
 
-router = DefaultRouter()
 
-router.register(r'exams', ExamViewSet)
-router.register(r'users', CustomUserViewSet)
+router = DefaultRouter()
+router.register(r'usuarios', UsuarioViewSet)
+router.register(r'profesores', ProfesorViewSet)
+router.register(r'examenes', ExamenViewSet)
 router.register(r'preguntas', PreguntaViewSet)
 router.register(r'opciones', OpcionViewSet)
 router.register(r'intentos', IntentoExamenViewSet)

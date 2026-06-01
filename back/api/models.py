@@ -1,64 +1,37 @@
 from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
-class Exam(models.Model):
-    title = models.CharField(
-        max_length=100,
-        help_text="Titulo del examen"
-    )
-    slug = models.SlugField(
-         max_length=150, 
-         unique=True, 
-         null=True, 
-         blank=True
-    )
-    description = models.TextField(
-        blank=True,
-        help_text="Descripción del examen"
-    )
-    category = models.CharField(
-        max_length=50,
-        choices=[
-            ('matematicas', 'Matemáticas'),
-            ('lengua', 'Lengua'),
-            ('ciencias', 'Ciencias'),
-        ],
-        help_text="Categoría del examen"
-    )
-    level = models.CharField(
-        max_length=20,
-        choices=[
-            ('basico', 'Basico'),
-            ('medio', 'Medio'),
-            ('avanzado', 'Avanzado'),
-        ],
-        help_text="Nivel de dificultad del examen"
-    )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='exams')
-    time_limit = models.IntegerField(null=True, blank=True, help_text="Tiempo límite en minutos")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-class CustomUser(AbstractUser):
-    role = models.CharField(
-        max_length=20,
-        choices=[
-            ('estudiante', 'Estudiante'),
-            ('profesor', 'Profesor'),
-            ('admin', 'Administrador'),
-        ],
-        help_text="Rol del usuario"
+class Usuario(models.Model):
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    email = models.EmailField(max_length=150, unique=True)
+    password_hash = models.CharField(max_length=250)
+    
+    ROLES = (
+        ('administrador', 'Administrador'),
+        ('estudiante', 'Estudiante'),
     )
-    ac_title = models.CharField(
-        max_length=100,
-         blank=True,
-        help_text="Título académico del profesor"
-    )
-    ac_file = models.FileField(
-        upload_to='archivos_academicos/',
-         blank=True,
-        help_text="Archivo académico del profesor"
-    )
+    rol = models.CharField(max_length=20, choices=ROLES, default='estudiante')
+    imagen_usuario = models.CharField(max_length=255, null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
+class Profesor(models.Model):
+    id_usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
+    especialidad = models.CharField(max_length=150)
+    titulo = models.CharField(max_length=150)
+    imagen_titulo = models.CharField(max_length=255, null=True, blank=True)
+
+class Examen(models.Model):
+    user = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='examenes')
+    titulo = models.CharField(max_length=120)
+    slug = models.SlugField(max_length=150, unique=True)
+    descripcion = models.TextField()
+    categoria = models.CharField(max_length=250)
+    tiempo_limite = models.IntegerField(null=True, blank=True)
+    imagen_usuario = models.CharField(max_length=255, null=True, blank=True)
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_modificacion = models.DateTimeField(auto_now=True)
+
 class Pregunta(models.Model):
     TIPOS = (
         ('opcion_multiple', 'Opción Múltiple'),
@@ -66,7 +39,7 @@ class Pregunta(models.Model):
         ('numerico', 'Numérico'),
         ('texto', 'Texto'),
     )
-    examen = models.ForeignKey(Exam, on_delete=models.CASCADE, related_name='preguntas')
+    examen = models.ForeignKey(Examen, on_delete=models.CASCADE, related_name='preguntas')
     enunciado = models.TextField()
     tipo = models.CharField(max_length=20, choices=TIPOS)
     puntos = models.DecimalField(max_digits=5, decimal_places=2, default=1.00)
@@ -79,8 +52,8 @@ class Opcion(models.Model):
     imagen_opcion = models.URLField(max_length=255, blank=True, null=True)
 
 class IntentoExamen(models.Model):
-    examen = models.ForeignKey(Exam, on_delete=models.CASCADE)
-    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
+    examen = models.ForeignKey(Examen, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(Usuario, on_delete=models.SET_NULL, null=True)
     fecha_inicio = models.DateTimeField(auto_now_add=True)
     fecha_fin = models.DateTimeField(null=True, blank=True)
     resultado = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
