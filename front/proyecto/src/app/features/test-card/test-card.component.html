@@ -4,7 +4,7 @@
     @for (test of testsCardList; track test.id) {
 
     <div class="card">
-      <img class="card-image" [src]=test.imagen alt="" srcset="">
+      <img class="card-image" [src]=test.imagen [alt]= test.alt srcset="">
       <h4 class="card-title">{{ test.titulo }}</h4>
       <div class="card-link">
         <a href="#"><img [src]="arrowUrl" class="card-link-img" alt="flecha de direccion"></a>
