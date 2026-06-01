@@ -1,8 +1,11 @@
 from rest_framework import viewsets
 
 from .models import (
-    Exam,
-    CustomUser,
+    Categoria,
+    Examen,
+    Nivel,
+    Usuario,
+    Profesor,
     Pregunta,
     Opcion,
     IntentoExamen,
@@ -11,8 +14,11 @@ from .models import (
 )
 
 from .serializers import (
-    ExamSerializer,
-    CustomUserSerializer,
+    CategoriaSerializer,
+    ExamenSerializer,
+    NivelSerializer,
+    UsuarioSerializer,
+    ProfesorSerializer,
     PreguntaSerializer,
     OpcionSerializer,
     IntentoExamenSerializer,
@@ -21,14 +27,27 @@ from .serializers import (
 )
 
 
-class ExamViewSet(viewsets.ModelViewSet):
-    queryset = Exam.objects.all()
-    serializer_class = ExamSerializer
+class ExamenViewSet(viewsets.ModelViewSet):
+    queryset = Examen.objects.all()
+    serializer_class = ExamenSerializer
 
 
-class CustomUserViewSet(viewsets.ModelViewSet):
-    queryset = CustomUser.objects.all()
-    serializer_class = CustomUserSerializer
+class CategoriaViewSet(viewsets.ModelViewSet):
+    queryset = Categoria.objects.all()
+    serializer_class = CategoriaSerializer
+    
+class NivelViewSet(viewsets.ModelViewSet):
+    queryset = Nivel.objects.all()
+    serializer_class = NivelSerializer
+
+class UsuarioViewSet(viewsets.ModelViewSet):
+    queryset = Usuario.objects.all()
+    serializer_class = UsuarioSerializer
+
+
+class ProfesorViewSet(viewsets.ModelViewSet):
+    queryset = Profesor.objects.all()
+    serializer_class = ProfesorSerializer
 
 
 class PreguntaViewSet(viewsets.ModelViewSet):

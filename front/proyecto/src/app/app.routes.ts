@@ -4,6 +4,7 @@ import { InicioComponent } from './views/inicio/inicio.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegistroComponent } from './views/registro/registro.component';
 import { QuienesSomosComponent } from './views/quienes-somos/quienes-somos.component';
+import { ExamenComponent } from './views/examen/examen.component';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent },
@@ -13,4 +14,6 @@ export const routes: Routes = [
     { path: 'registro', component: RegistroComponent },
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'quienes-somos', component: QuienesSomosComponent },
+    { path: 'examen/:slug', component: ExamenComponent },
+    { path: 'examen/:slug/intento/:id', component: ExamenComponent },
 ];

@@ -1,0 +1,66 @@
+<section class='examen-pregunta-container'>
+
+
+
+<div *ngIf="loading">Cargando examen...</div>
+<div *ngIf="error" class="error">{{ error }}</div>
+
+<div *ngIf="examen && intento" class="examen-container">
+  <div class="header">
+    <h2>{{ examen.titulo }}</h2>
+    <div class="tiempo-restante">
+      Tiempo restante: {{ tiempoRestante | date:'mm:ss' }}
+    </div>
+  </div>
+
+  <div class="pregunta-container">
+    <div class="pregunta">
+      <h3>{{ preguntaActual?.enunciado }}</h3>
+    </div>
+
+    <div *ngIf="preguntaActual?.tipo === 'opcion_multiple'" class="opciones">
+      <div *ngFor="let opcion of preguntaActual?.opciones" class="opcion">
+        <input
+          type="radio"
+          name="respuesta"
+          [checked]="respuestas.some(r => r.pregunta_id === preguntaActual?.id && r.opcion_seleccionada_id === opcion.id)"
+          (change)="seleccionarOpcion(opcion)"
+        >
+        <label>{{ opcion.texto_opcion }}</label>
+      </div>
+    </div>
+
+    <div *ngIf="preguntaActual?.tipo === 'verdadero_falso'" class="opciones">
+      <div class="opcion">
+        <input
+          type="radio"
+          name="respuesta"
+          [checked]="respuestas.some(r => r.pregunta_id === preguntaActual?.id && r.opcion_seleccionada_id === opcionVerdadero.id)"
+          (change)="seleccionarOpcion(opcionVerdadero)"
+        >
+        <label>Verdadero</label>
+      </div>
+      <div class="opcion">
+        <input
+          type="radio"
+          name="respuesta"
+          [checked]="respuestas.some(r => r.pregunta_id === preguntaActual?.id && r.opcion_seleccionada_id === opcionFalso.id)"
+          (change)="seleccionarOpcion(opcionFalso)"
+        >
+        <label>Falso</label>
+      </div>
+    </div>
+
+    <!-- Agrega lógica para otros tipos de preguntas (numerico, texto) -->
+  </div>
+
+  <div class="navigation">
+    <button (click)="preguntaAnterior()" [disabled]="indicePreguntaActual === 0">Anterior</button>
+    @if (indicePreguntaActual < examen.preguntas.length - 1) {
+      <button (click)="siguientePregunta()">Siguiente</button>
+    } else {
+      <button (click)="finalizarExamen()">Finalizar Examen</button>
+    }
+  </div>
+</div>
+</section>

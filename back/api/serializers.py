@@ -1,14 +1,29 @@
 from rest_framework import serializers
-from .models import Exam, CustomUser, Pregunta, Opcion, IntentoExamen, RespuestaUsuario, TestConnection
+from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario
 
-class ExamSerializer(serializers.ModelSerializer):
+class ExamenSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Exam
+        model = Examen
         fields = '__all__'
 
-class CustomUserSerializer(serializers.ModelSerializer):
+class CategoriaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = CustomUser
+        model = Categoria
+        fields = '__all__'
+        
+class NivelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Nivel
+        fields = '__all__'
+
+class UsuarioSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = '__all__'
+        
+class ProfesorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profesor
         fields = '__all__'
 
 class OpcionSerializer(serializers.ModelSerializer):

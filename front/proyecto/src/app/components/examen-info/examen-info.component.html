@@ -1,0 +1,54 @@
+<!-- Info necesaria: nombre del usuario, foto, si es profesor, titulo del examen, descripcion, categoria, nivel, tiempo limite, fecha de creacion -->
+
+
+<section class="examen-info-container">
+    <div class="examen-info-details">
+        <h2 class="examen-info-title title">Título del examen</h2>
+        <div class="examen-description">
+            <!-- Poner segun la categoria -->
+
+            <img src="assets/categorias-examen/Matematicas.png" class="examen-info-category-image"
+                alt="Imagen del examen">
+
+            <p class="examen-info-description">Descripción del examen. Lorem ipsum dolor sit amet, consectetur
+                adipiscing elit. Donec vel sapien eget nunc efficitur tincidunt.</p>
+        </div>
+        <div class="examen-info-meta p-2 d-flex  justify-content-around align-items-center flex-wrap">
+
+            <div class="examen-info-user-container d-flex flex-column align-items-center justify-content-center">
+                <!-- Si el usuario no tiene imagen poner la imagen por defecto -->
+
+                <div class="examen-info-user-details d-flex flex-row align-items-center">
+                    <img src="assets/icons/user-fill.svg" class="examen-info-user-avatar" alt="">
+                    <h3 class="examen-info-user-name">Por: Nombre del usuario</h3>
+                </div>
+                <!-- Hacer el if que detecte si el usuario es profesor -->
+                <div class="examen-info-user-role-container d-flex flex-row justify-content-center">
+                    <img src="assets/icons/profesor.svg" class="examen-info-profesor-icon" alt="Icono de profesor">
+                    <p class="examen-info-user-role">Profesor</p>
+                </div>
+
+            </div>
+
+
+            <div class="examen-info-btn-container ">
+                <button class="btn btn-primary"><a routerLink="/intento/:">Iniciar intento</a></button>
+            </div>
+
+            <div class="examen-info-data d-flex flex-column align-items-center text-center">
+                <span class="examen-info-category">Categoría: Matemáticas</span>
+                <span class="examen-info-level">Nivel: Intermedio</span>
+                <!-- Hacer el if que detecte si hay tiempo limite -->
+                <span class="examen-info-time-limit">Tiempo límite: 60 minutos</span>
+                <span class="examen-info-creation-date">Fecha de creación: 01/01/2024</span>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+
+
+
+
+<!-- Segun la categoria mostrar una imagen distinta  -->
