@@ -21,6 +21,7 @@ from .views import (
 
 router = DefaultRouter()
 
+
 router.register(r'examenes', ExamenViewSet)
 router.register(r'usuarios', UsuarioViewSet)
 router.register(r'profesores', ProfesorViewSet)
