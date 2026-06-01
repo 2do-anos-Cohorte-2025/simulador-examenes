@@ -1,0 +1,89 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+
+                    <h2 class="card-title text-center mb-4">Crear cuenta</h2>
+
+                    <form [formGroup]="registro_form" (ngSubmit)="on_submit()">
+
+                        <!-- Nombre -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" class="form-control"
+                                [class.is-invalid]="nombre?.invalid && nombre?.touched" formControlName="nombre"
+                                placeholder="Tu nombre">
+                            <div class="invalid-feedback">
+                                <span *ngIf="nombre?.errors?.['required']">El nombre es obligatorio.</span>
+                                <span *ngIf="nombre?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+                            </div>
+                        </div>
+
+                        <!-- Apellido -->
+                        <div class="mb-3">
+                            <label for="apellido" class="form-label">Apellido</label>
+                            <input type="text" id="apellido" class="form-control"
+                                [class.is-invalid]="apellido?.invalid && apellido?.touched" formControlName="apellido"
+                                placeholder="Tu apellido">
+                            <div class="invalid-feedback">
+                                <span *ngIf="apellido?.errors?.['required']">El apellido es obligatorio.</span>
+                                <span *ngIf="apellido?.errors?.['minlength']">Mínimo 2 caracteres.</span>
+                            </div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="email" class="form-control"
+                                [class.is-invalid]="email?.invalid && email?.touched" formControlName="email"
+                                placeholder="tu@email.com">
+                            <div class="invalid-feedback">
+                                <span *ngIf="email?.errors?.['required']">El email es obligatorio.</span>
+                                <span *ngIf="email?.errors?.['email']">Ingresá un email válido.</span>
+                            </div>
+                        </div>
+
+                        <!-- Contraseña -->
+                        <div class="mb-3">
+                            <label for="password_hash" class="form-label">Contraseña</label>
+                            <input type="password" id="password_hash" class="form-control"
+                                [class.is-invalid]="password_hash?.invalid && password_hash?.touched"
+                                formControlName="password_hash" placeholder="Mínimo 8 caracteres">
+                            <div class="invalid-feedback">
+                                <span *ngIf="password_hash?.errors?.['required']">La contraseña es obligatoria.</span>
+                                <span *ngIf="password_hash?.errors?.['minlength']">Mínimo 8 caracteres.</span>
+                            </div>
+                        </div>
+
+                        <!-- Confirmar Contraseña -->
+                        <div class="mb-3">
+                            <label for="confirmar_password" class="form-label">Confirmar contraseña</label>
+                            <input type="password" id="confirmar_password" class="form-control"
+                                [class.is-invalid]="confirmar_password?.invalid && confirmar_password?.touched"
+                                formControlName="confirmar_password" placeholder="Repetí tu contraseña">
+                            <div class="invalid-feedback">
+                                <span *ngIf="confirmar_password?.errors?.['required']">Confirmá tu contraseña.</span>
+                            </div>
+                        </div>
+
+                        <!-- Botón -->
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary" [disabled]="registro_form.invalid">
+                                Registrarse
+                            </button>
+                        </div>
+
+                    </form>
+
+                    <p class="text-center mt-3">
+                        ¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a>
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

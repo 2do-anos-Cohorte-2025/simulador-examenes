@@ -1,0 +1,67 @@
+<section class="team-section container-fluid">
+
+  <div class="text-center py-5">
+    <h1 class="team-title">Nuestro Equipo</h1>
+    <p class="team-subtitle">
+      Conoce a las personas detrás de TestAce
+    </p>
+  </div>
+
+  <div class="team-container">
+
+    <div class="team-card" *ngFor="let integrante of integrantes">
+
+      <img
+        [src]="integrante.imagen"
+        [alt]="integrante.nombre"
+        class="team-image"
+      >
+
+      <div class="team-content">
+        <h3>{{ integrante.nombre }}</h3>
+
+        <p class="team-role">
+          {{ integrante.rol }}
+        </p>
+
+        <a
+          class="btn btn-primary"
+          [href]="integrante.github"
+          target="_blank"
+        >
+          Ver GitHub
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="mission-section container">
+
+  <div class="accordion custom-accordion" id="aboutAccordion">
+
+
+    <div class="accordion-item">
+
+      <h2 class="accordion-header">
+        <button
+          class="accordion-button collapsed custom-accordion-button"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#missionCollapse">
+          <span>Nuestra Misión</span>
+        </button>
+      </h2>
+
+      <div
+        id="missionCollapse"
+        class="accordion-collapse collapse"
+        data-bs-parent="#aboutAccordion"
+      >
+        <div class="accordion-body custom-accordion-body">Nuestra misión es brindar una herramienta accesible que promueva el aprendizaje autónomo, reduzca el estrés académico y fomente la práctica activa como método de estudio. Creemos que equivocarse, practicar y recibir retroalimentación son partes fundamentales del proceso de aprendizaje.</div>
+      </div>
+
+    </div>
