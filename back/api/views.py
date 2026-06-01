@@ -30,6 +30,7 @@ from .serializers import (
 class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
+    lookup_field = 'slug'
 
 
 class CategoriaViewSet(viewsets.ModelViewSet):
