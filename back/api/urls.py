@@ -11,6 +11,7 @@ from .views import (
     OpcionViewSet,
     IntentoExamenViewSet,
     ProfesorViewSet,
+    SolicitudProfesorViewSet,
     RespuestaUsuarioViewSet,
     TestConnectionViewSet,
     UsuarioViewSet,
@@ -25,6 +26,7 @@ router = DefaultRouter()
 router.register(r'examenes', ExamenViewSet)
 router.register(r'usuarios', UsuarioViewSet)
 router.register(r'profesores', ProfesorViewSet)
+router.register(r'solicitudes-profesor', SolicitudProfesorViewSet, basename='solicitudes-profesor')
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'niveles', NivelViewSet)
 router.register(r'preguntas', PreguntaViewSet)

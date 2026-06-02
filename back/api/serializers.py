@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario
+from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario, SolicitudProfesor
 
 class ExamenSerializer(serializers.ModelSerializer):
     usuario=serializers.StringRelatedField()
@@ -8,7 +8,6 @@ class ExamenSerializer(serializers.ModelSerializer):
     categoria=serializers.StringRelatedField()
     nivel=serializers.StringRelatedField()
     class Meta:
-        verbose_name_plural = "Examenes"
         model = Examen
         fields = '__all__'
     
@@ -47,10 +46,17 @@ class ProfesorSerializer(serializers.ModelSerializer):
         model = Profesor
         fields = '__all__'
 
+class SolicitudProfesorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SolicitudProfesor
+        fields = '__all__'
+        read_only_fields = ['usuario', 'estado', 'fecha_creacion', 'fecha_revision']
 class OpcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcion
         fields = '__all__'
+        lookup_field = 'pregunta'
 
 class PreguntaSerializer(serializers.ModelSerializer):    
     class Meta:
@@ -62,7 +68,8 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
     examen_slug = serializers.CharField(source='examen.slug', read_only=True)
     class Meta:
         model = IntentoExamen
-        fields = '__all__'
+        fields = ['id', 'examen', 'usuario', 'fecha_inicio', 'fecha_fin', 'resultado']
+        read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
