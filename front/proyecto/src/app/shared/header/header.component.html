@@ -18,8 +18,13 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Quizzes</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Crea tus exámenes</a>
+            <li class="nav-item"  *ngIf="usuarioAutenticado">
+              <a class="nav-link" routerLink="/dashboard">Crea tus exámenes</a>
+            </li>
+            <li class="nav-item" *ngIf="!usuarioAutenticado">
+              <a class="nav-link" routerLink="/login">
+                Crea tus exámenes
+              </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
