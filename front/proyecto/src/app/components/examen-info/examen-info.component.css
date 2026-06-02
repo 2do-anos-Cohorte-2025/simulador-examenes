@@ -18,6 +18,7 @@
     font-weight: bold;
     margin-bottom: 10px;
 }
+
 .examen-description {
     position: relative;
     width: 100%;
@@ -32,7 +33,7 @@
 .examen-info-category-image {
     position: absolute;
     width: 100%;
-    height: 100%; 
+    height: 100%;
     object-fit: cover;
     background-position: center;
     background-size: cover;
@@ -40,6 +41,7 @@
     border-radius: 0 0 20px 20px;
     opacity: 0.98;
 }
+
 .examen-info-description {
     position: relative;
     z-index: 1;
@@ -52,7 +54,7 @@
 
 }
 
-.examen-info-user-avatar{
+.examen-info-user-avatar {
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -60,11 +62,27 @@
     background-color: #7f905d;
 }
 
-.examen-info-profesor-icon{
+.examen-info-profesor-icon {
     width: 20px;
     height: 20px;
     margin-right: 5px;
 }
-.examen-info-user-name{
+
+.examen-info-user-name {
     font-size: 0.9rem;
+}
+
+
+@media (max-width: 768px) {
+    .examen-info-description {
+        font-size: 1rem;
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 500px) {
+    .examen-info-description {
+        font-size: .7rem;
+        max-width: 100%;
+    }
 }
