@@ -5,6 +5,7 @@ from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
+
 class Usuario(AbstractUser):
     rol = models.CharField(
         max_length=15,
