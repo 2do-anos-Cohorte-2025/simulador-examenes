@@ -1,0 +1,98 @@
+.contenedor {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: #202324;
+  padding: 40px 20px;
+}
+
+
+form {
+  width: 100%;
+  max-width: 700px;
+
+  background: #111;
+  border: 1px solid #333;
+  border-radius: 20px;
+
+  padding: 35px;
+
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+}
+
+h2 {
+  color: white;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.campo,
+.archivo {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 18px;
+}
+
+label {
+  color: #d0d0d0;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+input[type="text"],
+input[type="file"] {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: #1b1b1b;
+  color: white;
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: #00aa44;
+  box-shadow: 0 0 0 0.2rem rgba(0, 170, 68, 0.25);
+}
+
+input[type="file"]:focus {
+  outline: none;
+  border-color: #00aa44;
+  box-shadow: 0 0 0 0.2rem rgba(0, 170, 68, 0.25);
+}
+
+button {
+  width: 100%;
+  margin-top: 10px;
+
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+
+  background: #546239;
+  color: white;
+
+  font-size: 16px;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #5a6a36;
+}
+
+.cabecera {
+  margin-bottom: 20px;
+}
+
+.cabecera h2 {
+  color: white;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+}
