@@ -1,0 +1,162 @@
+/* Layout general */
+.admin-layout {
+  display: flex;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+/* Barra lateral */
+.sidebar {
+  width: 200px;
+  background: #1e293b;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-title {
+  color: #fff;
+  margin: 0 0 16px;
+  font-size: 1.2rem;
+}
+
+.sidebar button {
+  background: none;
+  border: none;
+  color: #94a3b8;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.sidebar button:hover { background: #334155; color: #fff; }
+.sidebar button.activo { background: #3b82f6; color: #fff; }
+
+/* Contenido principal */
+.contenido {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  background: #f1f5f9;
+}
+
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.seccion-header h3 { margin: 0; font-size: 1.4rem; }
+
+.btn-nuevo {
+  background: #1a8b40;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+th { background: #f8fafc; font-weight: 600; color: #475569; }
+td { border-top: 1px solid #f1f5f9; }
+
+td button {
+  background: none;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 4px;
+  font-size: 0.82rem;
+}
+
+td button:hover { background: #f1f5f9; }
+
+/* Modal */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 28px;
+  border-radius: 10px;
+  width: 420px;
+  z-index: 11;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.modal h3 { margin: 0 0 8px; }
+
+.modal label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.modal input,
+.modal select,
+.modal textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.modal textarea { resize: vertical; height: 80px; }
+
+.modal-botones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.modal-botones button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-guardar {
+  background: #3b82f6;
+  color: #fff;
+  border-color: #3b82f6 !important;
+}
