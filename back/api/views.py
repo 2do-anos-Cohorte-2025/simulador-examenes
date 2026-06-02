@@ -10,6 +10,7 @@ from .models import (
     Nivel,
     Usuario,
     Profesor,
+    SolicitudProfesor,
     Pregunta,
     Opcion,
     IntentoExamen,
@@ -23,6 +24,7 @@ from .serializers import (
     NivelSerializer,
     UsuarioSerializer,
     ProfesorSerializer,
+    SolicitudProfesorSerializer,
     PreguntaSerializer,
     OpcionSerializer,
     IntentoExamenSerializer,
@@ -55,6 +57,15 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 class ProfesorViewSet(viewsets.ModelViewSet):
     queryset = Profesor.objects.all()
     serializer_class = ProfesorSerializer
+
+
+class SolicitudProfesorViewSet(viewsets.ModelViewSet):
+    queryset = SolicitudProfesor.objects.all()
+    serializer_class = SolicitudProfesorSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
 
 
 class PreguntaViewSet(viewsets.ModelViewSet):

@@ -9,6 +9,7 @@ import { ExamenComponent } from './views/examen/examen.component';
 
 
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -18,5 +19,5 @@ import { ExamenComponent } from './views/examen/examen.component';
 })
 export class AppComponent {
   title = 'proyecto';
- 
+
 }

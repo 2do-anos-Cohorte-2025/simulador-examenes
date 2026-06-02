@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario
+from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario, SolicitudProfesor
 
 class ExamenSerializer(serializers.ModelSerializer):
     usuario=serializers.StringRelatedField()
@@ -47,6 +47,12 @@ class ProfesorSerializer(serializers.ModelSerializer):
         model = Profesor
         fields = '__all__'
 
+class SolicitudProfesorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SolicitudProfesor
+        fields = '__all__'
+        read_only_fields = ['usuario', 'estado', 'fecha_creacion', 'fecha_revision']
 class OpcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcion
