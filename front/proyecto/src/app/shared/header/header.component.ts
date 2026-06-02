@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { LogoComponent } from '../logo/logo.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -5,10 +6,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [LogoComponent, RouterLink, RouterLinkActive],
+  imports: [CommonModule,LogoComponent, RouterLink, RouterLinkActive],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
+  usuarioAutenticado=true;
 
 }

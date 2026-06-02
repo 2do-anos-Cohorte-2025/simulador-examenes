@@ -1,9 +1,56 @@
-<section>    
-<div class="container d-flex flex-column m-5 w-100">
-<h1 class="text-center">Dashboard del Profesor</h1>
+<h1>Dashboard del Profesor</h1>
 
-<p class="text-center">Bienvenido al panel de creación de exámenes.</p>
 
-<app-exam-form></app-exam-form>
+<div class="p-3 mb-4 border rounded">
+  Bienvenido Profesor.
+  Desde aquí puede crear exámenes, revisar exámenes existentes y consultar resultados.
 </div>
-</section>
+
+<div class="mb-4">
+
+  <button 
+    class="btn custom-btn me-2"
+    (click)="mostrarCrearExamen()">
+    Crear examen
+  </button>
+
+  <button 
+    class="btn custom-btn me-2"
+    (click)="mostrarListaExamenes()">
+    Ver exámenes
+  </button>
+
+  <button 
+    class="btn custom-btn"
+    (click)="mostrarResultadosExamenes()">
+    Ver resultados
+  </button>
+
+</div>
+<p>Bienvenido al panel de creación de exámenes.</p>
+
+<div *ngIf="mostrarFormulario">
+
+  <app-exam-form></app-exam-form>
+
+</div>
+<div *ngIf="mostrarExamenes" class="mt-4">
+
+  <h3>Mis Exámenes</h3>
+
+  <ul>
+    <li>Matemática 1</li>
+    <li>Programación II</li>
+    <li>Bases de Datos</li>
+  </ul>
+
+</div>
+
+<div *ngIf="mostrarResultados" class="mt-4">
+
+  <h3>Resultados</h3>
+
+  <p>Próximamente se mostrarán los resultados de los exámenes.</p>
+
+</div>
+
