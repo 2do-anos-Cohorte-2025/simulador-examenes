@@ -83,8 +83,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'simulador_examen',
         'USER': 'root',
-        # Pongan su contraseña de mysql
-        'PASSWORD': '12345678',  
+        'PASSWORD': 'haceFrio14',  
         'HOST': 'localhost',
         'PORT': '3306',
     }

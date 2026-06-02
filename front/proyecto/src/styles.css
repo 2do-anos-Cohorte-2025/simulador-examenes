@@ -40,13 +40,13 @@ body {
 
 
 .btn-secondary {
-  background-color: #dec59e;
+  background-color: #cfb893;
   color: #fff;
   border: 1px solid #202808;
   cursor: pointer;
 }
 
 .btn-secondary:hover {
-  background-color: #bfa987;
+  background-color: #a79375;
 
 }

@@ -14,10 +14,8 @@ from .models import (
     TestConnection
 )
 
-# Registrar CustomUser
-admin.site.register(Usuario, UserAdmin)
 
-# Registrar modelos restantes
+admin.site.register(Usuario, UserAdmin)
 admin.site.register(Examen)
 admin.site.register(Categoria)
 admin.site.register(Nivel)
