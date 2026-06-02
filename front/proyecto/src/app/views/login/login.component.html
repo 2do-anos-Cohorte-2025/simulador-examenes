@@ -33,10 +33,15 @@
                             </div>
                         </div>
 
+                        <!-- Error del servidor -->
+                        <div class="alert alert-danger mt-3" *ngIf="error_mensaje">
+                            {{ error_mensaje }}
+                        </div>
+
                         <!-- Botón -->
                         <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary" [disabled]="login_form.invalid">
-                                Iniciar Sesión
+                            <button type="submit" class="btn btn-primary" [disabled]="login_form.invalid || cargando">
+                                {{ cargando ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
                             </button>
                         </div>
 
