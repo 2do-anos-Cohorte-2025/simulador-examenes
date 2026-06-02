@@ -8,7 +8,7 @@ from django.utils import timezone
 class Usuario(AbstractUser):
     rol = models.CharField(
         max_length=15,
-        choices=[('administrador', 'Administrador'), ('estudiante', 'Estudiante')],
+        choices=[('administrador', 'Administrador'), ('estudiante', 'Estudiante'), ('profesor', 'Profesor')],
         default='estudiante'
     )
     imagen_usuario = models.ImageField(upload_to='usuarios/', null=True, blank=True)
@@ -31,7 +31,30 @@ class Profesor(models.Model):
         verbose_name_plural = "Profesores"
 
     def __str__(self):
-        return f"Profesor: {self.titulo} {self.especialidad}"
+
+        return f"Profesor: {self.usuario.first_name} {self.usuario.last_name}"
+class SolicitudProfesor(models.Model):
+    ESTADOS = [ ('pendiente', 'Pendiente'), ('aprobada', 'Aprobada'), ('rechazada', 'Rechazada')]
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='solicitudes_profesor')
+    nombre_completo = models.CharField(max_length=255)
+    dni = models.CharField(max_length=30)
+    pais = models.CharField(max_length=100)
+    provincia = models.CharField(max_length=100, blank=True)
+    ciudad = models.CharField(max_length=100, blank=True)
+    telefono = models.CharField(max_length=50)
+    institucion = models.CharField(max_length=255)
+    especialidad = models.CharField(max_length=255)
+    motivo_contacto = models.CharField(max_length=255, default='Verificación de rol profesor')
+    certificado_titulo = models.FileField(upload_to='verificaciones/titulos/')
+    dni_frente = models.ImageField(upload_to='verificaciones/dni/')
+    dni_dorso = models.ImageField(upload_to='verificaciones/dni/')
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
+    fecha_creacion = models.DateTimeField(auto_now_add=True)
+    fecha_revision = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.usuario.email} - {self.estado}'
+
 
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, unique=True)

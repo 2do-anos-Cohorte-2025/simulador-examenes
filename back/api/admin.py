@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import (
     Usuario,
     Profesor,
+    SolicitudProfesor,
     Examen,
     Categoria,
     Nivel,
@@ -20,6 +21,7 @@ admin.site.register(Examen)
 admin.site.register(Categoria)
 admin.site.register(Nivel)
 admin.site.register(Profesor)
+admin.site.register(SolicitudProfesor)
 admin.site.register(Pregunta)
 admin.site.register(Opcion)
 admin.site.register(IntentoExamen)
