@@ -8,7 +8,6 @@ class ExamenSerializer(serializers.ModelSerializer):
     categoria=serializers.StringRelatedField()
     nivel=serializers.StringRelatedField()
     class Meta:
-        verbose_name_plural = "Examenes"
         model = Examen
         fields = '__all__'
     
@@ -57,6 +56,7 @@ class OpcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcion
         fields = '__all__'
+        lookup_field = 'pregunta'
 
 class PreguntaSerializer(serializers.ModelSerializer):    
     class Meta:
@@ -68,7 +68,8 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
     examen_slug = serializers.CharField(source='examen.slug', read_only=True)
     class Meta:
         model = IntentoExamen
-        fields = '__all__'
+        fields = ['id', 'examen', 'usuario', 'fecha_inicio', 'fecha_fin', 'resultado']
+        read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
