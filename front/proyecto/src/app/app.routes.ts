@@ -7,6 +7,7 @@ import { QuienesSomosComponent } from './views/quienes-somos/quienes-somos.compo
 import { ExamenVistaPreviaComponent } from './views/examen-vista-previa/examen-vista-previa.component';
 import { ExamenIntentoComponent } from './views/examen-intento/examen-intento.component';
 import { SolicitudProfesorComponent } from './views/solicitud-profesor/solicitud-profesor.component';
+import { PerfilComponent } from './views/perfil/perfil.component';
 
 
 export const routes: Routes = [
@@ -14,6 +15,7 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent },
     { path: 'login', component: LoginComponent },
     { path: 'registro', component: RegistroComponent },
+    { path: 'perfil', component: PerfilComponent },
     { path: 'quienes-somos', component: QuienesSomosComponent },
     { path: 'examen/:slug', component: ExamenVistaPreviaComponent },
     { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
