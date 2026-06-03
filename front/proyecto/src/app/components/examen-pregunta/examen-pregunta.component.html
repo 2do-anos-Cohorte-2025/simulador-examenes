@@ -7,15 +7,16 @@
   </div>
   } @else if (!examenFinalizado && temporizador>0) {
   <div class="exam-question-info ">
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
       <h2>Pregunta {{ preguntaActual + 1 }} de {{ preguntas.length }} </h2>
-      <!-- <p>Tiempo restante: {{ tiempoRestante | date:'mm:ss' }}</p> -->
+      
+      <p class="text-white p-2 bg-black">Tiempo restante: {{tiempoRestante}} segundos</p>
     </div>
 
     <div class="question-container">
       <h3>{{ preguntas[preguntaActual]?.enunciado }}</h3>
-      @if(preguntas[preguntaActual]?.imagen) {
-      <img [src]="preguntas[preguntaActual]?.imagen" alt="Imagen de la pregunta" class="img-fluid question-image" />
+      @if(preguntas[preguntaActual]?.imagen_pregunta) {
+      <img [src]="preguntas[preguntaActual]?.imagen_pregunta" alt="Imagen de la pregunta" class="img-fluid question-image" />
       }
       @if (preguntas[preguntaActual]?.tipo === 'opcion_multiple' || preguntas[preguntaActual]?.tipo ===
       'verdadero_falso') {
@@ -23,7 +24,7 @@
         @for (opcion of opciones; track opcion.id) {
         <div class="form-check option-item">
           <input type="radio" [checked]="respuestas[preguntaActual]?.opcion_seleccionada_id === opcion.id"
-            (change)="seleccionarOpcion(preguntas[preguntaActual]?.id, opcion.id)" />
+            (change)="seleccionarOpcion(preguntas[preguntaActual]?.id, opcion)" />
           <label>{{ opcion.texto_opcion }}</label>
           @if (opcion.imagen_opcion) {
           <img [src]="opcion.imagen_opcion" alt="Imagen de la opción" class="img-fluid option-image" />
@@ -61,11 +62,10 @@
     </div>
   </div>
   } @else if (examenFinalizado || temporizador === 0) {
-  <div class="d-flex flex-column align-items-center justify-content-center" >
+  <div class="d-flex flex-column align-items-center justify-content-center exam-question-info" >
     <h2>Examen Finalizado</h2>
-    <p>Resultado: {{ calculoTotal }}%</p>
-    <!-- <p>Tiempo transcurrido: {{ tiempoTotal - tiempoRestante | date:'mm:ss' }} minutos</p> -->
-    <!-- <button (click)="window.location.reload()">Volver a Intentos</button> -->
+    <p>Resultado: {{ calculoTotal *10 }}%</p>
+    <p>Tiempo transcurrido: {{ tiempoTotal - tiempoRestante}} segundos</p>
   </div>
   }
 

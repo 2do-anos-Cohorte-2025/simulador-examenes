@@ -24,17 +24,17 @@
                     @else{
                     <img src="assets/icons/user-fill.svg" class="examen-info-user-avatar" alt="">
                     }
-                    <h3 class="examen-info-user-name">Por: {{ examen?.usuario }} </h3>
+                    <h3 class="examen-info-user-name">Por: {{ examen?.usuario_nombre }} </h3>
                 </div>
-                @if (examen?.profesor) {
+                @if (examen?.es_profesor) {
                 <div
                     class="examen-info-user-role-container d-flex flex-column justify-content-center align-items-center">
                     <div class="d-flex flex-row">
                         <img src="assets/icons/profesor.svg" class="examen-info-profesor-icon" alt="Icono de profesor">
                         <p class="examen-info-user-role">Profesor</p>
                     </div>
-                    <p class="examen-info-user-role">Titulo: {{ examen?.profesor?.titulo }}</p>
-                    <p class="examen-info-user-role">Especialidad: {{ examen?.profesor?.especialidad }}</p>
+                    <p class="examen-info-user-role">Institución: {{ examen?.institucion }}</p>
+                    <p class="examen-info-user-role">Especialidad: {{ examen?.especialidad }}</p>
                 </div>
                 }
                 @else{
@@ -47,14 +47,16 @@
 
 
             <div class="examen-info-btn-container ">
-                <button class="btn btn-primary"><a (click)="iniciarIntento()" class="text-white text-decoration-none">Iniciar intento</a></button>
+                <button class="btn btn-primary"><a 
+                    (click)="iniciarIntento()" 
+                    class="text-white text-decoration-none">Iniciar intento</a></button>
             </div>
 
             <div class="examen-info-data d-flex flex-column align-items-center text-center">
                 <span class="examen-info-category">Categoría: {{ examen?.categoria }}</span>
                 <span class="examen-info-level">Nivel: {{ examen?.nivel }}</span>
-                @if (examen?.tiempoLimite) {
-                <span class="examen-info-time-limit">Tiempo límite: {{ examen?.tiempoLimite }} minutos</span>
+                @if (examen?.tiempo_limite) {
+                <span class="examen-info-time-limit">Tiempo límite: {{ examen?.tiempo_limite }} minutos</span>
                 }
                 <span class="examen-info-creation-date">Fecha de creación: {{ examen?.fecha_modificacion |
                     date:'dd/MM/yyyy' }}</span>

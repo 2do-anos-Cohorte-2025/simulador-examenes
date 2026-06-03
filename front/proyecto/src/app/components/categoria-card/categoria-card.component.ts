@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-test-card',
+  selector: 'app-categoria-card',
   standalone: true,
   imports: [],
-  templateUrl: './test-card.component.html',
-  styleUrl: './test-card.component.css'
+  templateUrl: './categoria-card.component.html',
+  styleUrl: './categoria-card.component.css'
 })
-export class TestCardComponent {
-  arrowUrl: string = 'assets/icons/arrow-up.svg';
+export class CategoriaCardComponent {
+    arrowUrl: string = 'assets/icons/arrow-up.svg';
   testsCardList: { id: number, titulo: string; imagen: string; alt: string }[] = [
 { id:1, titulo: "Ciencias Naturales", imagen:"/assets/carousel/card-ciencias.png", alt:"Card de ciencias naturales",},
 { id:2, titulo: "Digital", imagen:"/assets/carousel/card-educacion.png", alt:"Card de digital",},
