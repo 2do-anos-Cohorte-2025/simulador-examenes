@@ -1,0 +1,88 @@
+<div class="container mt-4">
+
+  <h1>Buscar Exámenes</h1>
+
+  <div class="row mt-4">
+
+    <!-- FILTROS -->
+    <div class="col-md-3">
+      <h5>Filtros</h5>
+
+      <!-- CATEGORÍA -->
+      <div class="mb-3">
+        <label class="form-label">Categoría</label>
+        <select class="form-select"
+                [(ngModel)]="filtros.categoria"
+                (change)="buscarExamenes()">
+          <option value="">Todas</option>
+          <option *ngFor="let c of categorias" [value]="c.nombre">
+            {{ c.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- NIVEL -->
+      <div class="mb-3">
+        <label class="form-label">Nivel</label>
+        <select class="form-select"
+                [(ngModel)]="filtros.nivel"
+                (change)="buscarExamenes()">
+          <option value="">Todos</option>
+          <option *ngFor="let n of niveles" [value]="n.nombre">
+            {{ n.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <!-- CREADOR -->
+      <div class="mb-3">
+        <label class="form-label">Creador</label>
+        <select class="form-select"
+                [(ngModel)]="filtros.creador"
+                (change)="buscarExamenes()">
+          <option value="">Todos</option>
+          <option value="profesor">Profesor</option>
+          <option value="estudiante">Estudiante</option>
+        </select>
+      </div>
+
+      <button class="btn btn-secondary w-100 mt-2"
+              (click)="limpiarFiltros()">
+        Limpiar
+      </button>
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="col-md-9">
+      <h5>Resultados</h5>
+
+      <div class="card mb-3"
+           *ngFor="let examen of examenes">
+
+        <div class="card-body">
+
+          <h5>{{ examen.titulo }}</h5>
+
+          <p>
+            <strong>Usuario:</strong> {{ examen.usuario_nombre }} <br>
+            <strong>Categoría:</strong> {{ examen.categoria_nombre }} <br>
+            <strong>Nivel:</strong> {{ examen.nivel_nombre }} <br>
+            <strong>Tiempo:</strong> {{ examen.tiempo_limite }} min
+          </p>
+
+          <span *ngIf="examen.es_profesor" class="badge bg-primary">
+            Profesor
+          </span>
+
+          <button class="btn btn-sm btn-outline-primary float-end">
+            Ver más
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

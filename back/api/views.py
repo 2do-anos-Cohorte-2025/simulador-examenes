@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics, status
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import (
@@ -35,12 +35,40 @@ from .serializers import (
     PerfilSerializer
 )
 
-
 class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
     lookup_field = 'slug'
 
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+    
+def get_queryset(self):
+    queryset = Examen.objects.all()
+
+    nivel = self.request.query_params.get('nivel')
+    categoria = self.request.query_params.get('categoria')
+    creador = self.request.query_params.get('creador')
+    search = self.request.query_params.get('search')
+
+    if nivel:
+        queryset = queryset.filter(nivel__nombre__iexact=nivel)
+
+    if categoria:
+        queryset = queryset.filter(categoria__nombre__iexact=categoria)
+
+    if creador == 'profesor':
+        queryset = queryset.filter(usuario__rol='profesor')
+
+    elif creador == 'estudiante':
+        queryset = queryset.filter(usuario__rol='estudiante')
+
+    if search:
+        queryset = queryset.filter(titulo__icontains=search)
+
+    return queryset
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
