@@ -34,12 +34,23 @@ export class LoginComponent {
 
   on_submit() {
     if (this.login_form.invalid) return;
+
     this.cargando = true;
     this.error_mensaje = '';
 
     const { email, password_hash } = this.login_form.value;
+
     this.authService.login(email, password_hash).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: () => {
+        const usuario = this.authService.getUsuario();
+
+        if (usuario?.rol === 'profesor') {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/inicio']);
+        }
+      },
+
       error: (err) => {
         this.error_mensaje = err.error?.error || 'Error al iniciar sesión.';
         this.cargando = false;
