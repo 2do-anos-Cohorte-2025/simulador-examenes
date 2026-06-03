@@ -48,4 +48,8 @@ export class AuthService {
     estaLogueado(): boolean {
         return !!localStorage.getItem('access_token');
     }
+    esProfesor(): boolean {
+    const usuario = this.getUsuario();
+    return usuario?.rol === 'profesor';
+    }
 }

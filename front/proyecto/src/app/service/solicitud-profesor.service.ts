@@ -13,4 +13,23 @@ export class SolicitudProfesorService {
   crearSolicitud(formData: FormData) {
     return this.http.post(this.apiUrl, formData);
   }
+
+  obtenerSolicitudes(estado?: string) {
+    if (estado) {
+      return this.http.get(`${this.apiUrl}?estado=${estado}`);
+    }
+    return this.http.get(this.apiUrl);
+  }
+
+  obtenerSolicitud(id: number) {
+    return this.http.get(`${this.apiUrl}${id}/`);
+  }
+
+  aprobarSolicitud(id: number) {
+    return this.http.post(`${this.apiUrl}${id}/aprobar/`, {});
+  }
+
+  rechazarSolicitud(id: number) {
+    return this.http.post(`${this.apiUrl}${id}/rechazar/`, {});
+  }
 }

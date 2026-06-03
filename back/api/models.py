@@ -42,7 +42,6 @@ class SolicitudProfesor(models.Model):
     dni = models.CharField(max_length=30)
     pais = models.CharField(max_length=100)
     provincia = models.CharField(max_length=100, blank=True)
-    ciudad = models.CharField(max_length=100, blank=True)
     telefono = models.CharField(max_length=50)
     institucion = models.CharField(max_length=255)
     especialidad = models.CharField(max_length=255)

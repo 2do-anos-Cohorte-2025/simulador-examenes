@@ -62,6 +62,10 @@ class ProfesorSerializer(serializers.ModelSerializer):
 
 class SolicitudProfesorSerializer(serializers.ModelSerializer):
 
+    email_usuario = serializers.CharField(
+        source='usuario.email',
+        read_only=True
+    )
     class Meta:
         model = SolicitudProfesor
         fields = '__all__'
@@ -70,7 +74,7 @@ class SolicitudProfesorSerializer(serializers.ModelSerializer):
 class OpcionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Opcion
-        fields = '__all__'
+        fields = '__all__'  
         lookup_field = 'pregunta'
 
 class PreguntaSerializer(serializers.ModelSerializer):    

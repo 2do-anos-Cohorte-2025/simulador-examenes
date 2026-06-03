@@ -7,6 +7,8 @@ import { QuienesSomosComponent } from './views/quienes-somos/quienes-somos.compo
 import { ExamenVistaPreviaComponent } from './views/examen-vista-previa/examen-vista-previa.component';
 import { ExamenIntentoComponent } from './views/examen-intento/examen-intento.component';
 import { SolicitudProfesorComponent } from './views/solicitud-profesor/solicitud-profesor.component';
+import { AdminSolicitudesComponent } from './views/admin-solicitudes/admin-solicitudes.component';
+import { AdminDashboardComponent } from './views/admin-dashboard/admin-dashboard.component';
 import { PerfilComponent } from './views/perfil/perfil.component';
 import { BuscarExamenesComponent } from './views/buscar-examen/buscar-examenes.component';
 
@@ -22,4 +24,7 @@ export const routes: Routes = [
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
     { path: 'buscar-examenes', component: BuscarExamenesComponent },
+    { path: 'admin-solicitudes', component: AdminSolicitudesComponent },
+    { path: 'admin', component: AdminDashboardComponent },
+
 ];
