@@ -114,26 +114,9 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
                   'fecha_inicio', 
                   'fecha_fin',
                   'resultado']
+        
         read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
 
-        fields = [
-            'id',
-            'examen',
-            'examen_titulo',
-            'examen_slug',
-            'usuario',
-            'fecha_inicio',
-            'fecha_fin',
-            'resultado',
-            
-        ]
-        read_only_fields = [
-            'id',
-            'usuario',
-            'fecha_inicio',
-            'slug',
-            'titulo',
-        ]
         extra_kwargs = {
             'examen': {'required': False},
             'usuario': {'required': False, 'allow_null': True},
