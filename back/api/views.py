@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics, status
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
 from django.utils import timezone
@@ -37,12 +37,43 @@ from .serializers import (
     PerfilSerializer
 )
 
-
 class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
     lookup_field = 'slug'
 
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+    
+# COMENTAR QUE LO MOVI, ESTABA MAL IDENTADO
+    def get_queryset(self):
+        queryset = Examen.objects.all()
+
+        nivel = self.request.query_params.get('nivel')
+        categoria = self.request.query_params.get('categoria')
+        creador = self.request.query_params.get('creador')
+        search = self.request.query_params.get('search')
+
+        if nivel:
+            queryset = queryset.filter(nivel__nombre__iexact=nivel)
+
+        if categoria:
+            queryset = queryset.filter(categoria__nombre__iexact=categoria)
+
+        if creador == 'profesor':
+            queryset = queryset.filter(usuario__rol='profesor')
+
+        elif creador == 'estudiante':
+            queryset = queryset.filter(usuario__rol='estudiante')
+
+        if search:
+            queryset = queryset.filter(titulo__icontains=search)
+
+        return queryset
+    
+    
 
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
@@ -75,6 +106,22 @@ class SolicitudProfesorViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+    
+    # Si el admin aprueba la solicitud, el rol del usuario se modifica para ser profesor
+    def update(self, request, *args, **kwargs):
+        solicitud = self.get_object()
+
+        serializer = self.get_serializer(solicitud, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        solicitud_actualizada = serializer.save()
+        
+        if solicitud_actualizada.estado == 'aprobada':
+            usuario = solicitud_actualizada.usuario
+            usuario.rol = 'profesor'
+            usuario.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    
 
     @action(detail=True, methods=['post'])
     def aprobar(self, request, pk=None):
@@ -135,13 +182,19 @@ class OpcionViewSet(viewsets.ModelViewSet):
 class IntentoExamenViewSet(viewsets.ModelViewSet):
     queryset = IntentoExamen.objects.all()
     serializer_class = IntentoExamenSerializer
+    
+    def perform_create(self, serializer):
+        usuario = self.request.user
+
+        if usuario.is_authenticated:
+            serializer.save(usuario=usuario)
+        else:
+            serializer.save(usuario=None)
 
     # Nos permite editar el intento para finalizarlo, agregando la fecha_fin y el resultado
     def update(self, request, *args, **kwargs):
-        # Obtener el intento a actualizar
         intento = self.get_object()
         
-        # Serializar con los datos recibidos en el body
         serializer = self.get_serializer(intento, data=request.data, partial=False) 
         
         serializer.is_valid(raise_exception=True)
@@ -150,23 +203,25 @@ class IntentoExamenViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     
+    
 
 
 class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
     queryset = RespuestaUsuario.objects.all()
     serializer_class = RespuestaUsuarioSerializer
     
-    # El endpoint seria asi: http://127.0.0.1:8000/api/respuestas/?intento_id=14&pregunta-id=5
+    # El endpoint seria asi: http://127.0.0.1:8000/api/respuestas/?intento_id=14&pregunta_id=5
     def get_queryset(self):
+        queryset = self.queryset
         intento_id = self.request.query_params.get('intento_id', None)
-        if intento_id:
-            return self.queryset.filter(intento_id=intento_id)
-        return self.queryset
-    def get_queryset(self):
         pregunta_id = self.request.query_params.get('pregunta_id', None)
+
+        if intento_id:
+            queryset = queryset.filter(intento_id=intento_id)
         if pregunta_id:
-            return self.queryset.filter(pregunta_id=pregunta_id)
-        return self.queryset
+            queryset = queryset.filter(pregunta_id=pregunta_id)
+
+        return queryset
 
 
 class TestConnectionViewSet(viewsets.ModelViewSet):

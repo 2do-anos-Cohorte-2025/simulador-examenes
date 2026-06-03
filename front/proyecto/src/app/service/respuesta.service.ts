@@ -6,14 +6,20 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class RespuestaService {
-  private apiUrl = 'http://localhost:8000/api/'; // URL de tu API de Django
+  private apiUrl = 'http://localhost:8000/api/'; 
 
   constructor(private http: HttpClient) {}
 
  
-  guardarRespuesta(respuesta: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/respuestas/`, {intento: respuesta.intentoId, pregunta: respuesta.preguntaId, opcion_seleccionada: respuesta.opcionId, respuesta_texto: respuesta.respuestaText});
-  }
+  
+  guardarRespuesta(data: {intentoId: number;preguntaId: number;opcionId: number | null;respuestaText: string | null;}): Observable<any> {
+  return this.http.post(`${this.apiUrl}respuestas/`, {
+    intento: data.intentoId,  
+    pregunta: data.preguntaId,  
+    opcion_seleccionada: data.opcionId,  
+    respuesta_texto: data.respuestaText === "null" ? null : data.respuestaText  
+  });
+}
   getRespuesta(intentoId: number, preguntaId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/respuestas/?intento_id=${intentoId}&pregunta_id=${preguntaId}`);
   }

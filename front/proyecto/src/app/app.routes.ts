@@ -10,7 +10,7 @@ import { SolicitudProfesorComponent } from './views/solicitud-profesor/solicitud
 import { AdminSolicitudesComponent } from './views/admin-solicitudes/admin-solicitudes.component';
 import { AdminDashboardComponent } from './views/admin-dashboard/admin-dashboard.component';
 import { PerfilComponent } from './views/perfil/perfil.component';
-
+import { BuscarExamenesComponent } from './views/buscar-examen/buscar-examenes.component';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent },
@@ -23,6 +23,8 @@ export const routes: Routes = [
     { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
+    { path: 'buscar-examenes', component: BuscarExamenesComponent },
     { path: 'admin-solicitudes', component: AdminSolicitudesComponent },
     { path: 'admin', component: AdminDashboardComponent },
+
 ];

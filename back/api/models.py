@@ -34,6 +34,7 @@ class Profesor(models.Model):
     def __str__(self):
 
         return f"Profesor: {self.usuario.first_name} {self.usuario.last_name}"
+    
 class SolicitudProfesor(models.Model):
     ESTADOS = [ ('pendiente', 'Pendiente'), ('aprobada', 'Aprobada'), ('rechazada', 'Rechazada')]
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='solicitudes_profesor')
