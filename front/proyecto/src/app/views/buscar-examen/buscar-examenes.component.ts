@@ -4,11 +4,12 @@ import { ExamenService } from '../../service/examen.service';
 import { CategoriaService } from '../../service/categoria.service';
 import { NivelService } from '../../service/nivel.service';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-buscar-examenes',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './buscar-examenes.component.html',
   styleUrl: './buscar-examenes.component.css'
 })

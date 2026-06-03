@@ -15,9 +15,6 @@
             <li class="nav-item">
               <a class="nav-link" href="#">Popular</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Quizzes</a>
-            </li>
             <li class="nav-item" *ngIf="!authService.estaLogueado()">
               <a class="nav-link" routerLink="/login" >
                 Crea tus exámenes
@@ -28,6 +25,7 @@
               <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
                 Crea tus exámenes
               </a>
+
             </li>
 
 
@@ -44,7 +42,13 @@
                 <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar Solicitudes</a>
               </li>
             </ng-container>
+            <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/admin" routerLinkActive="active">Panel Admin</a>
+              </li>
+            </ng-container>
           </ul>
+          
 
 
           <div class="navbar-sesion d-flex">

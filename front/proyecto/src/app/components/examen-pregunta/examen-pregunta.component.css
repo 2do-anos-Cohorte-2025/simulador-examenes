@@ -18,15 +18,28 @@
 
 .question-image {
     width: 80%;
+    display: flex;
+    justify-self: center;
     align-self: center;
     height: auto;
+    margin: auto;
     margin-top: 15px;
+}
+
+.options-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+        
+}
+.option-item{
+    text-wrap: wrap;
 }
 
 .option-image{
     display:flex;
     flex-direction: column;
-    width: 50%;
+    width: 40%;
     justify-content: center;
     align-self: center;
     height: auto;

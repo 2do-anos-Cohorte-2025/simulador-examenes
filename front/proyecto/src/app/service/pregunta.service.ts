@@ -19,6 +19,7 @@ export class PreguntaService {
   }
   // Obtener todas las opciones de una pregunta
   getOpciones(preguntaId: number): Observable<any> {
+
     return this.http.get(`${this.apiUrl}opciones/?pregunta_id=${preguntaId}`);
   }
 }

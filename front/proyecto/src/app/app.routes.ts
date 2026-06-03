@@ -21,9 +21,9 @@ export const routes: Routes = [
     { path: 'quienes-somos', component: QuienesSomosComponent },
     { path: 'examen/:slug', component: ExamenVistaPreviaComponent },
     { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
-    { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
+    { path: 'buscar-examenes', component: BuscarExamenesComponent },
     { path: 'admin-solicitudes', component: AdminSolicitudesComponent },
     { path: 'admin', component: AdminDashboardComponent },
-    { path: 'buscar-examenes', component: BuscarExamenesComponent },
+    { path: '', redirectTo: '/inicio', pathMatch: 'full' },
 ];

@@ -7,8 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RespuestaService } from '../../service/respuesta.service';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs/internal/observable/forkJoin';
-import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-examen-pregunta',
@@ -29,6 +27,7 @@ export class ExamenPreguntaComponent {
   respuestas: any[] = [];
   total: any = 0;
   calculoTotal: number = 0;
+  puntajesPorPregunta: { [key: number]: number } = {};
   tiempoRestante: number = 0;
   tiempoTotal: number = 0;
   temporizador: any;
@@ -56,22 +55,13 @@ export class ExamenPreguntaComponent {
         this.tiempoTotal = examen.tiempo_limite * 60; // Tiempo en segundos
         this.tiempoRestante = this.tiempoTotal;
         this.iniciarTemporizador();
+
       },
       error: (error) => {
         console.error('Error al cargar el examen:', error);
       }
     });
 
-    // SEGUN EL TOKEN OBTENER EL USUARIO ACTUAL
-
-    // this.usuario = UsuarioService.getUsuario(usuarioId).subscribe({
-    //   next: (usuario) => {
-    //     this.usuario = usuario;
-    //   },
-    //   error: (error) => {
-    //     console.error('Error al cargar el usuario:', error);
-    //   }
-    // });
 
 
   }
@@ -90,8 +80,6 @@ export class ExamenPreguntaComponent {
           this.preguntaActual = 0;
           this.conseguirOpciones(this.preguntas[this.preguntaActual].id);
         }
-        console.log('Preguntas cargadas:', this.preguntas);
-        console.log('Respuestas inicializadas:', this.respuestas);
       },
       error: (error) => {
         console.error('Error al cargar las preguntas:', error);
@@ -103,18 +91,18 @@ export class ExamenPreguntaComponent {
     this.PreguntaService.getOpciones(preguntaId).subscribe({
       next: (opciones) => {
         this.opciones = opciones;
-        console.log("preguntaId", preguntaId, "opciones", opciones);
       }
       ,
       error: (error) => {
-        console.error('Error al cargar las opciones:', error);
       }
     });
   }
 
   iniciarTemporizador(): void {
+
     this.temporizador = setInterval(() => {
       this.tiempoRestante--;
+
       if (this.tiempoRestante <= 0) {
         this.tiempoExpirado = true;
         this.finalizarExamen();
@@ -134,7 +122,6 @@ export class ExamenPreguntaComponent {
           this.examenFinalizado = true;
           this.intento = response;
           clearInterval(this.temporizador);
-          console.log('Examen finalizado:', response);
         },
         error: (error) => {
           console.error('Error al finalizar el examen:', error);
@@ -143,49 +130,65 @@ export class ExamenPreguntaComponent {
     }
   }
 
-  calcularPuntuacion(): void {
-    const observables = this.respuestas
-      .filter(respuesta => respuesta.opcion_seleccionada_id != null || respuesta.respuesta_texto != null)
-      .map(respuesta =>
-        this.RespuestaService.getOpcion(respuesta.opcion_seleccionada_id).pipe(
-          map(opcion => ({
-            es_correcta: opcion.es_correcta,
-            puntaje: this.preguntas.find(p => p.id === respuesta.pregunta_id)?.puntaje || 0
-          }))
-        )
-      );
 
-    if (observables.length === 0) {
-      this.calculoTotal = 0;
-      return;
-    }
+  seleccionarOpcion(preguntaId: number, opcion: any): void {
 
-    forkJoin(observables).subscribe(resultados => {
-      this.calculoTotal = resultados.reduce((total, resultado) =>
-        total + (resultado.es_correcta ? resultado.puntaje : 0), 0);
+    const respuesta = this.respuestas.find(
+      r => r.pregunta_id === preguntaId
+    );
 
-      console.log('Respuestas para calcular puntuación:', this.respuestas);
-      console.log('Puntaje calculado:', this.calculoTotal);
+    const pregunta = this.preguntas.find(
+      p => p.id === preguntaId
+    );
+
+    if (!respuesta || !pregunta) return;
+
+    respuesta.opcion_seleccionada_id = opcion.id;
+    respuesta.respuesta_texto = null;
+
+    this.puntajesPorPregunta[preguntaId] =
+      opcion.es_correcta ? Number(pregunta.puntos) : 0;
+
+    this.calculoTotal = Object.values(this.puntajesPorPregunta)
+      .reduce((total, puntos) => Number(total) + Number(puntos), 0);
+
+
+
+    this.guardarRespuesta({
+      intento: Number(this.intentoSlug),
+      pregunta: preguntaId,
+      opcion_seleccionada: opcion.id,
+      respuesta_texto: null
     });
-
   }
 
-  seleccionarOpcion(preguntaId: number, opcionId: number): void {
-    const respuesta = this.respuestas.find(r => r.pregunta_id === preguntaId);
-    if (respuesta) {
-      respuesta.opcion_seleccionada_id = opcionId;
-      this.guardarRespuesta({ intentoId: Number(this.intentoSlug), preguntaId: preguntaId, opcionId: opcionId });
-      respuesta.respuesta_texto = null;
-    }
-  }
-  
   responderTexto(preguntaId: number, texto: string): void {
-    const respuesta = this.respuestas.find(r => r.pregunta_id === preguntaId);
-    if (respuesta) {
-      respuesta.respuesta_texto = texto;
-      respuesta.opcion_seleccionada_id = null;
-      this.guardarRespuesta({ intentoId: this.intentoSlug, preguntaId: preguntaId, respuestaText: texto });
-    }
+
+    const respuesta = this.respuestas.find(
+      r => r.pregunta_id === preguntaId
+    );
+
+    const pregunta = this.preguntas.find(
+      p => p.id === preguntaId
+    );
+
+    if (!respuesta || !pregunta) return;
+
+    respuesta.respuesta_texto = texto;
+    respuesta.opcion_seleccionada_id = null;
+
+    this.puntajesPorPregunta[preguntaId] = Number(pregunta.puntos);
+
+    this.calculoTotal = Object.values(this.puntajesPorPregunta)
+      .reduce((total, puntos) => Number(total) + Number(puntos), 0);
+
+
+    this.guardarRespuesta({
+      intento: Number(this.intentoSlug),
+      pregunta: preguntaId,
+      opcion_seleccionada: null,
+      respuesta_texto: texto
+    });
   }
 
   siguientePregunta(): void {
@@ -201,10 +204,8 @@ export class ExamenPreguntaComponent {
         console.warn('Pregunta actual no disponible para cargar opciones');
       }
 
-      console.log('REspuestas:', this.respuestas);
-
     } else {
-      this.calcularPuntuacion();
+      this.finalizarExamen();
       this.preguntaFinalizada = true;
     }
   }
@@ -216,14 +217,14 @@ export class ExamenPreguntaComponent {
     }
   }
 
-  guardarRespuesta({ intentoId, preguntaId, opcionId, respuestaText }: { intentoId: number, preguntaId: number, opcionId?: number, respuestaText?: string }): void {
-    const respuesta = this.respuestas.find(r => r.pregunta_id === preguntaId);
-    if (respuesta && this.intento) {
+  guardarRespuesta(data: { intento: number; pregunta: number; opcion_seleccionada: number | null; respuesta_texto: string | null; }): void {
+    const respuesta = this.respuestas.find(r => r.pregunta_id === data.pregunta);
+    if (respuesta && this.intentoSlug) {
       this.RespuestaService.guardarRespuesta({
-        intento_id: intentoId,
-        pregunta_id: preguntaId,
-        opcion_seleccionada_id: opcionId,
-        respuesta_texto: respuestaText
+        intentoId: data.intento,
+        preguntaId: data.pregunta,
+        opcionId: data.opcion_seleccionada,
+        respuestaText: data.respuesta_texto
       }).subscribe({
         next: (response) => {
           console.log('Respuesta guardada:', response);

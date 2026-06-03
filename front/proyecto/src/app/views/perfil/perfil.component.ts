@@ -20,6 +20,7 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getPerfil().subscribe({
       next: (data) => {
+        console.log(data)
         this.usuario = data;
         this.cargando = false;
       },
