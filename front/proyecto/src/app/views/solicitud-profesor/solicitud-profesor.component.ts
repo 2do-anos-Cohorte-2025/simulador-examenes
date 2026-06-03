@@ -17,7 +17,6 @@ export class SolicitudProfesorComponent {
     dni: '',
     pais: '',
     provincia: '',
-    ciudad: '',
     telefono: '',
     institucion: '',
     especialidad: '',
@@ -62,7 +61,6 @@ export class SolicitudProfesorComponent {
     datos.append('dni', this.formData.dni);
     datos.append('pais', this.formData.pais);
     datos.append('provincia', this.formData.provincia);
-    datos.append('ciudad', this.formData.ciudad);
     datos.append('telefono', this.formData.telefono);
     datos.append('institucion', this.formData.institucion);
     datos.append('especialidad', this.formData.especialidad);
