@@ -1,0 +1,175 @@
+.contenedor {
+    min-height: 100vh;
+    background: #202324;
+
+    display: flex;
+    gap: 25px;
+
+    padding: 40px;
+}
+
+.lista,
+.detalle {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 20px;
+
+    padding: 25px;
+
+    box-shadow: 0 0 25px rgba(0,0,0,.5);
+}
+
+.lista {
+    width: 380px;
+    flex-shrink: 0;
+}
+
+.lista h2 {
+    color: white;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.detalle {
+    flex: 1;
+}
+
+.detalle h2 {
+    color: white;
+    margin-bottom: 25px;
+}
+
+.filtros {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.filtros button {
+    flex: 1;
+
+    border: none;
+    border-radius: 10px;
+
+    padding: 10px;
+
+    background: #546239;
+    color: white;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.filtros button:hover {
+    background: #667547;
+}
+
+
+.item {
+    background: #1b1b1b;
+    border: 1px solid #333;
+
+    border-radius: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 10px;
+
+    color: white;
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.item:hover {
+    border-color: #00aa44;
+    transform: translateY(-2px);
+}
+
+
+.detalle p {
+    color: #ddd;
+    margin-bottom: 10px;
+}
+
+.detalle strong {
+    color: white;
+}
+
+
+.detalle a {
+    color: #9cc76f;
+    text-decoration: none;
+}
+
+.detalle a:hover {
+    text-decoration: underline;
+}
+
+
+.estado {
+    display: inline-block;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.estado.pendiente {
+    background: #ffc107;
+    color: black;
+}
+
+.estado.aprobada {
+    background: #28a745;
+    color: white;
+}
+
+.estado.rechazada {
+    background: #dc3545;
+    color: white;
+}
+
+
+
+.acciones {
+    display: flex;
+    gap: 15px;
+
+    margin-top: 25px;
+}
+
+.aprobar,
+.rechazar {
+    flex: 1;
+
+    border: none;
+    border-radius: 12px;
+
+    padding: 14px;
+
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.aprobar {
+    background: #28a745;
+}
+
+.aprobar:hover {
+    background: #218838;
+}
+
+.rechazar {
+    background: #dc3545;
+}
+
+.rechazar:hover {
+    background: #c82333;
+}

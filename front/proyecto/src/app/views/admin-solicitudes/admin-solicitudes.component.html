@@ -1,0 +1,88 @@
+<div class="contenedor">
+
+    <div class="lista">
+
+        <h2>Solicitudes</h2>
+
+        <div class="filtros">
+
+            <button (click)="cambiarFiltro('pendiente')">
+                Pendientes
+            </button>
+
+            <button (click)="cambiarFiltro('aprobada')">
+                Aprobadas
+            </button>
+
+            <button (click)="cambiarFiltro('rechazada')">
+                Rechazadas
+            </button>
+
+        </div>
+
+        <div
+            class="item"
+            *ngFor="let solicitud of solicitudes"
+            (click)="seleccionarSolicitud(solicitud)"
+        >
+
+            {{ solicitud.email_usuario }}
+            -
+            {{ solicitud.estado }}
+
+        </div>
+
+    </div>
+
+    <div class="detalle" *ngIf="solicitudSeleccionada">
+
+        <h2>Detalle</h2>
+        <p><strong>Nombre:</strong> {{ solicitudSeleccionada.nombre_completo }}</p>
+        <p><strong>DNI:</strong> {{ solicitudSeleccionada.dni }}</p>
+        <p><strong>País:</strong> {{ solicitudSeleccionada.pais }}</p>
+        <p><strong>Provincia:</strong> {{ solicitudSeleccionada.provincia }}</p>
+        <p><strong>Teléfono:</strong> {{ solicitudSeleccionada.telefono }}</p>
+        <p><strong>Institución:</strong> {{ solicitudSeleccionada.institucion }}</p>
+        <p><strong>Especialidad:</strong> {{ solicitudSeleccionada.especialidad }}</p>
+        <p><strong>Estado:</strong>
+            <span
+                class="estado"
+                [ngClass]="solicitudSeleccionada.estado">
+                {{ solicitudSeleccionada.estado }}
+            </span>
+        </p>
+        <hr>
+
+        <p>
+            <a
+                [href]="solicitudSeleccionada.certificado_titulo"
+                target="_blank">Ver certificado</a>
+        </p>
+
+        <p>
+            <a
+                [href]="solicitudSeleccionada.dni_frente"
+                target="_blank">Ver DNI frente</a>
+        </p>
+
+        <p>
+            <a
+                [href]="solicitudSeleccionada.dni_dorso"
+                target="_blank">Ver DNI dorso
+            </a>
+        </p>
+
+        <div
+            *ngIf="solicitudSeleccionada.estado === 'pendiente'"
+            class="acciones"
+        >
+
+            <button class="aprobar" (click)="aprobar()">Aprobar</button>
+
+            <button class="rechazar" (click)="rechazar()">Rechazar</button>
+
+        </div>
+
+    </div>
+
+</div>
