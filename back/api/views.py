@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import action
+from django.utils import timezone
 
 from .models import (
     Categoria,
@@ -65,8 +67,43 @@ class SolicitudProfesorViewSet(viewsets.ModelViewSet):
     serializer_class = SolicitudProfesorSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        estado = self.request.query_params.get('estado')
+        if estado:
+            return SolicitudProfesor.objects.filter(estado=estado)
+        return SolicitudProfesor.objects.all()
+    
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
+
+    @action(detail=True, methods=['post'])
+    def aprobar(self, request, pk=None):
+        solicitud = self.get_object()
+        solicitud.estado = 'aprobada'
+        solicitud.fecha_revision = timezone.now()
+        solicitud.save()
+        usuario = solicitud.usuario
+        usuario.rol = 'profesor'
+        usuario.save()
+
+        if not Profesor.objects.filter(usuario=usuario).exists():
+            Profesor.objects.create(
+                usuario=usuario,
+                especialidad=solicitud.especialidad,
+                titulo='Pendiente'
+            )
+        return Response({
+            "mensaje": "Solicitud aprobada"
+        })
+    @action(detail=True, methods=['post'])
+    def rechazar(self, request, pk=None):
+        solicitud = self.get_object()
+        solicitud.estado = 'rechazada'
+        solicitud.fecha_revision = timezone.now()
+        solicitud.save()
+        return Response({
+            "mensaje": "Solicitud rechazada"
+        })
 
 
 class PreguntaViewSet(viewsets.ModelViewSet):
@@ -156,6 +193,7 @@ class RegistroView(generics.CreateAPIView):
                 "apellido": user.last_name,
                 "email":    user.email,
                 "rol":      user.rol,
+                "is_superuser": user.is_superuser,
             }
         }, status=status.HTTP_201_CREATED)
 
@@ -203,6 +241,7 @@ class LoginView(APIView):
                 "apellido": user.last_name,
                 "email":    user.email,
                 "rol":      user.rol,
+                "is_superuser": user.is_superuser,
             }
         })
 

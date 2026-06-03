@@ -29,8 +29,16 @@
             <li class="nav-item">
               <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
             </li>
-
-
+            <ng-container *ngIf="authService.estaLogueado()">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/solicitud-profesor" routerLinkActive="active">Solicitud Docente</a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.is_superuser">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar Solicitudes</a>
+              </li>
+            </ng-container>
           </ul>
 
 
