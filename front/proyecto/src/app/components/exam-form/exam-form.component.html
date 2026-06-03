@@ -61,39 +61,25 @@
       <div class="mb-3">
         <label class="form-label">Categoría</label>
 
-        <input
-          type="text"
-          class="form-control"
-          formControlName="categoria"
-          placeholder="Ej: Matemática, Lengua, Programación">
+        <select class="form-control" formControlName="categoria">
+          <option [ngValue]="null">Sin categoría</option>
+          <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">
+             {{ categoria.nombre }}
+          </option>
+        </select>
 
-          <div
-            class="text-danger mt-1"
-            *ngIf="examenForm.get('categoria')?.invalid &&
-                  examenForm.get('categoria')?.touched">
-
-            <small>
-              La categoría es obligatoria
-            </small>
-
-          </div>
+          
       </div>
 
       <div class="mb-3">
         <label class="form-label">Nivel</label>
 
-        <input
-          type="text"
-          class="form-control"
-          formControlName="nivel"
-          placeholder="Ej: A1 (Fácil), B1 (Intermedio), C1 (Avanzado)">
-
-        <div
-          class="text-danger mt-1"
-          *ngIf="examenForm.get('nivel')?.invalid && examenForm.get('nivel')?.touched">
-
-          <small>El nivel es obligatorio.</small>
-        </div>
+         <select class="form-control" formControlName="nivel">
+          <option [ngValue]="null">Sin nivel</option>
+          <option *ngFor="let nivel of niveles" [ngValue]="nivel.id">
+            {{ nivel.nombre }}
+          </option>
+        </select>
       </div>
 
       <div class="mb-3">

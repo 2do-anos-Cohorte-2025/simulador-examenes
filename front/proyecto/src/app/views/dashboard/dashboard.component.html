@@ -40,7 +40,9 @@
 
   <ul *ngIf="!cargandoExamenes && examenes.length > 0">
     <li *ngFor="let examen of examenes">
-      <strong>{{ examen.titulo }}</strong> - {{ examen.categoria }} - {{ examen.nivel }}
+      <strong>{{ examen.titulo }}</strong><br>
+      Categoría: {{ examen.categoria_nombre }} <br>
+      Nivel: {{ examen.nivel_nombre }}
     </li>
   </ul>
 

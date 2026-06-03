@@ -1,3 +1,5 @@
+import { CategoriaService } from '../../service/categoria.service';
+import { NivelService } from '../../service/nivel.service';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
@@ -6,7 +8,7 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-exam-form',
@@ -17,6 +19,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class ExamFormComponent {
 
+  categorias: any[] = [];
+  niveles: any[] = [];
   mensaje: string = "";
   examenForm: FormGroup;
   imagenSeleccionada: File | null = null;
@@ -24,7 +28,7 @@ export class ExamFormComponent {
   private apiUrl = 'http://127.0.0.1:8000/api/examenes/';
 
 
-constructor(private fb: FormBuilder,private http : HttpClient) {
+constructor(private fb: FormBuilder,private http : HttpClient,private categoriaService: CategoriaService,private nivelService: NivelService) {
 
   this.examenForm = this.fb.group({
 
@@ -40,9 +44,9 @@ constructor(private fb: FormBuilder,private http : HttpClient) {
       Validators.maxLength(200)
     ]],
 
-    categoria: ['', Validators.required],
+    categoria: [null],
 
-    nivel: ['', Validators.required],
+    nivel: [null],
 
     tiempo_limite: ['', [
       Validators.required,
@@ -52,6 +56,23 @@ constructor(private fb: FormBuilder,private http : HttpClient) {
 
   });
 
+  this.cargarCategorias();
+  this.cargarNiveles();
+
+}
+
+cargarCategorias() {
+  this.categoriaService.getCategorias().subscribe({
+    next: (data) => this.categorias = data,
+    error: (err) => console.error('Error cargando categorías', err)
+  });
+}
+
+cargarNiveles() {
+  this.nivelService.getNiveles().subscribe({
+    next: (data) => this.niveles = data,
+    error: (err) => console.error('Error cargando niveles', err)
+  });
 }
 
 crearSlug(titulo: string): string {
@@ -81,18 +102,18 @@ crearExamen() {
       return;
     }
 
-
     const titulo = this.examenForm.get('titulo')?.value;
     const slug = this.crearSlug(titulo);
-    const usuario = JSON.parse(localStorage.getItem('usuario') || '{}');
-
-    console.log(usuario);
     
     const formData = new FormData();
+    const token = localStorage.getItem('access_token');
+
+    const headers = new HttpHeaders({
+     Authorization: `Bearer ${token}`
+    });
 
     formData.append('titulo', titulo);
     formData.append('slug', slug);
-    formData.append('usuario', usuario.id);
     formData.append('descripcion', this.examenForm.get('descripcion')?.value);
     formData.append('categoria', this.examenForm.get('categoria')?.value);
     formData.append('nivel', this.examenForm.get('nivel')?.value);
@@ -102,7 +123,7 @@ crearExamen() {
       formData.append('imagen_examen', this.imagenSeleccionada);
     }
 
-    this.http.post(this.apiUrl, formData).subscribe({
+    this.http.post(this.apiUrl, formData, { headers }).subscribe({
       next: () => {
         this.mensaje = 'Examen creado correctamente';
         this.examenForm.reset();

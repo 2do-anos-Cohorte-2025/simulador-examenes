@@ -23,3 +23,7 @@
   height: 25px;
   object-fit: contain;
 }
+
+.header-fondo {
+    background-color: #d4b896;
+}

@@ -21,6 +21,7 @@ class ExamenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examen
         fields = '__all__'
+        read_only_fields = ['usuario']
     
     def get_usuario(self, obj):
         return f"{obj.usuario.first_name} {obj.usuario.last_name}" if obj.usuario else None
@@ -88,7 +89,14 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
     examen_slug = serializers.CharField(source='examen.slug', read_only=True)
     class Meta:
         model = IntentoExamen
-        fields = ['id', 'examen', 'usuario', 'fecha_inicio', 'fecha_fin', 'resultado']
+        fields = ['id', 
+                  'examen', 
+                  'usuario', 
+                  'examen_titulo',
+                  'examen_slug',
+                  'fecha_inicio', 
+                  'fecha_fin',
+                  'resultado']
         read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
