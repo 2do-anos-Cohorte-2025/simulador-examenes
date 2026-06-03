@@ -14,13 +14,15 @@ class ExamenSerializer(serializers.ModelSerializer):
     def get_usuario(self, obj):
         return f"{obj.usuario.first_name} {obj.usuario.last_name}" if obj.usuario else None
     def get_profesor(self, obj):
-        profesor = obj.usuario.profesor  
-        if profesor:
+        try:
+            profesor = obj.usuario.profesor
             return {
+                "id": profesor.id,
                 "titulo": profesor.titulo,
                 "especialidad": profesor.especialidad,
             }
-        return None
+        except:
+            return None
     def get_categoria(self, obj):
         return obj.categoria.nombre if obj.categoria else None
     def get_nivel(self, obj):

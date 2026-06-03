@@ -19,13 +19,13 @@
               <a class="nav-link" href="#">Quizzes</a>
             </li>
             <li class="nav-item" *ngIf="!authService.estaLogueado()">
-              <a class="nav-link" routerLink="/login">
+              <a class="nav-link" routerLink="/login" >
                 Crea tus exámenes
                </a>
             </li>
 
             <li class="nav-item" *ngIf="authService.estaLogueado() && authService.esProfesor()">
-              <a class="nav-link" routerLink="/dashboard">
+              <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
                 Crea tus exámenes
               </a>
             </li>
@@ -53,7 +53,16 @@
               <!-- Con sesión -->
               <ng-container *ngIf="authService.estaLogueado()">
                 <li class="nav-item">
-                  <a class="nav-link" routerLink="/perfil" routerLinkActive="active">Mi Perfil</a>
+                  <a class="nav-link d-flex align-items-center gap-2" routerLink="/perfil" routerLinkActive="active">
+                    
+                    <img
+                      *ngIf="authService.esProfesor()"
+                      src="assets/img/profesor_verificado_FB.png"
+                      alt="Profesor verificado"
+                      title="Profesor verificado"
+                      class="icono-profesor-header">
+                      Mi Perfil
+                  </a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" style="cursor: pointer;" (click)="logout()">Cerrar Sesión</a>

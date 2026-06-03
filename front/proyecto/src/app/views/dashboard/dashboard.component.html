@@ -1,10 +1,5 @@
-<h1>Dashboard del Profesor</h1>
+<h1>Bienvenido al panel de creacíon de exámenes</h1>
 
-
-<div class="p-3 mb-4 border rounded">
-  Bienvenido Profesor.
-  Desde aquí puede crear exámenes, revisar exámenes existentes y consultar resultados.
-</div>
 
 <div class="mb-4">
 
@@ -27,7 +22,6 @@
   </button>
 
 </div>
-<p>Bienvenido al panel de creación de exámenes.</p>
 
 <div *ngIf="mostrarFormulario">
 
@@ -38,11 +32,21 @@
 
   <h3>Mis Exámenes</h3>
 
-  <ul>
-    <li>Matemática 1</li>
-    <li>Programación II</li>
-    <li>Bases de Datos</li>
+  <p *ngIf="cargandoExamenes">Cargando exámenes...</p>
+
+  <div *ngIf="errorExamenes" class="alert alert-danger">
+    {{ errorExamenes }}
+  </div>
+
+  <ul *ngIf="!cargandoExamenes && examenes.length > 0">
+    <li *ngFor="let examen of examenes">
+      <strong>{{ examen.titulo }}</strong> - {{ examen.categoria }} - {{ examen.nivel }}
+    </li>
   </ul>
+
+  <p *ngIf="!cargandoExamenes && examenes.length === 0">
+    Todavía no hay exámenes cargados.
+  </p>
 
 </div>
 

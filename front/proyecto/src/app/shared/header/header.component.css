@@ -18,4 +18,8 @@
     color: #3b3b2f !important;
     border-bottom: 2px solid #3b3b2f;
 }
-
+.icono-profesor-header {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+}

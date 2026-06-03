@@ -19,7 +19,16 @@
                     <div>
                         <h2 class="perfil-nombre">{{ usuario.first_name }} {{ usuario.last_name }}</h2>
                         <p class="perfil-email mb-1">{{ usuario.email }}</p>
-                        <span class="badge perfil-badge text-capitalize">{{ usuario.rol }}</span>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge perfil-badge text-capitalize">{{ usuario.rol }}</span>
+                            <img
+                                *ngIf="usuario.rol === 'profesor'"
+                                src="assets/img/profesor_verificado_FB.png"
+                                alt="Profesor verificado"
+                                title="Profesor verificado"
+                                class="icono-profesor-verificado">
+                        </div>
                     </div>
                 </div>
             </div>
