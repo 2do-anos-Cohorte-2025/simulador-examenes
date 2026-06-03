@@ -7,8 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { RespuestaService } from '../../service/respuesta.service';
 import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { forkJoin } from 'rxjs/internal/observable/forkJoin';
-import { map } from 'rxjs/internal/operators/map';
 
 @Component({
   selector: 'app-examen-pregunta',

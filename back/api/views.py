@@ -145,6 +145,14 @@ class OpcionViewSet(viewsets.ModelViewSet):
 class IntentoExamenViewSet(viewsets.ModelViewSet):
     queryset = IntentoExamen.objects.all()
     serializer_class = IntentoExamenSerializer
+    
+    def perform_create(self, serializer):
+        usuario = self.request.user
+
+        if usuario.is_authenticated:
+            serializer.save(usuario=usuario)
+        else:
+            serializer.save(usuario=None)
 
     # Nos permite editar el intento para finalizarlo, agregando la fecha_fin y el resultado
     def update(self, request, *args, **kwargs):
@@ -156,6 +164,7 @@ class IntentoExamenViewSet(viewsets.ModelViewSet):
         self.perform_update(serializer)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
     
     
 

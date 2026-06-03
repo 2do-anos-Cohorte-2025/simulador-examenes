@@ -11,9 +11,7 @@
       <!-- CATEGORÍA -->
       <div class="mb-3">
         <label class="form-label">Categoría</label>
-        <select class="form-select"
-                [(ngModel)]="filtros.categoria"
-                (change)="buscarExamenes()">
+        <select class="form-select" [(ngModel)]="filtros.categoria" (change)="buscarExamenes()">
           <option value="">Todas</option>
           <option *ngFor="let c of categorias" [value]="c.nombre">
             {{ c.nombre }}
@@ -24,9 +22,7 @@
       <!-- NIVEL -->
       <div class="mb-3">
         <label class="form-label">Nivel</label>
-        <select class="form-select"
-                [(ngModel)]="filtros.nivel"
-                (change)="buscarExamenes()">
+        <select class="form-select" [(ngModel)]="filtros.nivel" (change)="buscarExamenes()">
           <option value="">Todos</option>
           <option *ngFor="let n of niveles" [value]="n.nombre">
             {{ n.nombre }}
@@ -37,17 +33,14 @@
       <!-- CREADOR -->
       <div class="mb-3">
         <label class="form-label">Creador</label>
-        <select class="form-select"
-                [(ngModel)]="filtros.creador"
-                (change)="buscarExamenes()">
+        <select class="form-select" [(ngModel)]="filtros.creador" (change)="buscarExamenes()">
           <option value="">Todos</option>
           <option value="profesor">Profesor</option>
           <option value="estudiante">Estudiante</option>
         </select>
       </div>
 
-      <button class="btn btn-secondary w-100 mt-2"
-              (click)="limpiarFiltros()">
+      <button class="btn btn-secondary w-100 mt-2" (click)="limpiarFiltros()">
         Limpiar
       </button>
     </div>
@@ -56,8 +49,7 @@
     <div class="col-md-9">
       <h5>Resultados</h5>
 
-      <div class="card mb-3"
-           *ngFor="let examen of examenes">
+      <div class="card mb-3" *ngFor="let examen of examenes">
 
         <div class="card-body">
 
@@ -74,7 +66,7 @@
             Profesor
           </span>
 
-          <button class="btn btn-sm btn-outline-primary float-end" routerLink="">
+          <button class="btn btn-sm btn-outline-primary float-end" [routerLink]="'/examen/' + examen.slug">
             Ver más
           </button>
 
