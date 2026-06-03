@@ -59,23 +59,26 @@
 <div class="modal-fondo" *ngIf="mostrarModal" (click)="cerrarModal()"></div>
 <div class="modal" *ngIf="mostrarModal">
 
-  <h3>{{ modoModal === 'crear' ? 'Nuevo' : 'Editar' }}</h3>
+  <h3>
+    {{ modoModal === 'crear' ? 'Nuevo' : 'Editar' }} 
+    {{ seccionActiva === 'usuarios' ? 'Usuario' : 'Examen' }}
+  </h3>
 
   <div *ngIf="seccionActiva === 'usuarios'">
-    <label>Nombre de Usuario (Obligatorio)</label>
-    <input [(ngModel)]="form.username" placeholder="Nombre de usuario (ej: juan123)">
+    <label>Email</label>
+    <input [(ngModel)]="form.email" placeholder="Email (ej: juan@email.com)" type="email">
 
-    <label *ngIf="modoModal === 'crear'">Contraseña (Obligatorio)</label>
-    <input *ngIf="modoModal === 'crear'" [(ngModel)]="form.password" type="password" placeholder="Contraseña">
+    <label *ngIf="modoModal === 'crear'">Contraseña (Mínimo 8 caracteres)</label>
+    <input *ngIf="modoModal === 'crear'" [(ngModel)]="form.password" type="password" placeholder="Ingresa la contraseña">
+
+    <label *ngIf="modoModal === 'crear'">Confirmar Contraseña</label>
+    <input *ngIf="modoModal === 'crear'" [(ngModel)]="form.confirmPassword" type="password" placeholder="Repite la contraseña">
 
     <label>Nombre</label>
     <input [(ngModel)]="form.first_name" placeholder="Nombre">
     
     <label>Apellido</label>
     <input [(ngModel)]="form.last_name" placeholder="Apellido">
-    
-    <label>Email</label>
-    <input [(ngModel)]="form.email" placeholder="Email" type="email">
     
     <label>Rol</label>
     <select [(ngModel)]="form.rol">
@@ -88,8 +91,10 @@
   <div *ngIf="seccionActiva === 'examenes'">
     <label>Título</label>
     <input [(ngModel)]="form.titulo" placeholder="Título del examen">
+    
     <label>Descripción</label>
     <textarea [(ngModel)]="form.descripcion" placeholder="Descripción"></textarea>
+    
     <label>Tiempo límite (minutos)</label>
     <input [(ngModel)]="form.tiempo_limite" type="number" placeholder="Ej: 60">
   </div>
