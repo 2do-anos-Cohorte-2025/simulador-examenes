@@ -22,9 +22,6 @@ export const routes: Routes = [
     { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
-<<<<<<< HEAD
     { path: 'admin', component: AdminDashboardComponent },
-=======
     { path: 'buscar-examenes', component: BuscarExamenesComponent },
->>>>>>> origin/feature/busqueda
 ];

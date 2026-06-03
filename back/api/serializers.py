@@ -21,7 +21,6 @@ class ExamenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examen
         fields = '__all__'
-<<<<<<< HEAD
     
     def get_usuario(self, obj):
         return f"{obj.usuario.first_name} {obj.usuario.last_name}" if obj.usuario else None
@@ -39,8 +38,6 @@ class ExamenSerializer(serializers.ModelSerializer):
         return obj.categoria.nombre if obj.categoria else None
     def get_nivel(self, obj):
         return obj.nivel.nombre if obj.nivel else None
-=======
->>>>>>> origin/feature/busqueda
 
     def get_es_profesor(self, obj):
         return obj.usuario.rol == "profesor"
