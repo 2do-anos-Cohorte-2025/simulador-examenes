@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
 @Injectable({
@@ -31,7 +31,12 @@ export class AuthService {
     }
 
     getPerfil(): Observable<any> {
-        return this.http.get(`${this.apiUrl}/perfil/`);
+        const token = localStorage.getItem('access_token');
+
+        const headers = new HttpHeaders({
+            Authorization: `Bearer ${token}`
+        });
+        return this.http.get(`${this.apiUrl}/perfil/`, { headers });
     }
 
     logout(): void {

@@ -23,6 +23,24 @@ class ExamenSerializer(serializers.ModelSerializer):
     class Meta:
         model = Examen
         fields = '__all__'
+        read_only_fields = ['usuario']
+    
+    def get_usuario(self, obj):
+        return f"{obj.usuario.first_name} {obj.usuario.last_name}" if obj.usuario else None
+    def get_profesor(self, obj):
+        try:
+            profesor = obj.usuario.profesor
+            return {
+                "id": profesor.id,
+                "titulo": profesor.titulo,
+                "especialidad": profesor.especialidad,
+            }
+        except:
+            return None
+    def get_categoria(self, obj):
+        return obj.categoria.nombre if obj.categoria else None
+    def get_nivel(self, obj):
+        return obj.nivel.nombre if obj.nivel else None
 
     def get_es_profesor(self, obj):
         return obj.usuario.rol == "profesor"
@@ -88,6 +106,16 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IntentoExamen
+        fields = ['id', 
+                  'examen', 
+                  'usuario', 
+                  'examen_titulo',
+                  'examen_slug',
+                  'fecha_inicio', 
+                  'fecha_fin',
+                  'resultado']
+        read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
+
         fields = [
             'id',
             'examen',
@@ -122,7 +150,6 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
         instance.resultado = validated_data.get('resultado', instance.resultado)
         instance.save()
         return instance
-    
     
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
