@@ -13,13 +13,14 @@
                 routerLinkActive="active">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Popular</a>
+              <a class="nav-link" routerLink="/buscar-examenes">Exámenes</a>
             </li>
             <li class="nav-item" *ngIf="!authService.estaLogueado()">
-              <a class="nav-link" routerLink="/login" >
+              <a class="nav-link" routerLink="/login">
                 Crea tus exámenes
-               </a>
+              </a>
             </li>
+
 
             <li class="nav-item" *ngIf="authService.estaLogueado() ">
               <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
@@ -28,10 +29,9 @@
 
             </li>
 
-
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
-            </li>
+            </li> -->
             <ng-container *ngIf="authService.estaLogueado()">
               <li class="nav-item">
                 <a class="nav-link" routerLink="/solicitud-profesor" routerLinkActive="active">Solicitud Docente</a>
@@ -39,7 +39,8 @@
             </ng-container>
             <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
               <li class="nav-item">
-                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar Solicitudes</a>
+                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar
+                  Solicitudes</a>
               </li>
             </ng-container>
             <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
@@ -48,7 +49,7 @@
               </li>
             </ng-container>
           </ul>
-          
+
 
 
           <div class="navbar-sesion d-flex">
@@ -68,14 +69,10 @@
               <ng-container *ngIf="authService.estaLogueado()">
                 <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2" routerLink="/perfil" routerLinkActive="active">
-                    
-                    <img
-                      *ngIf="authService.esProfesor()"
-                      src="assets/img/profesor_verificado_FB.png"
-                      alt="Profesor verificado"
-                      title="Profesor verificado"
-                      class="icono-profesor-header">
-                      Mi Perfil
+
+                    <img *ngIf="authService.esProfesor()" src="assets/img/profesor_verificado_FB.png"
+                      alt="Profesor verificado" title="Profesor verificado" class="icono-profesor-header">
+                    Mi Perfil
                   </a>
                 </li>
                 <li class="nav-item">

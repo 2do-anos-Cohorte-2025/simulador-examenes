@@ -12,7 +12,6 @@ export class IntentoService {
   constructor(private http: HttpClient) { }
 
   iniciarIntento(data:any): Observable<any> {
-    console.log(data)
     return this.http.post(this.apiUrl, data);
   }
   getIntento(intentoId: number): Observable<any> {

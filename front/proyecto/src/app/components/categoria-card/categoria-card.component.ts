@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-
+import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-categoria-card',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './categoria-card.component.html',
   styleUrl: './categoria-card.component.css'
 })

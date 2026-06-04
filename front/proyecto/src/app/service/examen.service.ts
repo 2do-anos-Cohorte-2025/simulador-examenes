@@ -10,6 +10,8 @@ export class ExamenService {
 
   constructor(private http: HttpClient) {}
 
+  
+
   getExamenes(): Observable<any> {
     return this.http.get(this.apiUrl);
   }

@@ -1,3 +1,12 @@
 .info-profesor {
   background-color: #d8c19c;
 }
+.btn-dashboard{
+  padding: 5px;
+  background-color: #a4e9ac;
+  border: 1px solid #fff;
+}
+
+.btn-dashboard:hover{
+  background-color: #8ec794;
+}

@@ -1,6 +1,6 @@
 <div class="container mt-5">
 
-  <div class="card p-4 shadow">
+  <div class="card p-4 shadow m-5">
 
     <h2 class="mb-4">Crear Examen</h2>
 
@@ -8,24 +8,18 @@
 
       <div class="mb-3">
         <label class="form-label">Título del examen</label>
-      
-        <input
-          type="text"
-          class="form-control"
-          formControlName="titulo"
-          placeholder="Ingrese un título">
 
-          <div
-            class="text-danger mt-1"
-            *ngIf="examenForm.get('titulo')?.invalid &&
+        <input type="text" class="form-control" formControlName="titulo" placeholder="Ingrese un título">
+
+        <div class="text-danger mt-1" *ngIf="examenForm.get('titulo')?.invalid &&
             examenForm.get('titulo')?.touched">
 
           <small *ngIf="examenForm.get('titulo')?.errors?.['required']">
-              El título es obligatorio
+            El título es obligatorio
           </small>
 
           <small *ngIf="examenForm.get('titulo')?.errors?.['minlength']">
-              Debe tener al menos 3 caracteres
+            Debe tener al menos 3 caracteres
           </small>
 
         </div>
@@ -35,27 +29,22 @@
       <div class="mb-3">
         <label class="form-label">Descripción</label>
 
-        <textarea
-          class="form-control"
-          rows="4"
-          formControlName="descripcion"
+        <textarea class="form-control" rows="4" formControlName="descripcion"
           placeholder="Ingrese una descripción del exámen">
         </textarea>
 
-          <div
-              class="text-danger mt-1"
-              *ngIf="examenForm.get('descripcion')?.invalid &&
+        <div class="text-danger mt-1" *ngIf="examenForm.get('descripcion')?.invalid &&
                     examenForm.get('descripcion')?.touched">
 
-              <small *ngIf="examenForm.get('descripcion')?.errors?.['required']">
-                La descripción es obligatoria
-              </small>
+          <small *ngIf="examenForm.get('descripcion')?.errors?.['required']">
+            La descripción es obligatoria
+          </small>
 
-              <small *ngIf="examenForm.get('descripcion')?.errors?.['minlength']">
-                Debe tener al menos 10 caracteres
-              </small>
+          <small *ngIf="examenForm.get('descripcion')?.errors?.['minlength']">
+            Debe tener al menos 10 caracteres
+          </small>
 
-          </div>
+        </div>
 
       </div>
       <div class="mb-3">
@@ -64,17 +53,17 @@
         <select class="form-control" formControlName="categoria">
           <option [ngValue]="null">Sin categoría</option>
           <option *ngFor="let categoria of categorias" [ngValue]="categoria.id">
-             {{ categoria.nombre }}
+            {{ categoria.nombre }}
           </option>
         </select>
 
-          
+
       </div>
 
       <div class="mb-3">
         <label class="form-label">Nivel</label>
 
-         <select class="form-control" formControlName="nivel">
+        <select class="form-control" formControlName="nivel">
           <option [ngValue]="null">Sin nivel</option>
           <option *ngFor="let nivel of niveles" [ngValue]="nivel.id">
             {{ nivel.nombre }}
@@ -85,18 +74,13 @@
       <div class="mb-3">
         <label class="form-label">Tiempo límite (minutos)</label>
 
-        <input
-          type="number"
-          class="form-control"
-          formControlName="tiempo_limite"
-          placeholder="max 60">
+        <input type="number" class="form-control" formControlName="tiempo_limite" placeholder="max 60">
 
         <small class="text-muted">
           Tiempo máximo para resolver el examen, expresado en minutos.
         </small>
 
-        <div
-          class="text-danger mt-1"
+        <div class="text-danger mt-1"
           *ngIf="examenForm.get('tiempo_limite')?.invalid && examenForm.get('tiempo_limite')?.touched">
 
           <small>El tiempo límite es obligatorio y debe ser mayor a 0.</small>
@@ -109,28 +93,156 @@
           Subir imagen o archivo del examen
         </label>
 
-        <input
-          type="file"
-          class="form-control"
-          (change)="seleccionarImagen($event)">
+        <input type="file" class="form-control" (change)="seleccionarImagen($event)">
 
       </div>
-      
-      <button
-        type="button"
-        class="btn btn-primary"
-        (click)="crearExamen()">
+
+      <button type="button" class="btn btn-primary" (click)="crearExamen()">
         Crear examen
       </button>
-      
-      <p class="mt-3 fw-bold"
-        [class.text-success]="mensaje === 'Examen creado correctamente'"
+
+      <p class="mt-3 fw-bold" [class.text-success]="mensaje === 'Examen creado correctamente'"
         [class.text-danger]="mensaje !== '' && mensaje !== 'Examen creado correctamente'">
-        
+
         {{ mensaje}}
       </p>
 
     </form>
+    @if(examenCreado){
+    <div class="alert alert-success mt-3">
+
+      <strong>Examen creado:</strong>
+
+      {{ examenCreado.titulo }}
+
+    </div>
+    }
+    @if(mostrarPreguntas){
+    <div *ngIf="mostrarPreguntas" class="card mt-4 p-4 shadow">
+
+      <h3>Crear Pregunta</h3>
+
+      <form [formGroup]="preguntaForm">
+
+        <div class="mb-3">
+
+          <label>Enunciado</label>
+
+          <textarea class="form-control" formControlName="enunciado">
+      </textarea>
+
+        </div>
+        <div class="mb-3">
+
+          <label class="form-label">
+            Imagen de la pregunta
+          </label>
+
+          <input type="file" class="form-control" accept="image/*" (change)="seleccionarImagenPregunta($event)">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label>Puntos</label>
+
+          <input type="number" step="0.01" min="0.01" class="form-control" formControlName="puntos">
+
+        </div>
+
+        <div class="mb-3">
+
+          <label>Tipo de pregunta</label>
+
+          <select class="form-control" formControlName="tipo">
+
+            <option value="opcion_multiple">
+              Opción múltiple
+            </option>
+
+            <option value="texto">
+              Texto libre
+            </option>
+            <option value="verdadero_falso">
+              Verdadero / Falso
+            </option>
+            <option value="numerico">
+              Numerico
+            </option>
+
+          </select>
+
+        </div>
+
+        <button type="button" class="btn btn-success" (click)="crearPregunta()">
+
+          Crear pregunta
+
+        </button>
+
+      </form>
+
+    </div>
+    }
+    @if(mostrarOpciones){
+    <div class="card mt-4 p-4 shadow">
+
+      <h4>
+
+        Opciones para:
+
+        {{ preguntaActual?.enunciado }}
+
+      </h4>
+
+      <form [formGroup]="opcionForm">
+
+        <div class="mb-3">
+
+          <label>Texto opción</label>
+
+          <input type="text" class="form-control" formControlName="texto_opcion">
+
+        </div>
+        <div class="mb-3">
+
+          <label class="form-label">
+            Imagen de la opción
+          </label>
+
+          <input type="file" class="form-control" accept="image/*" (change)="seleccionarImagenOpcion($event)">
+
+        </div>
+
+        <div class="form-check mb-3">
+
+          <input type="checkbox" class="form-check-input" formControlName="es_correcta">
+
+          <label class="form-check-label">
+
+            Es correcta
+
+          </label>
+
+        </div>
+
+        <button type="button" class="btn btn-primary" (click)="crearOpcion()">
+
+          Agregar opción
+
+        </button>
+
+      </form>
+
+      <hr>
+
+      <button type="button" class="btn btn-success" (click)="nuevaPregunta()">
+        Crear otra pregunta
+      </button>
+
+    </div>
+    }
+
 
   </div>
 
