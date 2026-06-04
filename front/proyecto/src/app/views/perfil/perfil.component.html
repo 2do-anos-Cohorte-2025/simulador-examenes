@@ -1,0 +1,84 @@
+<div class="perfil-wrapper">
+    <div class="container py-5">
+
+
+        <div *ngIf="cargando" class="text-center py-5">
+            <div class="spinner-border" role="status"></div>
+            <p class="mt-3 texto-oscuro">Cargando perfil...</p>
+        </div>
+
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+        <div *ngIf="usuario && !cargando">
+
+            <!-- Info de la cuenta -->
+            <div class="card perfil-card mb-4">
+                <div class="card-body d-flex align-items-center gap-4 p-4">
+                    <img [src]="usuario.imagen_usuario || 'assets/icons/user-fill.svg'" class="perfil-avatar"
+                        alt="Foto de perfil">
+                    <div>
+                        <h2 class="perfil-nombre">{{ usuario.first_name }} {{ usuario.last_name }}</h2>
+                        <p class="perfil-email mb-1">{{ usuario.email }}</p>
+
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge perfil-badge text-capitalize">{{ usuario.rol }}</span>
+                            <img
+                                *ngIf="usuario.rol === 'profesor'"
+                                src="assets/img/profesor_verificado_FB.png"
+                                alt="Profesor verificado"
+                                title="Profesor verificado"
+                                class="icono-profesor-verificado">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info de profesor (si lo es) -->
+            <div *ngIf="usuario.profesor" class="card perfil-card perfil-card--profesor mb-4">
+                <div class="card-header perfil-card-header">
+                    Información académica
+                </div>
+                <div class="card-body p-4">
+                    <p class="texto-oscuro mb-1"><strong>Título:</strong> {{ usuario.profesor.titulo }}</p>
+                    <p class="texto-oscuro mb-0"><strong>Especialidad:</strong> {{ usuario.profesor.especialidad }}</p>
+                </div>
+            </div>
+
+            <h4 class="perfil-seccion-titulo mb-3">Historial de exámenes</h4>
+
+            <div *ngIf="usuario.intentos.length === 0" class="alert perfil-sin-intentos">
+                Todavía no realizaste ningún examen.
+            </div>
+
+            <div class="table-responsive" *ngIf="usuario.intentos.length > 0">
+                <table class="table perfil-tabla align-middle">
+                    <thead>
+                        <tr>
+                            <th>Examen</th>
+                            <th>Fecha</th>
+                            <th>Resultado</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let intento of usuario.intentos">
+                            <td class="texto-oscuro">{{ intento.examen_titulo }}</td>
+                            <td class="texto-oscuro">{{ intento.fecha_inicio | date:'dd/MM/yyyy HH:mm' }}</td>
+                            <td>
+                                <span *ngIf="intento.resultado !== null" class="texto-oscuro">{{ intento.resultado
+                                    }}</span>
+                                <span *ngIf="intento.resultado === null" class="text-muted">En progreso</span>
+                            </td>
+                            <td>
+                                <a [routerLink]="['/examen', intento.examen_slug]" class="btn btn-sm btn-secondary">
+                                    Ver examen
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+@if (examen) {
+<section class="examen-info-container">
+    <div class="examen-info-details">
+        <h2 class="examen-info-title title">{{ examen?.titulo }}</h2>
+        <div class="examen-description">
+
+            @if(examen?.imagen_examen){
+            <img src="{{ examen?.imagen_examen }}" class="examen-info-category-image" alt="Imagen del examen">
+            }
+            @else{
+            <img src="assets/categorias-examen/{{ examen?.categoria }}.png" class="examen-info-category-image"
+                alt="Imagen del examen">
+            }
+
+            <p class="examen-info-description">{{examen?.descripcion}}</p>
+        </div>
+        <div class="examen-info-meta p-2 d-flex  justify-content-around align-items-center flex-wrap">
+
+            <div class="examen-info-user-container d-flex flex-column align-items-center justify-content-center">
+
+                <div class="examen-info-user-details d-flex flex-row align-items-center">
+                    @if (examen?.usuario?.foto) {
+                    <img src="{{ examen?.usuario?.foto }}" class="examen-info-user-avatar"> }
+                    @else{
+                    <img src="assets/icons/user-fill.svg" class="examen-info-user-avatar" alt="">
+                    }
+                    <h3 class="examen-info-user-name">Por: {{ examen?.usuario_nombre }} </h3>
+                </div>
+                @if (examen?.es_profesor) {
+                <div
+                    class="examen-info-user-role-container d-flex flex-column justify-content-center align-items-center">
+                    <div class="d-flex flex-row">
+                        <img src="assets/icons/profesor.svg" class="examen-info-profesor-icon" alt="Icono de profesor">
+                        <p class="examen-info-user-role">Profesor</p>
+                    </div>
+                    <p class="examen-info-user-role">Institución: {{ examen?.institucion }}</p>
+                    <p class="examen-info-user-role">Especialidad: {{ examen?.especialidad }}</p>
+                </div>
+                }
+                @else{
+                <div class="examen-info-user-role-container d-flex flex-row justify-content-center">
+                    <p class="examen-info-user-role">Estudiante</p>
+                </div>
+                }
+
+            </div>
+
+
+            <div class="examen-info-btn-container ">
+                <button class="btn btn-primary"><a 
+                    (click)="iniciarIntento()" 
+                    class="text-white text-decoration-none">Iniciar intento</a></button>
+            </div>
+
+            <div class="examen-info-data d-flex flex-column align-items-center text-center">
+                <span class="examen-info-category">Categoría: {{ examen?.categoria }}</span>
+                <span class="examen-info-level">Nivel: {{ examen?.nivel }}</span>
+                @if (examen?.tiempo_limite) {
+                <span class="examen-info-time-limit">Tiempo límite: {{ examen?.tiempo_limite }} minutos</span>
+                }
+                <span class="examen-info-creation-date">Fecha de creación: {{ examen?.fecha_modificacion |
+                    date:'dd/MM/yyyy' }}</span>
+            </div>
+        </div>
+    </div>
+
+
+</section>
+}
+@else {
+
+<p class="text-center">Examen no encontrado</p>
+}

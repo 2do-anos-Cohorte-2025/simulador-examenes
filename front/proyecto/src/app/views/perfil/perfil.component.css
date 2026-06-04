@@ -1,0 +1,126 @@
+:host {
+    display: block;
+    min-height: 80vh;
+    background-color: #d4b896;
+    padding: 2rem 0;
+}
+
+/* ── Tarjetas ── */
+.perfil-card {
+    border: 1.5px solid #6b7c5c;
+    border-radius: 12px;
+    background-color: #f5ede0;
+}
+
+.perfil-card--profesor {
+    border-color: #9e4f3a;
+}
+
+.perfil-card-header {
+    background-color: #abb491;
+    color: #3b3b2f;
+    font-weight: 700;
+    border-bottom: 1px solid #6b7c5c;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 0.75rem 1.25rem;
+}
+
+/* ── Avatar ──*/
+.perfil-avatar {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #6b7c5c;
+}
+
+/* ── Textos ── */
+.perfil-nombre {
+    color: #3b3b2f;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+}
+
+.perfil-email {
+    color: #5a5a4a;
+    font-size: 0.95rem;
+}
+
+.texto-oscuro {
+    color: #3b3b2f;
+}
+
+/* ── Badge de rol ── */
+.perfil-badge {
+    background-color: #6b7c5c;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 0.35em 0.75em;
+}
+
+/* ── Título de sección ── */
+.perfil-seccion-titulo {
+    color: #3b3b2f;
+    font-weight: 700;
+    border-bottom: 2px solid #6b7c5c;
+    padding-bottom: 0.4rem;
+}
+
+/* ── Alerta sin intentos ──*/
+.perfil-sin-intentos {
+    background-color: #f5ede0;
+    border: 1px solid #6b7c5c;
+    color: #3b3b2f;
+}
+
+/* ── Tabla ──*/
+.perfil-tabla thead {
+    background-color: #abb491;
+    color: #3b3b2f;
+}
+
+.perfil-tabla {
+    background-color: #f5ede0;
+}
+
+.perfil-tabla tbody tr {
+    background-color: #f5ede0;
+}
+
+.perfil-tabla td {
+    background-color: #f5ede0;
+    color: #3b3b2f;
+}
+
+.perfil-tabla thead th {
+    font-weight: 700;
+    border-bottom: 2px solid #6b7c5c;
+}
+
+.perfil-tabla tbody tr:hover {
+    background-color: #ecdfc8;
+}
+
+.icono-profesor-verificado {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.perfil-tabla .btn-secondary {
+  background-color: #6f835e;
+  border-color: #6f835e;
+  color: #fff;
+}
+
+.perfil-tabla .btn-secondary:hover {
+  background-color: #5d704f;
+  border-color: #5d704f;
+  color: #fff;
+}
+
+.perfil-tabla {
+    --bs-table-bg: #f5ede0;
+    --bs-table-striped-bg: #f5ede0;
+    --bs-table-hover-bg: #ecdfc8;
+}

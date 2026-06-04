@@ -1,0 +1,107 @@
+<div class="admin-layout">
+
+  <aside class="sidebar">
+    <h2 class="sidebar-title">Admin</h2>
+    <button [class.activo]="seccionActiva === 'usuarios'" (click)="cambiarSeccion('usuarios')"> Usuarios</button>
+    <button [class.activo]="seccionActiva === 'examenes'" (click)="cambiarSeccion('examenes')"> Exámenes</button>
+  </aside>
+
+  <main class="contenido">
+
+    <section *ngIf="seccionActiva === 'usuarios'">
+      <div class="seccion-header">
+        <h3>Usuarios</h3>
+        <button class="btn-nuevo" (click)="abrirModalCrear()">+ Nuevo</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Nombre</th><th>Email</th><th>Rol</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuarios">
+            <td>{{ u.first_name }} {{ u.last_name }}</td>
+            <td>{{ u.email }}</td>
+            <td>{{ u.rol }}</td>
+            <td>
+              <button (click)="abrirModalEditar(u)">Editar</button>
+              <button (click)="eliminar(u)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section *ngIf="seccionActiva === 'examenes'">
+      <div class="seccion-header">
+        <h3>Exámenes</h3>
+        <button class="btn-nuevo" (click)="abrirModalCrear()">+ Nuevo</button>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Título</th><th>Tiempo</th><th>Acciones</th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let e of examenes">
+            <td>{{ e.titulo }}</td>
+            <td>{{ e.tiempo_limite ? e.tiempo_limite + ' min' : '-' }}</td>
+            <td>
+              <button (click)="abrirModalEditar(e)">Editar</button>
+              <button (click)="eliminar(e)">Eliminar</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+</div>
+
+<div class="modal-fondo" *ngIf="mostrarModal" (click)="cerrarModal()"></div>
+<div class="modal" *ngIf="mostrarModal">
+
+  <h3>
+    {{ modoModal === 'crear' ? 'Nuevo' : 'Editar' }} 
+    {{ seccionActiva === 'usuarios' ? 'Usuario' : 'Examen' }}
+  </h3>
+
+  <div *ngIf="seccionActiva === 'usuarios'">
+    <label>Email</label>
+    <input [(ngModel)]="form.email" placeholder="Email (ej: juan@email.com)" type="email">
+
+    <label *ngIf="modoModal === 'crear'">Contraseña (Mínimo 8 caracteres)</label>
+    <input *ngIf="modoModal === 'crear'" [(ngModel)]="form.password" type="password" placeholder="Ingresa la contraseña">
+
+    <label *ngIf="modoModal === 'crear'">Confirmar Contraseña</label>
+    <input *ngIf="modoModal === 'crear'" [(ngModel)]="form.confirmPassword" type="password" placeholder="Repite la contraseña">
+
+    <label>Nombre</label>
+    <input [(ngModel)]="form.first_name" placeholder="Nombre">
+    
+    <label>Apellido</label>
+    <input [(ngModel)]="form.last_name" placeholder="Apellido">
+    
+    <label>Rol</label>
+    <select [(ngModel)]="form.rol">
+      <option value="estudiante">Estudiante</option>
+      <option value="profesor">Profesor</option>
+      <option value="administrador">Administrador</option>
+    </select>
+  </div>
+
+  <div *ngIf="seccionActiva === 'examenes'">
+    <label>Título</label>
+    <input [(ngModel)]="form.titulo" placeholder="Título del examen">
+    
+    <label>Descripción</label>
+    <textarea [(ngModel)]="form.descripcion" placeholder="Descripción"></textarea>
+    
+    <label>Tiempo límite (minutos)</label>
+    <input [(ngModel)]="form.tiempo_limite" type="number" placeholder="Ej: 60">
+  </div>
+
+  <div class="modal-botones">
+    <button (click)="cerrarModal()">Cancelar</button>
+    <button class="btn-guardar" (click)="guardar()">Guardar</button>
+  </div>
+
+</div>

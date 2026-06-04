@@ -9,33 +9,80 @@
         <div class="collapse navbar-collapse " id="navbarTogglerDemo02">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" aria-currentWhenActive="page" routerLink="/inicio" routerLinkActive="active">Inicio</a>
+              <a class="nav-link" aria-currentWhenActive="page" routerLink="/inicio"
+                routerLinkActive="active">Inicio</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Popular</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Quizzes</a>
+            <li class="nav-item" *ngIf="!authService.estaLogueado()">
+              <a class="nav-link" routerLink="/login" >
+                Crea tus exámenes
+               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Crea tus exámenes</a>
+
+            <li class="nav-item" *ngIf="authService.estaLogueado() ">
+              <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+                Crea tus exámenes
+              </a>
+
             </li>
+
+
             <li class="nav-item">
               <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
             </li>
-
+            <ng-container *ngIf="authService.estaLogueado()">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/solicitud-profesor" routerLinkActive="active">Solicitud Docente</a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar Solicitudes</a>
+              </li>
+            </ng-container>
+            <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/admin" routerLinkActive="active">Panel Admin</a>
+              </li>
+            </ng-container>
           </ul>
+          
 
 
           <div class="navbar-sesion d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registrarse</a>
 
-              </li>
+              <!-- Sin sesión -->
+              <ng-container *ngIf="!authService.estaLogueado()">
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="/login" routerLinkActive="active">Iniciar Sesión</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="/registro" routerLinkActive="active">Registrarse</a>
+                </li>
+              </ng-container>
+
+              <!-- Con sesión -->
+              <ng-container *ngIf="authService.estaLogueado()">
+                <li class="nav-item">
+                  <a class="nav-link d-flex align-items-center gap-2" routerLink="/perfil" routerLinkActive="active">
+                    
+                    <img
+                      *ngIf="authService.esProfesor()"
+                      src="assets/img/profesor_verificado_FB.png"
+                      alt="Profesor verificado"
+                      title="Profesor verificado"
+                      class="icono-profesor-header">
+                      Mi Perfil
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" style="cursor: pointer;" (click)="logout()">Cerrar Sesión</a>
+                </li>
+              </ng-container>
+
             </ul>
           </div>
 
@@ -44,14 +91,14 @@
       </div>
     </nav>
   </div>
-  <div class="container-fluid alert-dark bg-body-tertiary shadow-sm p-3 bg-body-tertiary rounded">
+  <div class="container-fluid header-fondo shadow-sm p-3 rounded">
     <div class="header-bottom mx-5 d-flex flex-column flex-md-row justify-content-between align-items-center">
       <div class="p-2 w-sm-100">
         <app-logo></app-logo>
       </div>
 
       <div class="p-2 w-25 w-sm-100 ms-auto">
-        <form class="d-flex w-sm-100 search-form" role="search" >
+        <form class="d-flex w-sm-100 search-form" role="search">
           <input class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search" />
         </form>
       </div>

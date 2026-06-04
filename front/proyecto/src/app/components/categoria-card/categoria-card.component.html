@@ -1,0 +1,25 @@
+<section class="tests-container mt-2">
+    <div class="tests-card-title text-center">
+      <h3>¡Elije con que categoria quieres iniciar!</h3>
+    
+    </div>
+  <div class="tests-content m-5">
+    
+    @for (test of testsCardList; track test.id) {
+
+    <div class="card">
+      <img class="card-image" [src]=test.imagen [alt]= test.alt srcset="">
+      <h4 class="card-title">{{ test.titulo }}</h4>
+      <div class="card-link">
+        <a href="#"><img [src]="arrowUrl" class="card-link-img" alt="flecha de direccion"></a>
+      </div>
+    </div>
+
+    }
+    @empty{
+    <p>No hay tests disponibles</p>
+    }
+
+
+  </div>
+</section>

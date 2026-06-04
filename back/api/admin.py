@@ -2,8 +2,12 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from .models import (
-    CustomUser,
-    Exam,
+    Usuario,
+    Profesor,
+    SolicitudProfesor,
+    Examen,
+    Categoria,
+    Nivel,
     Pregunta,
     Opcion,
     IntentoExamen,
@@ -11,11 +15,13 @@ from .models import (
     TestConnection
 )
 
-# Registrar CustomUser
-admin.site.register(CustomUser, UserAdmin)
 
-# Registrar modelos restantes
-admin.site.register(Exam)
+admin.site.register(Usuario, UserAdmin)
+admin.site.register(Examen)
+admin.site.register(Categoria)
+admin.site.register(Nivel)
+admin.site.register(Profesor)
+admin.site.register(SolicitudProfesor)
 admin.site.register(Pregunta)
 admin.site.register(Opcion)
 admin.site.register(IntentoExamen)

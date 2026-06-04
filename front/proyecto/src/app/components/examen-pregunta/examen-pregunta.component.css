@@ -1,0 +1,47 @@
+.exam-question-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.exam-question-info, .exam-question-content {
+    width: 100%;
+    max-width: 800px;
+    background-color: #bae4b7de;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.question-image {
+    width: 80%;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    height: auto;
+    margin: auto;
+    margin-top: 15px;
+}
+
+.options-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+        
+}
+.option-item{
+    text-wrap: wrap;
+}
+
+.option-image{
+    display:flex;
+    flex-direction: column;
+    width: 40%;
+    justify-content: center;
+    align-self: center;
+    height: auto;
+    margin-top: 10px;
+}

@@ -4,13 +4,26 @@ import { InicioComponent } from './views/inicio/inicio.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegistroComponent } from './views/registro/registro.component';
 import { QuienesSomosComponent } from './views/quienes-somos/quienes-somos.component';
+import { ExamenVistaPreviaComponent } from './views/examen-vista-previa/examen-vista-previa.component';
+import { ExamenIntentoComponent } from './views/examen-intento/examen-intento.component';
+import { SolicitudProfesorComponent } from './views/solicitud-profesor/solicitud-profesor.component';
+import { AdminSolicitudesComponent } from './views/admin-solicitudes/admin-solicitudes.component';
+import { AdminDashboardComponent } from './views/admin-dashboard/admin-dashboard.component';
+import { PerfilComponent } from './views/perfil/perfil.component';
+import { BuscarExamenesComponent } from './views/buscar-examen/buscar-examenes.component';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent },
     { path: 'dashboard', component: DashboardComponent },
-    { path: '', redirectTo: '/inicio', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
     { path: 'registro', component: RegistroComponent },
-    { path: '', redirectTo: '/inicio', pathMatch: 'full' },
+    { path: 'perfil', component: PerfilComponent },
     { path: 'quienes-somos', component: QuienesSomosComponent },
+    { path: 'examen/:slug', component: ExamenVistaPreviaComponent },
+    { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
+    { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
+    { path: 'buscar-examenes', component: BuscarExamenesComponent },
+    { path: 'admin-solicitudes', component: AdminSolicitudesComponent },
+    { path: 'admin', component: AdminDashboardComponent },
+    { path: '', redirectTo: '/inicio', pathMatch: 'full' },
 ];

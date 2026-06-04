@@ -1,6 +1,6 @@
 .team-section{
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color: #d4b896;
   padding: 50px 20px;
 }
 
@@ -24,7 +24,7 @@
 
 .team-card{
   width: 320px;
-  background-color: white;
+  background-color: #f5ede0;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 5px 20px rgba(0,0,0,0.1);
@@ -103,7 +103,7 @@
 }
 
 .custom-accordion-body{
-  background-color: white;
+  background-color: #f5ede0;
   color: #495057;
   text-align: center;
   font-size: 1.05rem;

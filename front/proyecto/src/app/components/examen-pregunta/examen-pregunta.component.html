@@ -1,0 +1,72 @@
+<section class="exam-question-container">
+
+
+  @if (!examen && preguntas.length === 0) {
+  <div class="d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
+    <p>Cargando examen...</p>
+  </div>
+  } @else if (!examenFinalizado && temporizador>0) {
+  <div class="exam-question-info ">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+      <h2>Pregunta {{ preguntaActual + 1 }} de {{ preguntas.length }} </h2>
+      
+      <p class="text-white p-2 bg-black">Tiempo restante: {{tiempoRestante}} segundos</p>
+    </div>
+
+    <div class="question-container">
+      <h3>{{ preguntas[preguntaActual]?.enunciado }}</h3>
+      @if(preguntas[preguntaActual]?.imagen_pregunta) {
+      <img [src]="preguntas[preguntaActual]?.imagen_pregunta" alt="Imagen de la pregunta" class="img-fluid question-image" />
+      }
+      @if (preguntas[preguntaActual]?.tipo === 'opcion_multiple' || preguntas[preguntaActual]?.tipo ===
+      'verdadero_falso') {
+      <div class="options-container">
+        @for (opcion of opciones; track opcion.id) {
+        <div class="form-check option-item">
+          <input type="radio" [checked]="respuestas[preguntaActual]?.opcion_seleccionada_id === opcion.id"
+            (change)="seleccionarOpcion(preguntas[preguntaActual]?.id, opcion)" />
+          <label>{{ opcion.texto_opcion }}</label>
+          @if (opcion.imagen_opcion) {
+          <img [src]="opcion.imagen_opcion" alt="Imagen de la opción" class="img-fluid option-image" />
+          }
+        </div>
+        }
+      </div>
+      }
+
+      @else if (preguntas[preguntaActual]?.tipo === 'numerico') {
+      <p>Ingrese un valor numérico:</p>
+      <div class="form-group">
+        <input type="number" name="respuesta" [(ngModel)]="respuestas[preguntaActual].respuesta_texto"
+          (change)="responderTexto(preguntas[preguntaActual]?.id, $any($event.target).value)" />
+      </div>
+      }
+      @else if (preguntas[preguntaActual]?.tipo === 'texto') {
+      <p>Ingrese su respuesta:</p>
+      <div class="form-group">
+        <textarea [(ngModel)]="respuestas[preguntaActual].respuesta_texto"
+          (change)="responderTexto(preguntas[preguntaActual]?.id, $any($event.target).value)"
+          class="form-control"></textarea>
+      </div>
+      }
+    </div>
+
+    <div class="d-flex justify-content-center align-items-center mt-2">
+      @if (preguntaActual > 0) {
+      <button (click)="anteriorPregunta()" class="btn btn-secondary m-1">Anterior</button>
+      }
+      @if (preguntaActual < preguntas.length - 1) { <button (click)="siguientePregunta()" class="btn btn-primary m-1">Siguiente</button>
+        } @else if(preguntaActual === preguntas.length - 1) {
+        <button (click)="finalizarExamen()" class="btn btn-success m-1">Finalizar Examen</button>
+        }
+    </div>
+  </div>
+  } @else if (examenFinalizado || temporizador === 0) {
+  <div class="d-flex flex-column align-items-center justify-content-center exam-question-info" >
+    <h2>Examen Finalizado</h2>
+    <p>Resultado: {{ calculoTotal *10 }}%</p>
+    <p>Tiempo transcurrido: {{ tiempoTotal - tiempoRestante}} segundos</p>
+  </div>
+  }
+
+</section>

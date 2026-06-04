@@ -1,0 +1,99 @@
+<div class="contenedor">
+
+  <div class="cabecera">
+    <h2>Solicitud de Verificación Docente</h2>
+  </div>
+
+  <form (ngSubmit)="enviarSolicitud()">
+
+
+    <div class="campo">
+      <label for="nombre_completo">Nombre completo</label>
+      <input
+        id="nombre_completo"
+        type="text"
+        [(ngModel)]="formData.nombre_completo"
+        name="nombre_completo"
+        required
+      >
+</div>
+
+    <div class="campo">
+      <label for="dni">DNI</label>
+      <input
+        id="dni"
+        type="text"
+        [(ngModel)]="formData.dni"
+        name="dni"
+        required
+      >
+
+    <div class="campo">
+      <label for="pais">País</label>
+      <input
+        id="pais"
+        type="text"
+        [(ngModel)]="formData.pais"
+        name="pais"
+        required
+      >
+
+    <div class="campo">
+      <label for="provincia">Provincia (Opcional)</label>
+      <input
+        id="provincia"
+        type="text"
+        [(ngModel)]="formData.provincia"
+        name="provincia"
+      >
+
+    <div class="campo">
+      <label for="telefono">Teléfono</label>
+      <input
+        id="telefono"
+        type="text"
+        [(ngModel)]="formData.telefono"
+        name="telefono"
+        required
+      >
+
+    <div class="campo">
+      <label for="institucion">Institución</label>
+      <input
+        id="institucion"
+        type="text"
+        [(ngModel)]="formData.institucion"
+        name="institucion"
+        required
+      >
+
+    <div class="campo">
+      <label for="especialidad">Especialidad</label>
+      <input
+        id="especialidad"
+        type="text"
+        [(ngModel)]="formData.especialidad"
+        name="especialidad"
+        required
+      >
+
+    <div class="archivo">
+      <label>Certificado de título</label>
+      <input type="file" (change)="onFileChange($event, 'titulo')">
+    </div>
+
+    <div class="archivo">
+      <label>DNI Frente</label>
+      <input type="file" (change)="onFileChange($event, 'frente')">
+    </div>
+
+    <div class="archivo">
+      <label>DNI Dorso</label>
+      <input type="file" (change)="onFileChange($event, 'dorso')">
+    </div>
+
+    <button type="submit">
+      Enviar Solicitud
+    </button>
+
+</div>
