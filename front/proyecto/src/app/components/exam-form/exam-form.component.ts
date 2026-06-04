@@ -74,7 +74,6 @@ export class ExamFormComponent {
 
     this.nivelService.getNiveles().subscribe({
       next: data => {
-        console.log('Niveles:', data);
         this.niveles = data;
       }
     });
