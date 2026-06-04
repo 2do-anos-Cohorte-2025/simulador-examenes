@@ -113,3 +113,12 @@
   font-size: 1.1rem;
   padding: 30px;
 }
+.btn-dashboard{
+  padding: 5px;
+  background-color: #a4e9ac;
+  border: 1px solid #fff;
+}
+
+.btn-dashboard:hover{
+  background-color: #8ec794;
+}

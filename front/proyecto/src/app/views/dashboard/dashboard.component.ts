@@ -2,11 +2,14 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ExamFormComponent } from '../../components/exam-form/exam-form.component';
+import { CategoriaService } from '../../service/categoria.service';
+import { NivelService } from '../../service/nivel.service';
+import { ExamenService } from '../../service/examen.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule,HttpClientModule,ExamFormComponent],
+  imports: [CommonModule, HttpClientModule, ExamFormComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
@@ -21,7 +24,11 @@ export class DashboardComponent {
   cargandoExamenes = false;
   errorExamenes = '';
 
-  constructor(private http: HttpClient) {}
+  
+
+  constructor(private http: HttpClient,) {
+  
+  }
 
   mostrarCrearExamen() {
     this.mostrarFormulario = true;

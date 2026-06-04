@@ -13,13 +13,14 @@
                 routerLinkActive="active">Inicio</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Popular</a>
+              <a class="nav-link" routerLink="/buscar-examenes">Exámenes</a>
             </li>
             <li class="nav-item" *ngIf="!authService.estaLogueado()">
-              <a class="nav-link" routerLink="/login" >
+              <a class="nav-link" routerLink="/login">
                 Crea tus exámenes
-               </a>
+              </a>
             </li>
+
 
             <li class="nav-item" *ngIf="authService.estaLogueado() ">
               <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
@@ -29,9 +30,10 @@
             </li>
 
 
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/quienes-somos" routerLinkActive="active">Quiénes Somos</a>
-            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
+            </li> -->
+
             <ng-container *ngIf="authService.estaLogueado()">
               <li class="nav-item">
                 <a class="nav-link" routerLink="/solicitud-profesor" routerLinkActive="active">Solicitud Docente</a>
@@ -39,7 +41,8 @@
             </ng-container>
             <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
               <li class="nav-item">
-                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar Solicitudes</a>
+                <a class="nav-link" routerLink="/admin-solicitudes" routerLinkActive="active">Administrar
+                  Solicitudes</a>
               </li>
             </ng-container>
             <ng-container *ngIf="authService.estaLogueado() && authService.getUsuario()?.rol === 'administrador'">
@@ -48,7 +51,6 @@
               </li>
             </ng-container>
           </ul>
-
 
           <div class="navbar-sesion d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -74,6 +76,7 @@
                       title="Profesor verificado"
                       class="icono-profesor-header">
                       Mi Perfil
+
                   </a>
                 </li>
                 <li class="nav-item">
@@ -105,3 +108,5 @@
     </div>
     <hr class="border mt-1 bg-dark border-2 opacity-50">
   </div>
+
+</header>

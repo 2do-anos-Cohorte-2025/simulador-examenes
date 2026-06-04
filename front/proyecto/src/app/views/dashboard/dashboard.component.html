@@ -4,8 +4,57 @@
     Panel de Creación de Exámenes
   </h1>
 
+<div class="mb-4 d-flex flex-row justify-content-center">
+
+  <button 
+    class="btn custom-btn me-2 btn-dashboard"
+    (click)="mostrarCrearExamen()">
+    Crear examen
+  </button>
+
+  <button 
+    class="btn custom-btn me-2 btn-dashboard"
+    (click)="mostrarListaExamenes()">
+    Ver exámenes
+  </button>
+
+  <button 
+    class="btn custom-btn btn-dashboard"
+    (click)="mostrarResultadosExamenes()">
+    Ver resultados
+  </button>
+
+</div>
+
+<div *ngIf="mostrarFormulario">
+
+  <app-exam-form></app-exam-form>
+
+</div>
+<div *ngIf="mostrarExamenes" class="mt-4">
+
+  <h3>Mis Exámenes</h3>
+
+  <p *ngIf="cargandoExamenes">Cargando exámenes...</p>
+
+  <div *ngIf="errorExamenes" class="alert alert-danger">
+    {{ errorExamenes }}
+  </div>
+
+  <ul *ngIf="!cargandoExamenes && examenes.length > 0">
+    <li *ngFor="let examen of examenes">
+      <strong>{{ examen.titulo }}</strong><br>
+      Categoría: {{ examen.categoria_nombre }} <br>
+      Nivel: {{ examen.nivel_nombre }}
+    </li>
+  </ul>
+
+  <p *ngIf="!cargandoExamenes && examenes.length === 0">
+    Todavía no hay exámenes cargados.
+
   <p class="panel-subtitle">
     Administra tus exámenes y consulta tus resultados.
+
   </p>
 
   <div class="botones-panel">

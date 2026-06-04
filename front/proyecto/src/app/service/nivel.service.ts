@@ -12,6 +12,7 @@ export class NivelService {
   constructor(private http: HttpClient) {}
 
   getNiveles(): Observable<any> {
+     console.log("Pidiendo nivel");
     return this.http.get(this.apiUrl);
   }
 }

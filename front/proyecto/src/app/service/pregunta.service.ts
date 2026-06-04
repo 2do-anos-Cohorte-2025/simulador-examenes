@@ -17,9 +17,14 @@ export class PreguntaService {
   getPregunta(preguntaId: number): Observable<any> {
     return this.http.get(`${this.apiUrl}preguntas/${preguntaId}/`);
   }
+  createPregunta(data:any): Observable<any>{
+    return this.http.post(`${this.apiUrl}preguntas/`, data);
+  }
   // Obtener todas las opciones de una pregunta
   getOpciones(preguntaId: number): Observable<any> {
-
     return this.http.get(`${this.apiUrl}opciones/?pregunta_id=${preguntaId}`);
+  }
+  createOpcion(data:any): Observable<any>{
+    return this.http.post(`${this.apiUrl}opciones/`, data);
   }
 }
