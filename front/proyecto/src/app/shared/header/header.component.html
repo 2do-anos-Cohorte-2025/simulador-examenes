@@ -1,7 +1,7 @@
 <header class="header-container">
   <div class="header-top ">
     <nav class="navbar navbar-expand-lg ">
-      <div class="container-fluid mx-5 justify-content-between">
+      <div class="container-fluid px-3 px-lg-5 justify-content-between">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
           aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -29,9 +29,11 @@
 
             </li>
 
+
             <!-- <li class="nav-item">
               <a class="nav-link" routerLink="/quienes-somos">Quiénes Somos</a>
             </li> -->
+
             <ng-container *ngIf="authService.estaLogueado()">
               <li class="nav-item">
                 <a class="nav-link" routerLink="/solicitud-profesor" routerLinkActive="active">Solicitud Docente</a>
@@ -50,8 +52,6 @@
             </ng-container>
           </ul>
 
-
-
           <div class="navbar-sesion d-flex">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
@@ -69,10 +69,14 @@
               <ng-container *ngIf="authService.estaLogueado()">
                 <li class="nav-item">
                   <a class="nav-link d-flex align-items-center gap-2" routerLink="/perfil" routerLinkActive="active">
+                    <img
+                      *ngIf="authService.esProfesor()"
+                      src="assets/img/profesor_verificado_FB.png"
+                      alt="Profesor verificado"
+                      title="Profesor verificado"
+                      class="icono-profesor-header">
+                      Mi Perfil
 
-                    <img *ngIf="authService.esProfesor()" src="assets/img/profesor_verificado_FB.png"
-                      alt="Profesor verificado" title="Profesor verificado" class="icono-profesor-header">
-                    Mi Perfil
                   </a>
                 </li>
                 <li class="nav-item">
@@ -94,12 +98,15 @@
         <app-logo></app-logo>
       </div>
 
-      <div class="p-2 w-25 w-sm-100 ms-auto">
-        <form class="d-flex w-sm-100 search-form" role="search">
-          <input class="form-control me-2 search-input" type="search" placeholder="Search" aria-label="Search" />
-        </form>
+      <div class="search-button-container">
+        <button
+          class="btn btn-primary"
+          routerLink="/buscar-examenes">
+          Buscar Exámenes
+        </button>
       </div>
     </div>
     <hr class="border mt-1 bg-dark border-2 opacity-50">
   </div>
+
 </header>

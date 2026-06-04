@@ -1,5 +1,8 @@
-<h1>Bienvenido al panel de creacíon de exámenes</h1>
+<div class="panel-section">
 
+  <h1 class="panel-title">
+    Panel de Creación de Exámenes
+  </h1>
 
 <div class="mb-4 d-flex flex-row justify-content-center">
 
@@ -48,15 +51,88 @@
 
   <p *ngIf="!cargandoExamenes && examenes.length === 0">
     Todavía no hay exámenes cargados.
+
+  <p class="panel-subtitle">
+    Administra tus exámenes y consulta tus resultados.
+
   </p>
 
+  <div class="botones-panel">
+
+    <button
+      class="btn custom-btn"
+      (click)="mostrarCrearExamen()">
+      Crear examen
+    </button>
+
+    <button
+      class="btn custom-btn"
+      (click)="mostrarListaExamenes()">
+      Ver exámenes
+    </button>
+
+    <button
+      class="btn custom-btn"
+      (click)="mostrarResultadosExamenes()">
+      Ver resultados
+    </button>
+
+  </div>
+
+  <div *ngIf="mostrarFormulario" class="panel-card">
+
+    <app-exam-form></app-exam-form>
+
+  </div>
+
+  <div *ngIf="mostrarExamenes" class="panel-card">
+
+    <h3>Mis Exámenes</h3>
+
+    <p *ngIf="cargandoExamenes" class="cargando">
+      Cargando exámenes...
+    </p>
+
+    <div *ngIf="errorExamenes" class="alert alert-danger">
+      {{ errorExamenes }}
+    </div>
+
+    <div
+      *ngIf="!cargandoExamenes && examenes.length > 0"
+      class="examen-lista">
+
+      <div
+        class="examen-card"
+        *ngFor="let examen of examenes">
+
+        <strong>{{ examen.titulo }}</strong>
+
+        <div class="mt-2">
+          <span><strong>Categoría:</strong> {{ examen.categoria_nombre }}</span>
+          <br>
+          <span><strong>Nivel:</strong> {{ examen.nivel_nombre }}</span>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p
+      *ngIf="!cargandoExamenes && examenes.length === 0"
+      class="mensaje-vacio">
+      Todavía no hay exámenes cargados.
+    </p>
+
+  </div>
+
+  <div *ngIf="mostrarResultados" class="panel-card">
+
+    <h3>Resultados</h3>
+
+    <div class="resultados-placeholder">
+      Próximamente se mostrarán los resultados de los exámenes.
+    </div>
+
+  </div>
+
 </div>
-
-<div *ngIf="mostrarResultados" class="mt-4">
-
-  <h3>Resultados</h3>
-
-  <p>Próximamente se mostrarán los resultados de los exámenes.</p>
-
-</div>
-
