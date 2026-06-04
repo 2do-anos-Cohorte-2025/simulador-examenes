@@ -4,11 +4,9 @@
 
   <div class="row mt-4">
 
-    <!-- FILTROS -->
     <div class="col-md-3">
-      <h5>Filtros</h5>
+      <h5 class="mb-4">Filtros</h5>
 
-      <!-- CATEGORÍA -->
       <div class="mb-3">
         <label class="form-label">Categoría</label>
         <select class="form-select" [(ngModel)]="filtros.categoria" (change)="buscarExamenes()">
@@ -19,7 +17,6 @@
         </select>
       </div>
 
-      <!-- NIVEL -->
       <div class="mb-3">
         <label class="form-label">Nivel</label>
         <select class="form-select" [(ngModel)]="filtros.nivel" (change)="buscarExamenes()">
@@ -30,7 +27,6 @@
         </select>
       </div>
 
-      <!-- CREADOR -->
       <div class="mb-3">
         <label class="form-label">Creador</label>
         <select class="form-select" [(ngModel)]="filtros.creador" (change)="buscarExamenes()">
@@ -45,9 +41,8 @@
       </button>
     </div>
 
-    <!-- RESULTADOS -->
     <div class="col-md-9">
-      <h5>Resultados</h5>
+      <h5 class="mb-4">Resultados</h5>
 
       <div class="card mb-3" *ngFor="let examen of examenes">
 
