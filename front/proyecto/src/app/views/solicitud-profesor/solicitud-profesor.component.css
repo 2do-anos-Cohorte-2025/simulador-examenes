@@ -5,26 +5,25 @@
   justify-content: center;
   align-items: center;
 
-  background: #202324;
+  background: #d4b896;
   padding: 40px 20px;
 }
-
 
 form {
   width: 100%;
   max-width: 700px;
 
-  background: #111;
-  border: 1px solid #333;
+  background: #f5ede0;
+  border: none;
   border-radius: 20px;
 
   padding: 35px;
 
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  color: white;
+  color: #202808;
   text-align: center;
   margin-bottom: 25px;
 }
@@ -37,30 +36,26 @@ h2 {
 }
 
 label {
-  color: #d0d0d0;
+  color: #495057;
   margin-bottom: 6px;
   font-size: 14px;
+  font-weight: 500;
 }
 
 input[type="text"],
 input[type="file"] {
   padding: 12px;
   border-radius: 10px;
-  border: 1px solid #444;
-  background: #1b1b1b;
-  color: white;
+  border: 1px solid #abb491;
+  background: white;
+  color: #212529;
 }
 
-input[type="text"]:focus {
-  outline: none;
-  border-color: #00aa44;
-  box-shadow: 0 0 0 0.2rem rgba(0, 170, 68, 0.25);
-}
-
+input[type="text"]:focus,
 input[type="file"]:focus {
   outline: none;
-  border-color: #00aa44;
-  box-shadow: 0 0 0 0.2rem rgba(0, 170, 68, 0.25);
+  border-color: #536815;
+  box-shadow: 0 0 0 0.2rem rgba(83, 104, 21, 0.25);
 }
 
 button {
@@ -71,18 +66,19 @@ button {
   border: none;
   border-radius: 12px;
 
-  background: #546239;
+  background: #536815;
   color: white;
 
   font-size: 16px;
   font-weight: bold;
 
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.3s;
 }
 
 button:hover {
-  background: #5a6a36;
+  background: #627737;
+  transform: translateY(-2px);
 }
 
 .cabecera {
@@ -90,7 +86,7 @@ button:hover {
 }
 
 .cabecera h2 {
-  color: white;
+  color: #202808;
   text-align: center;
   font-size: 32px;
   font-weight: 700;

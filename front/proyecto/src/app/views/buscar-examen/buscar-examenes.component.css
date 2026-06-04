@@ -1,3 +1,106 @@
 .container {
-  padding: 20px;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+/* Títulos */
+
+h1 {
+  color: #202808;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+h5 {
+  color: #202808;
+  font-weight: 600;
+}
+
+/* Panel de filtros */
+
+.col-md-3 {
+  background-color: #f5ede0;
+  padding: 25px;
+  border-radius: 15px;
+  height: fit-content;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.form-label {
+  color: #495057;
+  font-weight: 600;
+}
+
+.form-select {
+  border: 1px solid #abb491;
+}
+
+.form-select:focus {
+  border-color: #536815;
+  box-shadow: 0 0 0 0.2rem rgba(83, 104, 21, 0.2);
+}
+
+/* Botón limpiar */
+
+.btn-secondary {
+  background-color: #536815;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #627737;
+}
+
+/* Tarjetas de exámenes */
+
+.card {
+  background-color: #f5ede0;
+  border: none;
+  border-radius: 15px;
+
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.card-body h5 {
+  color: #202808;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.card-body p {
+  color: #495057;
+  margin-bottom: 15px;
+}
+
+/* Badge profesor */
+
+.badge.bg-primary {
+  background-color: #536815 !important;
+  font-size: 0.85rem;
+}
+
+/* Botón ver más */
+
+.btn-outline-primary {
+  color: #536815;
+  border-color: #536815;
+}
+
+.btn-outline-primary:hover {
+  background-color: #536815;
+  border-color: #536815;
+  color: white;
 }
