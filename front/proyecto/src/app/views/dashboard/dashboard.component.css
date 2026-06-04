@@ -1,3 +1,115 @@
+/* Fondo general */
+.panel-section {
+  min-height: 100vh;
+  background-color: #d4b896;
+  padding: 50px 20px;
+}
+
+/* Encabezado */
+.panel-title {
+  text-align: center;
+  color: #202808;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+.panel-subtitle {
+  text-align: center;
+  color: #6c757d;
+  margin-bottom: 40px;
+}
+
+/* Botones */
+.botones-panel {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.custom-btn {
+  background-color: #536815;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.custom-btn:hover {
+  background-color: #627737;
+  transform: translateY(-2px);
+}
+
+/* Tarjetas de contenido */
+.panel-card {
+  max-width: 1000px;
+  margin: auto;
+  background-color: #f5ede0;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  margin-bottom: 30px;
+}
+
+/* Títulos internos */
+.panel-card h3 {
+  color: #202808;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+/* Lista de exámenes */
+.examen-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.examen-card {
+  background: white;
+  border-left: 6px solid #536815;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.examen-card:hover {
+  transform: translateY(-3px);
+}
+
+.examen-card strong {
+  color: #202808;
+  font-size: 1.1rem;
+}
+
+/* Mensajes */
+.mensaje-vacio {
+  text-align: center;
+  color: #6c757d;
+  font-style: italic;
+  padding: 20px;
+}
+
+.cargando {
+  text-align: center;
+  color: #536815;
+  font-weight: 600;
+}
+
 .info-profesor {
-  background-color: #d8c19c;
+  background-color: #abb491;
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.resultados-placeholder {
+  text-align: center;
+  color: #6c757d;
+  font-size: 1.1rem;
+  padding: 30px;
 }

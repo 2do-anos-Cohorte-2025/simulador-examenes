@@ -1,6 +1,6 @@
 .contenedor {
     min-height: 100vh;
-    background: #202324;
+    background-color: #d4b896;
 
     display: flex;
     gap: 25px;
@@ -10,13 +10,13 @@
 
 .lista,
 .detalle {
-    background: #111;
-    border: 1px solid #333;
+    background-color: #f5ede0;
+    border: 1px solid #d8c8b0;
     border-radius: 20px;
 
     padding: 25px;
 
-    box-shadow: 0 0 25px rgba(0,0,0,.5);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
 
 .lista {
@@ -24,19 +24,15 @@
     flex-shrink: 0;
 }
 
-.lista h2 {
-    color: white;
+.lista h2,
+.detalle h2 {
+    color: #202808;
+    font-weight: bold;
     margin-bottom: 20px;
-    text-align: center;
 }
 
 .detalle {
     flex: 1;
-}
-
-.detalle h2 {
-    color: white;
-    margin-bottom: 25px;
 }
 
 .filtros {
@@ -49,11 +45,11 @@
     flex: 1;
 
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
 
     padding: 10px;
 
-    background: #546239;
+    background-color: #536815;
     color: white;
 
     cursor: pointer;
@@ -61,51 +57,49 @@
 }
 
 .filtros button:hover {
-    background: #667547;
+    background-color: #627737;
 }
 
-
 .item {
-    background: #1b1b1b;
-    border: 1px solid #333;
+    background-color: white;
+    border: 2px solid transparent;
 
     border-radius: 12px;
 
     padding: 14px;
-
     margin-bottom: 10px;
 
-    color: white;
+    color: #343a40;
     cursor: pointer;
 
     transition: .2s;
 }
 
 .item:hover {
-    border-color: #00aa44;
-    transform: translateY(-2px);
+    border-color: #536815;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
-
 .detalle p {
-    color: #ddd;
+    color: #495057;
     margin-bottom: 10px;
 }
 
 .detalle strong {
-    color: white;
+    color: #202808;
 }
 
-
 .detalle a {
-    color: #9cc76f;
+    color: #536815;
     text-decoration: none;
+    font-weight: 600;
 }
 
 .detalle a:hover {
+    color: #627737;
     text-decoration: underline;
 }
-
 
 .estado {
     display: inline-block;
@@ -119,26 +113,23 @@
 }
 
 .estado.pendiente {
-    background: #ffc107;
-    color: black;
+    background-color: #ffe08a;
+    color: #664d03;
 }
 
 .estado.aprobada {
-    background: #28a745;
+    background-color: #536815;
     color: white;
 }
 
 .estado.rechazada {
-    background: #dc3545;
+    background-color: #c94a4a;
     color: white;
 }
-
-
 
 .acciones {
     display: flex;
     gap: 15px;
-
     margin-top: 25px;
 }
 
@@ -159,17 +150,17 @@
 }
 
 .aprobar {
-    background: #28a745;
+    background-color: #536815;
 }
 
 .aprobar:hover {
-    background: #218838;
+    background-color: #627737;
 }
 
 .rechazar {
-    background: #dc3545;
+    background-color: #c94a4a;
 }
 
 .rechazar:hover {
-    background: #c82333;
+    background-color: #b53d3d;
 }
