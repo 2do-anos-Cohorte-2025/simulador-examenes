@@ -12,13 +12,11 @@ from .models import (
     Examen,
     Nivel,
     Usuario,
-    Profesor,
     SolicitudProfesor,
     Pregunta,
     Opcion,
     IntentoExamen,
-    RespuestaUsuario,
-    TestConnection
+    RespuestaUsuario
 )
 
 from .serializers import (
@@ -26,13 +24,11 @@ from .serializers import (
     ExamenSerializer,
     NivelSerializer,
     UsuarioSerializer,
-    ProfesorSerializer,
     SolicitudProfesorSerializer,
     PreguntaSerializer,
     OpcionSerializer,
     IntentoExamenSerializer,
     RespuestaUsuarioSerializer,
-    TestConnectionSerializer,
     RegistroSerializer,
     PerfilSerializer
 )
@@ -41,13 +37,13 @@ class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
     lookup_field = 'slug'
-
     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
     
-# COMENTAR QUE LO MOVI, ESTABA MAL IDENTADO
+
     def get_queryset(self):
         queryset = Examen.objects.all()
 
@@ -88,9 +84,6 @@ class UsuarioViewSet(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
 
 
-class ProfesorViewSet(viewsets.ModelViewSet):
-    queryset = Profesor.objects.all()
-    serializer_class = ProfesorSerializer
 
 
 class SolicitudProfesorViewSet(viewsets.ModelViewSet):
@@ -133,12 +126,6 @@ class SolicitudProfesorViewSet(viewsets.ModelViewSet):
         usuario.rol = 'profesor'
         usuario.save()
 
-        if not Profesor.objects.filter(usuario=usuario).exists():
-            Profesor.objects.create(
-                usuario=usuario,
-                especialidad=solicitud.especialidad,
-                titulo='Pendiente'
-            )
         return Response({
             "mensaje": "Solicitud aprobada"
         })
@@ -157,7 +144,7 @@ class PreguntaViewSet(viewsets.ModelViewSet):
     queryset = Pregunta.objects.all()
     serializer_class = PreguntaSerializer
     
-    # Obtener preguntas por examen en la consulta
+
     def get_queryset(self):
         examen_id = self.request.query_params.get('examen_id', None)
         if examen_id:
@@ -169,7 +156,7 @@ class OpcionViewSet(viewsets.ModelViewSet):
     queryset = Opcion.objects.all()
     serializer_class = OpcionSerializer
     
-    # Obtener opciones por cada pregunta en la consulta
+    
     def get_queryset(self):
         pregunta_id = self.request.query_params.get('pregunta_id', None)
         if pregunta_id:
@@ -191,7 +178,7 @@ class IntentoExamenViewSet(viewsets.ModelViewSet):
         else:
             serializer.save(usuario=None)
 
-    # Nos permite editar el intento para finalizarlo, agregando la fecha_fin y el resultado
+
     def update(self, request, *args, **kwargs):
         intento = self.get_object()
         
@@ -210,7 +197,7 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
     queryset = RespuestaUsuario.objects.all()
     serializer_class = RespuestaUsuarioSerializer
     
-    # El endpoint seria asi: http://127.0.0.1:8000/api/respuestas/?intento_id=14&pregunta_id=5
+
     def get_queryset(self):
         queryset = self.queryset
         intento_id = self.request.query_params.get('intento_id', None)
@@ -224,9 +211,6 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class TestConnectionViewSet(viewsets.ModelViewSet):
-    queryset = TestConnection.objects.all()
-    serializer_class = TestConnectionSerializer
 
 
 class RegistroView(generics.CreateAPIView):

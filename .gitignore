@@ -5,6 +5,8 @@ back/env/
 # Variables de entorno
 .env
 
+back/media/
+
 # Archivos de Python
 __pycache__/
 *.pyc

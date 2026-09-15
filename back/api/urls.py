@@ -10,10 +10,8 @@ from .views import (
     PreguntaViewSet,
     OpcionViewSet,
     IntentoExamenViewSet,
-    ProfesorViewSet,
     SolicitudProfesorViewSet,
     RespuestaUsuarioViewSet,
-    TestConnectionViewSet,
     UsuarioViewSet,
     RegistroView,
     LoginView,
@@ -25,7 +23,6 @@ router = DefaultRouter()
 
 router.register(r'examenes', ExamenViewSet)
 router.register(r'usuarios', UsuarioViewSet)
-router.register(r'profesores', ProfesorViewSet)
 router.register(r'solicitudes-profesor', SolicitudProfesorViewSet, basename='solicitudes-profesor')
 router.register(r'categorias', CategoriaViewSet)
 router.register(r'niveles', NivelViewSet)
@@ -33,7 +30,6 @@ router.register(r'preguntas', PreguntaViewSet)
 router.register(r'opciones', OpcionViewSet)
 router.register(r'intentos', IntentoExamenViewSet)
 router.register(r'respuestas', RespuestaUsuarioViewSet)
-router.register(r'test-connection', TestConnectionViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),

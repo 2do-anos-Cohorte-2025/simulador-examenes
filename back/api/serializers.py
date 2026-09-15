@@ -1,21 +1,17 @@
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
-from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, Profesor, RespuestaUsuario, TestConnection, Usuario, SolicitudProfesor
+from .models import Categoria, Examen, Nivel, Pregunta, Opcion, IntentoExamen, RespuestaUsuario, Usuario, SolicitudProfesor
 from django.utils import timezone
 class ExamenSerializer(serializers.ModelSerializer):
-
     usuario_nombre = serializers.CharField(source='usuario.__str__', read_only=True)
-
     categoria_nombre = serializers.CharField(
         source='categoria.nombre',
         read_only=True
     )
-
     nivel_nombre = serializers.CharField(
         source='nivel.nombre',
         read_only=True
     )
-
     es_profesor = serializers.SerializerMethodField()
     institucion = serializers.SerializerMethodField()
     especialidad = serializers.SerializerMethodField()
@@ -27,16 +23,6 @@ class ExamenSerializer(serializers.ModelSerializer):
     
     def get_usuario(self, obj):
         return f"{obj.usuario.first_name} {obj.usuario.last_name}" if obj.usuario else None
-    def get_profesor(self, obj):
-        try:
-            profesor = obj.usuario.profesor
-            return {
-                "id": profesor.id,
-                "titulo": profesor.titulo,
-                "especialidad": profesor.especialidad,
-            }
-        except:
-            return None
     def get_categoria(self, obj):
         return obj.categoria.nombre if obj.categoria else None
     def get_nivel(self, obj):
@@ -50,7 +36,6 @@ class ExamenSerializer(serializers.ModelSerializer):
             if solicitud:
                 return solicitud.institucion
         return None
-
     def get_especialidad(self, obj):
         if obj.usuario.rol == "profesor":
             solicitud = SolicitudProfesor.objects.filter(usuario=obj.usuario, estado='aprobada').first()
@@ -73,10 +58,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
         model = Usuario
         fields = '__all__'
         
-class ProfesorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profesor
-        fields = '__all__'
+
 
 class SolicitudProfesorSerializer(serializers.ModelSerializer):
 
@@ -106,7 +88,7 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = IntentoExamen
-        fields = ['id', 
+        fields = [ 
                   'examen', 
                   'usuario', 
                   'examen_titulo',
@@ -114,19 +96,6 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
                   'fecha_inicio', 
                   'fecha_fin',
                   'resultado']
-        read_only_fields = ['id', 'examen', 'usuario', 'fecha_inicio']
-
-        fields = [
-            'id',
-            'examen',
-            'examen_titulo',
-            'examen_slug',
-            'usuario',
-            'fecha_inicio',
-            'fecha_fin',
-            'resultado',
-            
-        ]
         read_only_fields = [
             'id',
             'usuario',
@@ -145,7 +114,6 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
         return intento_examen
 
     def update(self, instance, validated_data):
-        # Actualizar solo los campos fecha_fin y resultado al terminar el intento
         instance.fecha_fin = validated_data.get('fecha_fin', instance.fecha_fin)
         instance.resultado = validated_data.get('resultado', instance.resultado)
         instance.save()
@@ -157,10 +125,7 @@ class RespuestaUsuarioSerializer(serializers.ModelSerializer):
         model = RespuestaUsuario
         fields = '__all__'
 
-class TestConnectionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = TestConnection
-        fields = '__all__'
+
 
 # ── Autenticación
 
@@ -193,24 +158,28 @@ class RegistroSerializer(serializers.ModelSerializer):
         return user
 
 
-class PerfilProfesorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model  = Profesor
-        fields = ['especialidad', 'titulo', 'imagen_titulo']
+
 
 
 class PerfilSerializer(serializers.ModelSerializer):
-    profesor = PerfilProfesorSerializer(read_only=True)
     intentos = serializers.SerializerMethodField()
+    profesor_info=serializers.SerializerMethodField()
 
     class Meta:
         model  = Usuario
         fields = [
             'id', 'first_name', 'last_name', 'email',
-            'rol', 'imagen_usuario', 'fecha_creacion',
-            'profesor', 'intentos'
+            'rol', 'imagen_usuario', 'fecha_creacion', 'intentos','profesor_info'
         ]
 
     def get_intentos(self, obj):
         intentos = IntentoExamen.objects.filter(usuario=obj).select_related('examen').order_by('-fecha_inicio')
         return IntentoExamenSerializer(intentos, many=True).data
+    def get_profesor_info(self, obj):
+        if obj.rol == "profesor":      
+            solicitud = SolicitudProfesor.objects.filter(usuario=obj.id, estado='aprobada').first()
+            if solicitud:
+                return {"institucion":solicitud.institucion,
+                        "especialidad":solicitud.especialidad}     
+        return None
+

@@ -22,18 +22,6 @@ class Usuario(AbstractUser):
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
 
-class Profesor(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='profesor')
-    especialidad = models.CharField(max_length=150)
-    titulo = models.CharField(max_length=150)
-    imagen_titulo = models.ImageField(upload_to='titulos/', null=True, blank=True)
-    
-    class Meta:
-        verbose_name_plural = "Profesores"
-
-    def __str__(self):
-
-        return f"Profesor: {self.usuario.first_name} {self.usuario.last_name}"
     
 class SolicitudProfesor(models.Model):
     ESTADOS = [ ('pendiente', 'Pendiente'), ('aprobada', 'Aprobada'), ('rechazada', 'Rechazada')]
@@ -159,9 +147,3 @@ class RespuestaUsuario(models.Model):
 
 
 
-
-class TestConnection(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-            return self.name 

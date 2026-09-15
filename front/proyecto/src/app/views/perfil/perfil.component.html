@@ -34,13 +34,13 @@
             </div>
 
             <!-- Info de profesor (si lo es) -->
-            <div *ngIf="usuario.profesor" class="card perfil-card perfil-card--profesor mb-4">
+            <div *ngIf="usuario.rol=='profesor'" class="card perfil-card perfil-card--profesor mb-4">
                 <div class="card-header perfil-card-header">
                     Información académica
                 </div>
                 <div class="card-body p-4">
-                    <p class="texto-oscuro mb-1"><strong>Título:</strong> {{ usuario.profesor.titulo }}</p>
-                    <p class="texto-oscuro mb-0"><strong>Especialidad:</strong> {{ usuario.profesor.especialidad }}</p>
+                    <p class="texto-oscuro mb-1"><strong>Título:</strong> {{ usuario.profesor_info?.institucion }}</p>
+                    <p class="texto-oscuro mb-0"><strong>Especialidad:</strong> {{ usuario.profesor_info?.especialidad }}</p>
                 </div>
             </div>
 

@@ -32,7 +32,6 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -78,8 +77,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -93,8 +90,6 @@ DATABASES = {
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -112,8 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
@@ -124,8 +117,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
 
@@ -133,14 +124,14 @@ STATIC_URL = 'static/'
 
 AUTH_USER_MODEL = 'api.Usuario'
 
-MEDIA_URL = '/media/'  # URL base para servir archivos multimedia
+MEDIA_URL = '/media/'  
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
 
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [ 
-    "http://localhost:4200",  # URL de tu frontend Angular
-    "https://tu-dominio.com",  # Si tienes un dominio en producción
+    "http://localhost:4200",  
+    "https://tu-dominio.com",  
 ]
 
 
@@ -156,7 +147,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Permitir métodos HTTP específicos
+
 CORS_ALLOW_METHODS = [
     'DELETE',
     'GET',
