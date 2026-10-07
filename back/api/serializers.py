@@ -89,8 +89,9 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
     class Meta:
         model = IntentoExamen
         fields = [ 
+                  'id',
+                  'usuario',
                   'examen', 
-                  'usuario', 
                   'examen_titulo',
                   'examen_slug',
                   'fecha_inicio', 
@@ -99,9 +100,10 @@ class IntentoExamenSerializer(serializers.ModelSerializer):
         read_only_fields = [
             'id',
             'usuario',
-            'fecha_inicio',
-            'slug',
-            'titulo',
+            'examen_titulo',
+            'examen_slug',
+            'fecha_inicio'
+            
         ]
         extra_kwargs = {
             'examen': {'required': False},
