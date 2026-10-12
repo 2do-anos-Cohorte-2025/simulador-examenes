@@ -140,12 +140,21 @@ class RegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Usuario
         fields = ['first_name', 'last_name', 'email', 'password', 'confirmar_password']
+        extra_kwargs = {
+            'first_name': {'required': True, 'allow_blank': False},
+            'last_name': {'required': True, 'allow_blank': False},
+            'email': {'required': True, 'allow_blank': False},
+        }
+
+    def validate_email(self, value):
+        value = value.strip().lower()
+        if Usuario.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError({"email": "Ya existe una cuenta con ese email."})
+        return value
 
     def validate(self, attrs):
         if attrs['password'] != attrs['confirmar_password']:
             raise serializers.ValidationError({"password": "Las contraseñas no coinciden."})
-        if Usuario.objects.filter(email=attrs['email']).exists():
-            raise serializers.ValidationError({"email": "Ya existe una cuenta con ese email."})
         return attrs
 
     def create(self, validated_data):
