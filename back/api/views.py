@@ -284,8 +284,23 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
         if self.action in ("update", "partial_update", "destroy"):
             return [SiNoEsAdminSoloLectura()]
         return [AllowAny()]
+
+    def _es_admin(self):
+        usuario = self.request.user
+        return usuario.is_authenticated and (
+            getattr(usuario, "rol", None) == "administrador" or usuario.is_superuser
+        )
+    
     def get_queryset(self):
+        usuario = self.request.user
         queryset = self.queryset
+
+        if self._es_admin():
+            pass
+        elif usuario.is_authenticated:
+            queryset = queryset.filter(intento__usuario=usuario)
+        else:
+            queryset = queryset.filter(intento__usuario__isnull=True)
         intento_id = self.request.query_params.get('intento_id', None)
         pregunta_id = self.request.query_params.get('pregunta_id', None)
 
@@ -296,8 +311,36 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def perform_create(self, serializer):
+        intento = serializer.validated_data["intento"]
+        pregunta = serializer.validated_data["pregunta"]
+        opcion = serializer.validated_data.get("opcion_seleccionada")
+        usuario = self.request.user
 
+        if not self._es_admin():
+            if usuario.is_autenticated:
+                es_su_intento = intento.usuario_id == usuario.pk
+            else:
+                es_su_intento = intento.usuario_id is None
+            if not es_su_intento:
+                raise exceptions.PermissionDenied("No tenés permiso para responder en este intento.")
+        
+        if intento.fecha_fin is not None:
+            raise serializers.ValidationError({"intento": "Este intento ya fue finalizado."})
+        if pregunta.examen_id != intento.examen_id:
+            raise serializers.ValidationError({"pregunta": "La pregunta no pertenece al examen de este intento."})
+        if opcion is not None and opcion.pregunta_id != pregunta.id:
+            raise serializers.ValidationError({"opcion_seleccionada": "La opción no pertenece a esta pregunta."})
 
+        existente = RespuestaUsuario.objects.filter(intento=intento, pregunta=pregunta).first()
+        if existente:
+            existente.opcion_seleccionada = opcion
+            existente.respuesta_texto = serializer.validated_data.get("respuesta_texto", existente.respuesta_texto)
+            existente.save()
+            RespuestaUsuario.objects.filter(intento=intento, pregunta=pregunta).exclude(pk=existente.pk).delete()
+            serializer.instance = existente
+        else:
+            serializer.save()
 
 class RegistroView(generics.CreateAPIView):
     serializer_class = RegistroSerializer
