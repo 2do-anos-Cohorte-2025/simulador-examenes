@@ -2,7 +2,7 @@ from rest_framework import viewsets, generics, status
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly, BasePermission
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
 from django.utils import timezone
@@ -86,10 +86,24 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 
 
 
+class SolicitudProfesorPermission(BasePermission):
+    """
+    - Usuario autenticado: solo puede CREAR solicitudes (POST).
+    - Administrador: acceso completo (listar, ver, editar, eliminar, aprobar, rechazar).
+    """
+    def has_permission(self, request, view):
+        user = request.user
+        if not (user and user.is_authenticated):
+            return False
+        if getattr(user, 'rol', None) == 'administrador':
+            return True
+        return view.action == 'create'
+
+
 class SolicitudProfesorViewSet(viewsets.ModelViewSet):
     queryset = SolicitudProfesor.objects.all()
     serializer_class = SolicitudProfesorSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [SolicitudProfesorPermission]
 
     def get_queryset(self):
         estado = self.request.query_params.get('estado')
@@ -98,7 +112,8 @@ class SolicitudProfesorViewSet(viewsets.ModelViewSet):
         return SolicitudProfesor.objects.all()
     
     def perform_create(self, serializer):
-        serializer.save(usuario=self.request.user)
+        # El estado inicial lo fija el servidor: el usuario no puede autoaprobarse
+        serializer.save(usuario=self.request.user, estado='pendiente')
     
     # Si el admin aprueba la solicitud, el rol del usuario se modifica para ser profesor
     def update(self, request, *args, **kwargs):
