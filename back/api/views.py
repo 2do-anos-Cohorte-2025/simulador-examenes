@@ -333,7 +333,7 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
         usuario = self.request.user
 
         if not self._es_admin():
-            if usuario.is_autenticated:
+            if usuario.is_authenticated:
                 es_su_intento = intento.usuario_id == usuario.pk
             else:
                 es_su_intento = intento.usuario_id is None
