@@ -85,47 +85,46 @@ class PreguntaSerializer(serializers.ModelSerializer):
 class IntentoExamenSerializer(serializers.ModelSerializer):
     examen_titulo = serializers.CharField(source='examen.titulo', read_only=True)
     examen_slug = serializers.CharField(source='examen.slug', read_only=True)
+    resultado = serializers.SerializerMethodField()
+
 
     class Meta:
         model = IntentoExamen
-        fields = [ 
-                  'id',
-                  'usuario',
-                  'examen', 
-                  'examen_titulo',
-                  'examen_slug',
-                  'fecha_inicio', 
-                  'fecha_fin',
-                  'resultado']
-        read_only_fields = [
-            'id',
-            'usuario',
-            'examen_titulo',
-            'examen_slug',
-            'fecha_inicio'
-            
-        ]
+        fields = ['id', 'examen', 'usuario', 'fecha_inicio', 'examen_slug', 'examen_titulo', 'fecha_fin', 'resultado']
+        read_only_fields = ['id', 'fecha_inicio', 'resultado']
         extra_kwargs = {
-            'examen': {'required': False},
-            'usuario': {'required': False, 'allow_null': True},
+            'examen': {'required': True},  
+            'usuario': {'required': False, 'allow_null': True}
+            
         }
 
     def create(self, validated_data):
-        
-        intento_examen = IntentoExamen.objects.create(**validated_data)
+        examen = validated_data.pop('examen')
+        usuario = validated_data.pop('usuario', None)
+        intento_examen = IntentoExamen.objects.create(
+            examen=examen,
+            usuario=usuario,
+            **validated_data
+        )
         return intento_examen
 
     def update(self, instance, validated_data):
         instance.fecha_fin = validated_data.get('fecha_fin', instance.fecha_fin)
-        instance.resultado = validated_data.get('resultado', instance.resultado)
-        instance.save()
+        instance.save() 
         return instance
+
+    def get_resultado(self, obj):
+        if obj.resultado is not None:
+            return obj.resultado
+        return obj.calcular_resultado() if obj.fecha_fin else None
+
+
     
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = RespuestaUsuario
-        fields = '__all__'
+        fields = ['id', 'intento', 'pregunta', 'opcion_seleccionada', 'respuesta_texto']
 
 
 
