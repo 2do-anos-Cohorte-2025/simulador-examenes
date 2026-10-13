@@ -1,4 +1,4 @@
-from rest_framework.permissions  import BasePermission
+from rest_framework.permissions  import BasePermission, SAFE_METHODS
 import logging
 
 from .models import Pregunta,Opcion, Examen,Usuario
@@ -47,3 +47,17 @@ class SoloCreadorModificaPregunta(BasePermission):
     def has_object_permission(self, request, view, obj):
         examen = obj.examen
         return examen.usuario == request.user or request.user.is_superuser
+    
+    
+class SiNoEsAdminSoloLectura(BasePermission):
+    message = 'No tienes permiso para crear o manipular este campo.'
+
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS:  # GET, HEAD, OPTIONS
+            return True
+        user = request.user
+        return bool(
+            user
+            and user.is_authenticated
+            and (user.rol == 'administrador' or user.is_superuser)
+        )
