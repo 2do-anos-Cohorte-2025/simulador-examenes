@@ -54,6 +54,10 @@ class ExamenViewSet(viewsets.ModelViewSet):
         categoria = self.request.query_params.get('categoria')
         creador = self.request.query_params.get('creador')
         search = self.request.query_params.get('search')
+        mine = self.request.query_params.get('mine')
+
+        if mine and mine.lower() == 'true' and self.request.user.is_authenticated:
+            queryset = queryset.filter(usuario=self.request.user)
 
         if nivel:
             queryset = queryset.filter(nivel__nombre__iexact=nivel)
@@ -435,3 +439,19 @@ class PerfilView(APIView):
     def get(self, request):
         serializer = PerfilSerializer(request.user)
         return Response(serializer.data)
+
+    def patch(self, request):
+        # Solo se permiten estos campos: evita que el usuario cambie su rol, etc.
+        user = request.user
+        for campo in ('first_name', 'last_name'):
+            if campo in request.data:
+                valor = str(request.data[campo]).strip()
+                if not valor:
+                    return Response({campo: 'No puede estar vacío.'}, status=status.HTTP_400_BAD_REQUEST)
+                setattr(user, campo, valor)
+        user.save(update_fields=['first_name', 'last_name', 'fecha_modificacion'])
+        return Response(PerfilSerializer(user).data)
+
+    def delete(self, request):
+        request.user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
