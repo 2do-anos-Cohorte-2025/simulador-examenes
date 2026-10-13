@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, PermisoPreguntaYOpcion ,SoloCreadorModificaPregunta
+from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloCreadorModificaPregunta
 
 from .models import (
     Categoria,
@@ -77,10 +77,12 @@ class ExamenViewSet(viewsets.ModelViewSet):
 class CategoriaViewSet(viewsets.ModelViewSet):
     queryset = Categoria.objects.all()
     serializer_class = CategoriaSerializer
+    permission_classes = [SiNoEsAdminSoloLectura]
     
 class NivelViewSet(viewsets.ModelViewSet):
     queryset = Nivel.objects.all()
     serializer_class = NivelSerializer
+    permission_classes = [SiNoEsAdminSoloLectura]
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
