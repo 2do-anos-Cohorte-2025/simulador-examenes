@@ -280,7 +280,10 @@ class RespuestaUsuarioViewSet(viewsets.ModelViewSet):
     queryset = RespuestaUsuario.objects.all()
     serializer_class = RespuestaUsuarioSerializer
     
-
+    def get_permissions(self):
+        if self.action in ("update", "partial_update", "destroy"):
+            return [SiNoEsAdminSoloLectura()]
+        return [AllowAny()]
     def get_queryset(self):
         queryset = self.queryset
         intento_id = self.request.query_params.get('intento_id', None)

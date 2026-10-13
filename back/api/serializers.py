@@ -148,7 +148,7 @@ class RegistroSerializer(serializers.ModelSerializer):
     def validate_email(self, value):
         value = value.strip().lower()
         if Usuario.objects.filter(email__iexact=value).exists():
-            raise serializers.ValidationError({"email": "Ya existe una cuenta con ese email."})
+            raise serializers.ValidationError("Ya existe una cuenta con ese email.")
         return value
 
     def validate(self, attrs):
