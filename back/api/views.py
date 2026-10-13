@@ -1,13 +1,14 @@
 from rest_framework import viewsets, generics, status,exceptions
-from rest_framework import status
+from rest_framework import status, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
+from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta
+from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, PermisoPreguntaYOpcion ,SoloCreadorModificaPregunta
 
 from .models import (
     Categoria,
@@ -145,37 +146,39 @@ class SolicitudProfesorViewSet(viewsets.ModelViewSet):
 class PreguntaViewSet(viewsets.ModelViewSet):
     queryset = Pregunta.objects.all()
     serializer_class = PreguntaSerializer
-    
+    permission_classes = [PermisoPreguntaYOpcion]
+
     def get_queryset(self):
-        examen_id = self.request.query_params.get('examen_id', None)
+        queryset = Pregunta.objects.all()
+        examen_id = self.request.query_params.get("examen_id")
+
         if examen_id:
-            return self.queryset.filter(examen_id=examen_id)
-        else:
-            return Pregunta.objects.all()
+            queryset = queryset.filter(examen_id=examen_id)
+
+        return queryset
+
+    def perform_create(self, serializer):
+        examen_id = self.request.data.get("examen")
+
+        if not examen_id:
+            raise serializers.ValidationError({
+                "examen": "El examen es necesario."
+            })
+
+        examen = get_object_or_404(Examen, pk=examen_id)
+        usuario = self.request.user
+
+        if not usuario.is_authenticated:
+            raise exceptions.NotAuthenticated()
+
+        es_administrador = getattr(usuario, "rol", None) == "administrador"
+        es_propietario = examen.usuario_id == usuario.pk
+
+        if not (es_propietario or es_administrador):
+            raise exceptions.PermissionDenied("Solo el propietario del examen o un administrador pueden crear preguntas.")
+
+        serializer.save(examen=examen)
         
-        
-        
-    def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
-            permission_classes = [IsAuthenticatedOrReadOnly]  
-        else:
-            permission_classes = [SoloCreadorModificaPregunta]  
-        return [permission() for permission in permission_classes]
-    
-    def perform_create(self,serializer):
-        examen = self.request.data.get('examen')
-        
-        if examen:
-            try:
-                examen_obj = Examen.objects.get(id=examen)
-            except Examen.DoesNotExist:
-                raise exceptions.ValidationError('Ese examen no existe')
-            if examen_obj.usuario == self.request.user or self.request.user.is_superuser:
-                serializer.save()
-            else:
-                raise exceptions.ValidationError("No tienes permiso para agregar preguntas a este examen.")
-        else:
-            raise exceptions.ValidationError("Por favor, ingresa un examen.")
  
         
 
@@ -183,61 +186,90 @@ class PreguntaViewSet(viewsets.ModelViewSet):
 class OpcionViewSet(viewsets.ModelViewSet):
     queryset = Opcion.objects.all()
     serializer_class = OpcionSerializer
-    
-    
+    permission_classes = [PermisoPreguntaYOpcion]
+
     def get_queryset(self):
-        pregunta_id = self.request.query_params.get('pregunta_id', None)
+        queryset = Opcion.objects.all()
+        pregunta_id = self.request.query_params.get("pregunta_id")
+
         if pregunta_id:
-            return self.queryset.filter(pregunta_id=pregunta_id)
-        return self.queryset
-    
-    def get_permissions(self):
-            if self.action in ['list', 'retrieve']:
-                permission_classes = [IsAuthenticatedOrReadOnly]  
-            else:
-                permission_classes = [SoloCreadorModificaOpcion]  
-            return [permission() for permission in permission_classes]
+            queryset = queryset.filter(pregunta_id=pregunta_id)
 
+        return queryset
 
-    def perform_create(self,serializer):
-            pregunta = self.request.data.get('pregunta')
-            if pregunta:
-                try:
-                    pregunta_obj = Pregunta.objects.get(id=pregunta)
-                    examen_obj= Examen.objects.get(id=pregunta_obj.examen.id)
-                except Pregunta.DoesNotExist:
-                    raise exceptions.ValidationError('Esa pregunta no existe') 
-                if examen_obj.usuario == self.request.user or self.request.user.is_superuser:
-                    serializer.save()
-                else:
-                    raise exceptions.ValidationError("No tienes permiso para agregar opciones a esta pregunta.")
-            else:
-                raise exceptions.ValidationError("Por favor, ingresa una pregunta.")
+    def perform_create(self, serializer):
+        pregunta_id = self.request.data.get("pregunta")
+
+        if not pregunta_id:
+            raise serializers.ValidationError({
+                "pregunta": "La pregunta es necesaria."
+            })
+
+        pregunta = get_object_or_404(
+            Pregunta.objects.select_related("examen"),
+            pk=pregunta_id
+        )
+
+        examen = pregunta.examen
+        usuario = self.request.user
+
+        if not usuario.is_authenticated:
+            raise exceptions.NotAuthenticated()
+
+        es_administrador = getattr(usuario, "rol", None) == "administrador"
+        es_propietario = examen.usuario_id == usuario.pk
+
+        if not (es_propietario or es_administrador):
+            raise exceptions.PermissionDenied("Solo el propietario del examen o un administrador pueden crear opciones.")
+
+        serializer.save(pregunta=pregunta)
+
             
 
     
 class IntentoExamenViewSet(viewsets.ModelViewSet):
     queryset = IntentoExamen.objects.all()
     serializer_class = IntentoExamenSerializer
+    permission_classes = [AllowAny]
+    
+    def get_queryset(self):
+        usuario = self.request.user
+
+        if usuario.is_authenticated and getattr(usuario, "rol", None) == "administrador":
+            return self.queryset.all()
+
+        if usuario.is_authenticated:
+            return self.queryset.filter(usuario=usuario)
+
+        return self.queryset.filter(usuario__isnull=True)
     
     def perform_create(self, serializer):
-        usuario = self.request.user
-        if usuario.is_authenticated and usuario.id == self.request.data.get('usuario'):
-            serializer.save(usuario=usuario)
+        examen_id = self.request.data.get("examen")
+        usuario_solicitante = self.request.user
+
+        if not examen_id:
+            raise serializers.ValidationError({
+                "examen": "El examen es obligatorio."
+            })
+
+        examen = get_object_or_404(Examen, pk=examen_id)
+
+    
+        if usuario_solicitante.is_authenticated:
+            serializer.save(examen=examen,usuario=usuario_solicitante)
         else:
-            serializer.save(usuario=None)
+            
+            serializer.save(examen=examen,usuario=None)
 
 
     def update(self, request, *args, **kwargs):
         intento = self.get_object()
-        
-        serializer = self.get_serializer(intento, data=request.data, partial=False) 
-        
+
+        serializer = self.get_serializer(intento, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
-        
+
         return Response(serializer.data, status=status.HTTP_200_OK)
-    
     
     
 

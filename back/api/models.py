@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
+import uuid
 
 
 class Usuario(AbstractUser):
@@ -127,8 +128,27 @@ class IntentoExamen(models.Model):
     @property
     def tiempo_transcurrido(self):
         if self.fecha_fin and self.fecha_inicio:
-            return (self.fecha_fin - self.fecha_inicio).total_seconds() / 60  
-        return (timezone.now() - self.fecha_inicio).total_seconds() / 60  
+            return (self.fecha_fin - self.fecha_inicio).total_seconds() / 60
+        return (timezone.now() - self.fecha_inicio).total_seconds() / 60
+
+    def calcular_resultado(self):
+        total_puntos = 0.0
+
+        respuestas = self.respuestas.all()
+        
+        for respuesta in respuestas:
+            pregunta = respuesta.pregunta
+            if respuesta.opcion_seleccionada:
+                if respuesta.opcion_seleccionada.es_correcta:
+                    total_puntos += float(pregunta.puntos)
+
+        self.resultado = total_puntos
+        return total_puntos
+
+    def save(self, *args, **kwargs):
+        if self.fecha_fin and not self.resultado:
+            self.calcular_resultado()  
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Intento {self.id} - Examen: {self.examen.titulo}"

@@ -29,7 +29,25 @@ class SoloCreadorModifica(BasePermission):
     def has_object_permission(self, request, view, obj):
         return obj.usuario == request.user or request.user.is_superuser
     
-        
+class PuedeGestionarIntentoExamen(BasePermission):
+    message = "No tienes permiso para acceder a este intento."
+
+    def has_permission(self, request, view):
+        if view.action == "create":
+            return True
+
+        return bool(request.user and request.user.is_authenticated)
+
+    def has_object_permission(self, request, view, obj):
+        usuario = request.user
+
+        if not usuario or not usuario.is_authenticated:
+            return False
+
+        es_administrador = usuario.rol == "administrador"
+        es_propietario = obj.usuario_id == usuario.pk
+
+        return es_administrador or es_propietario  
     
     
 class SoloCreadorModificaOpcion(BasePermission):
@@ -38,7 +56,11 @@ class SoloCreadorModificaOpcion(BasePermission):
     def has_object_permission(self, request, view, obj):
         pregunta = obj.pregunta
         examen = pregunta.examen
-        return examen.usuario == request.user or request.user.is_superuser
+        
+        es_administrador = examen.usuario.rol == "administrador"
+        es_propietario = examen.usuario == request.user
+        
+        return es_propietario or es_administrador
     
     
 class SoloCreadorModificaPregunta(BasePermission):
@@ -46,4 +68,42 @@ class SoloCreadorModificaPregunta(BasePermission):
 
     def has_object_permission(self, request, view, obj):
         examen = obj.examen
-        return examen.usuario == request.user or request.user.is_superuser
+        # return examen.usuario == request.user or request.user.is_superuser
+    
+        es_administrador = examen.usuario.rol == "administrador"
+        es_propietario = examen.usuario == request.user
+            
+        return es_propietario or es_administrador
+    
+    
+class PermisoPreguntaYOpcion(BasePermission):
+    message = "No tienes permiso para modificar las preguntas u opciones de este examen."
+
+    def has_permission(self, request, view):
+        if request.method in ("GET", "HEAD", "OPTIONS"):
+            return True
+
+        return bool(
+            request.user and request.user.is_authenticated
+        )
+
+    def has_object_permission(self, request, view, obj):
+        if request.method in ("GET", "HEAD", "OPTIONS"):
+            return True
+
+        usuario = request.user
+        if not usuario or not usuario.is_authenticated:
+            return False
+
+        # Conseguir el examen asociado al objeto.
+        if isinstance(obj, Pregunta):
+            examen = obj.examen
+        elif isinstance(obj, Opcion):
+            examen = obj.pregunta.examen
+        else:
+            return False
+
+        es_administrador = getattr(usuario, "rol", None) == "administrador"
+        es_propietario = examen.usuario_id == usuario.pk
+
+        return es_administrador or es_propietario
