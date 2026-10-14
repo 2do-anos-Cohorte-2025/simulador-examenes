@@ -142,3 +142,35 @@ class SoloUsuarioOAdmin(BasePermission):
         es_administrador = usuario.rol == "administrador" or usuario.is_superuser
         es_propietario = obj.pk == usuario.pk
         return es_administrador or es_propietario
+
+
+
+class PermisoExamen(BasePermission):
+    message = "No tenés permiso para modificar este examen."
+
+    def has_permission(self, request, view):
+        # Cualquiera puede consultar los exámenes.
+        if request.method in SAFE_METHODS:
+            return True
+
+        # Para escribir, hay que iniciar sesión.
+        return bool(
+            request.user
+            and request.user.is_authenticated
+        )
+
+    def has_object_permission(self, request, view, obj):
+        # Cualquiera puede consultar un examen específico.
+        if request.method in SAFE_METHODS:
+            return True
+
+        usuario = request.user
+
+        es_administrador = (
+            usuario.is_superuser
+            or getattr(usuario, "rol", None) == "administrador"
+        )
+
+        es_creador = obj.usuario_id == usuario.pk
+
+        return es_administrador or es_creador
