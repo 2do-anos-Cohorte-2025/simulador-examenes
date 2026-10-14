@@ -56,8 +56,45 @@ class NivelSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = '__all__'
-        
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'rol',
+                  'imagen_usuario', 'is_active', 'password',
+                  'fecha_creacion', 'fecha_modificacion']
+        read_only_fields = ['id', 'fecha_creacion', 'fecha_modificacion']
+        extra_kwargs = {'password': {'write_only': True, 'required': False,
+                             'validators': [validate_password]}}
+
+    def validate(self, attrs):
+        usuario = self.context['request'].user
+        es_administrador = usuario.rol == "administrador" or usuario.is_superuser
+
+        if not es_administrador:
+            
+            for campo in ('rol', 'is_active'):
+                if campo in attrs and (
+                    self.instance is None or attrs[campo] != getattr(self.instance, campo)
+                ):
+                    raise serializers.ValidationError(
+                        {campo: "No tenés permiso para modificar este campo."}
+                    )
+        return attrs
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        usuario = Usuario(**validated_data)
+        if password:
+            usuario.set_password(password)
+        else:
+            usuario.set_unusable_password()
+        usuario.save()
+        return usuario
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        usuario = super().update(instance, validated_data)
+        if password:
+            usuario.set_password(password)
+            usuario.save()
+        return usuario
 
 
 class SolicitudProfesorSerializer(serializers.ModelSerializer):

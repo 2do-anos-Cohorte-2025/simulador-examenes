@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminService } from '../../service/admin.service';
-import { AuthService } from '../../service/AuthService/auth.service'; 
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -27,7 +26,6 @@ export class AdminDashboardComponent implements OnInit {
   
   constructor(
     private api: AdminService,
-    private authService: AuthService 
   ) {}
 
   ngOnInit() {
@@ -106,26 +104,32 @@ export class AdminDashboardComponent implements OnInit {
       }
 
       
-      const payloadRegistro = {
+      const nuevoUsuario = {
         username: this.form.email,
         email: this.form.email,
         first_name: this.form.first_name || '',
         last_name: this.form.last_name || '',
-        password: this.form.password,                    
-        confirmar_password: this.form.confirmPassword,     
+        password: this.form.password,                        
         rol: this.form.rol || 'estudiante'
       };
 
       
-      this.authService.registro(payloadRegistro).subscribe({
+      this.api.crearUsuario(nuevoUsuario).subscribe({
         next: () => { 
           this.cargarTodo(); 
           this.cerrarModal(); 
-          alert('¡Usuario creado con éxito y contraseña encriptada!');
+          alert('¡Usuario creado con éxito!');
         },
         error: (err) => {
-          console.error('Error al registrar mediante AuthService:', err);
-          alert('No se pudo crear el usuario. Revisa que el email no esté repetido.');
+          console.error('Error al crear usuario:', err);
+          const errores = err.error;
+          if (errores?.password) {
+           alert('Contraseña no válida: ' + [].concat(errores.password).join(' '));
+         } else if (errores?.username) {
+           alert('Ya existe un usuario con ese email.');
+         } else {
+           alert('No se pudo crear el usuario.');
+         }
         }
       });
 

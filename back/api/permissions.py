@@ -124,3 +124,21 @@ class PermisoPreguntaYOpcion(BasePermission):
         es_propietario = examen.usuario_id == usuario.pk
 
         return es_administrador or es_propietario
+
+class SoloUsuarioOAdmin(BasePermission):
+    message = "Solo podés acceder a tu propio usuario."
+
+    def has_permission(self, request, view):
+        usuario = request.user
+        if not (usuario and usuario.is_authenticated):
+            return False
+       
+        if view.action == "create":
+            return usuario.rol == "administrador" or usuario.is_superuser
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        usuario = request.user
+        es_administrador = usuario.rol == "administrador" or usuario.is_superuser
+        es_propietario = obj.pk == usuario.pk
+        return es_administrador or es_propietario
