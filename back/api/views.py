@@ -8,7 +8,7 @@ from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 
-from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloCreadorModificaPregunta
+from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloCreadorModificaPregunta, SoloUsuarioOAdmin
 
 from .models import (
     Categoria,
@@ -91,6 +91,15 @@ class NivelViewSet(viewsets.ModelViewSet):
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all()
     serializer_class = UsuarioSerializer
+    permission_classes = [SoloUsuarioOAdmin]
+
+    def get_queryset(self):
+        usuario = self.request.user
+        es_administrador = getattr(usuario, "rol", None) == "administrador" or usuario.is_superuser
+
+        if es_administrador:
+            return Usuario.objects.all()
+        return Usuario.objects.filter(pk=usuario.pk)
 
 
 
