@@ -69,7 +69,12 @@ class SoloCreadorModificaPregunta(BasePermission):
     def has_object_permission(self, request, view, obj):
         examen = obj.examen
 
-        return examen.usuario == request.user or request.user.is_superuser
+        # return examen.usuario == request.user or request.user.is_superuser
+    
+        es_administrador = examen.usuario.rol == "administrador"
+        es_propietario = examen.usuario == request.user
+            
+        return es_propietario or es_administrador
     
     
 class SiNoEsAdminSoloLectura(BasePermission):
@@ -85,12 +90,6 @@ class SiNoEsAdminSoloLectura(BasePermission):
             and (user.rol == 'administrador' or user.is_superuser)
         )
 
-        # return examen.usuario == request.user or request.user.is_superuser
-    
-        es_administrador = examen.usuario.rol == "administrador"
-        es_propietario = examen.usuario == request.user
-            
-        return es_propietario or es_administrador
     
     
 class PermisoPreguntaYOpcion(BasePermission):
