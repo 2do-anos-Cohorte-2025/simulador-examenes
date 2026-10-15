@@ -1,0 +1,1766 @@
+{
+  "info": {
+    "_postman_id": "dd6164ff-e30a-4c98-9713-3245841cd1da",
+    "name": "AUT-API-Mari",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "55172622",
+    "_collection_link": "https://go.postman.co/collection/55172622-dd6164ff-e30a-4c98-9713-3245841cd1da?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - AUT-API-Auth",
+      "item": [
+        {
+          "name": "Registro",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\npm.test(\"Status 201 - Registro exitoso\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"first_name\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"last_name\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"email\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"access\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"refresh\").that.is.a(\"string\");\n});\n\n// 5. Guardar tokens\nif (pm.response.code === 201) {\n    const json = pm.response.json();\n    const access = json.access;\n    const refresh = json.refresh;\n    if (access) {\n        pm.environment.set(\"accessToken\", access);\n        pm.collectionVariables.set(\"accessToken\", access);\n    }\n    if (refresh) {\n        pm.environment.set(\"refreshToken\", refresh);\n        pm.collectionVariables.set(\"refreshToken\", refresh);\n    }\n}\n\n// Negative: 400 - Cuerpo inválido\npm.test(\"400 - Cuerpo inválido\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/auth/registro/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"first_name\":\"alumnoPrueba\",\r\n    \"last_name\":\"test\",\r\n    \"email\":\"alumnoPrueba@gmail.com\",\r\n    \"password\":\"alumno1234\",\r\n    \"confirmar_password\":\"alumno1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/registro/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "registro",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Iniciar Sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\npm.test(\"Status 201 - Registro exitoso\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: tokens presentes y de tipo string\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"access\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"refresh\").that.is.a(\"string\");\n});\n\n// 5. Guardar tokens\nif (pm.response.code === 200) {\n    const json = pm.response.json();\n    const access = json.access;\n    const refresh = json.refresh;\n    if (access) {\n        pm.environment.set(\"accessToken\", access);\n        pm.collectionVariables.set(\"accessToken\", access);\n    }\n    if (refresh) {\n        pm.environment.set(\"refreshToken\", refresh);\n        pm.collectionVariables.set(\"refreshToken\", refresh);\n    }\n}\n\n\n// Negative: 400 - cuerpo vacío\npm.test(\"400 - Cuerpo vacío\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/auth/login/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"alumnoPrueba@gmail.com\",\r\n    \"password_hash\":\"alumno1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Conseguir Perfil",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\r\npm.test(\"Status 200 - Conseguir perfil exitoso\", function () {\r\n    pm.response.to.have.status(200); da\r\n});\r\n\r\n// 2. Content-Type\r\npm.test(\"Content-Type es application/json\", function () {\r\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r\n});\r\n\r\n\r\n// 3. SLA\r\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(800);\r\n});\r\n\r\n// 5. Guardar usuarioId\r\nif (pm.response.code === 200) {\r\n    const json = pm.response.json();\r\n    const usuarioId = json.id;\r\n    if (usuarioId) {\r\n        pm.environment.set(\"usuarioId\", usuarioId);\r\n        pm.collectionVariables.set(\"usuarioId\", usuarioId);\r\n    }\r\n    \r\n}\r\n\r\n\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/perfil/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "perfil",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin inicio de Sesión",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\npm.test(\"Status 200 - Admin inicio de sesión exitoso\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: tokens presentes y de tipo string\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"access\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"refresh\").that.is.a(\"string\");\n});\n\n// 5. Guardar adminAccessToken\nif (pm.response.code === 200) {\n    const json = pm.response.json();\n    const access = json.access || json.access_token;\n    if (access) {\n        pm.environment.set(\"adminAccessToken\", access);\n        pm.collectionVariables.set(\"adminAccessToken\", access);\n    }\n   \n}\n\n// Negative: 400 - Cuerpo vacío\npm.test(\"400 - Cuerpo vacío\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/auth/login/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"email\":\"testace@gmail.com\",\r\n    \"password_hash\":\"testace1234\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - AUT-API-Categorias",
+      "item": [
+        {
+          "name": "Conseguir Categorias",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Categorías obtenidas\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Crea Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Categoría creada\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"nombre\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n});\n\n// Guardar categoriaId\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"categoriaId\", json.id);\n\n// Negative: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/categorias/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ nombre: \"Test\", descripcion: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Programacion\",\r\n    \"descripcion\":\"La programacion es una capacidad admirable y asombrosa.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usuario No Puede Crear Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code - Test negativo, usuario sin rol de administrador no puede crear categorias o niveles\npm.test(\"Status 403 - Usuario no puede crear categoria\", function () {\n    pm.response.to.have.status(403);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Error message structure\npm.test(\"Respuesta contiene mensaje error\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.be.an(\"object\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Medicina\",\r\n    \"descripcion\":\"La medicina es una capacidad admirable y asombrosa.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Categoría modificada\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"nombre\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/categorias/\" + pm.environment.get(\"categoriaId\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ nombre: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Nombre de categoria actualizado\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{categoriaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoriaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar categoria",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Categoría eliminada\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negatico: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/categorias/\" + pm.environment.get(\"categoriaId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categorias/{{categoriaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "categorias",
+                "{{categoriaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - AUT-API-Niveles",
+      "item": [
+        {
+          "name": "Conseguir Niveles",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Niveles obtenidos\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/niveles/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "niveles",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Admin Crea Nivel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Nivel creado\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"nombre\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n});\n\n// Save nivelId\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"nivelId\", json.id);\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/niveles/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ nombre: \"Test\", descripcion: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Complicado\",\r\n    \"descripcion\":\"El nivel más dificil.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/niveles/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "niveles",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Usuario No Puede Crear Nivel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code - Test negativo, usuario sin rol de administrador no puede crear categorias o niveles\npm.test(\"Status 403 - Usuario no puede crear nivel\", function () {\n    pm.response.to.have.status(403);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Estructura de mensaje de error\npm.test(\"Respuesta contiene mensaje de error\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.be.an(\"object\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"nombre\":\"Muy facil\",\r\n    \"descripcion\":\"El nivel más facil.\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/niveles/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "niveles",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Nivel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Nivel modificado\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"nombre\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/categorias/\" + pm.environment.get(\"nivelId\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ nombre: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"nombre\": \"Nombre del nivel actualizado\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/niveles/{{nivelId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "niveles",
+                "{{nivelId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Nivel",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Nivel eliminado\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/categorias/\" + pm.environment.get(\"nivelId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/niveles/{{nivelId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "niveles",
+                "{{nivelId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - AUT-API-Examenes",
+      "item": [
+        {
+          "name": "Crear Examen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Examen creado\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"titulo\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"slug\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"tiempo_limite\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"categoria\");\n    pm.expect(json).to.have.property(\"nivel\");\n});\n\n// Guardar ID\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"examenId\", json.id);\nif (json.slug) pm.environment.set(\"examenSlug\", json.slug);\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"titulo\": \"Examen de prueba por alumno para la API\",\r\n  \"descripcion\": \"Examen creado para probar la API\",\r\n  \"categoria\": {{categoriaId}},\r\n  \"nivel\": {{nivelId}},\r\n  \"tiempo_limite\": 30\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/examenes/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "examenes",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener un examen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Examen obtenido\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"titulo\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"slug\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"tiempo_limite\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"categoria\");\n    pm.expect(json).to.have.property(\"nivel\");\n});\n\n\n// Negativo: 404 - slug inexistente\npm.test(\"404 - Examen no encontrado\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/examenes/slug-que-no-existe-xyz/\",\n        method: \"GET\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/examenes/{{examenSlug}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "examenes",
+                "{{examenSlug}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Examen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Examen modificado\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"titulo\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"descripcion\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"slug\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"tiempo_limite\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"categoria\");\n    pm.expect(json).to.have.property(\"nivel\");\n});\n\n// Negative: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/examenes/\" + pm.environment.get(\"examenSlug\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ titulo: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n// Negativo: 404 - slug inexistente\npm.test(\"404 - Examen no encontrado\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/examenes/slug-que-no-existe-xyz/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") },\n        body: { mode: \"raw\", raw: JSON.stringify({ titulo: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"titulo\": \"Examen actualizado\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/examenes/{{examenSlug}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "examenes",
+                "{{examenSlug}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Examen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Examen eliminado\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/examenes/\" + pm.environment.get(\"examenSlug\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n// Negative: 404 - slug inexistente\npm.test(\"404 - Examen no encontrado\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/examenes/slug-que-no-existe-xyz/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/examenes/{{examenSlug}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "examenes",
+                "{{examenSlug}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - AUT-API-Preguntas",
+      "item": [
+        {
+          "name": "Crear Pregunta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Pregunta creada\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"texto\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"tipo\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"examen\").that.is.a(\"number\");\n});\n\n// Save preguntaId\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"preguntaId\", json.id);\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/preguntas/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ texto: \"Test\", tipo: \"opcion_multiple\", examen: 1 }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"examen\":{{examenId}},\r\n    \"enunciado\":\"Esto es una pregunta\",\r\n    \"tipo\":\"opcion_multiple\",\r\n    \"puntos\":\"1.0\",\r\n    \"imagen_pregunta\":null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/preguntas/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "preguntas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Conseguir Preguntas de un Examen",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Preguntas obtenidas\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/preguntas/?examen_id={{examenId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "preguntas",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "examen_id",
+                  "value": "{{examenId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Pregunta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Pregunta modificada\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"texto\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"tipo\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"examen\").that.is.a(\"number\");\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/preguntas/\" + pm.environment.get(\"preguntaId\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ texto: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"enunciado\": \"Se cambia el enunciado de la pregunta\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/preguntas/{{preguntaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "preguntas",
+                "{{preguntaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Pregunta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Pregunta eliminada\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n\n// Negativo: 404 - ID inexistente\npm.test(\"404 - Pregunta no encontrada\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/preguntas/999999/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminAccessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/preguntas/{{preguntaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "preguntas",
+                "{{preguntaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 - AUT-API-Opciones",
+      "item": [
+        {
+          "name": "Crear Opcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Opción creada\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"texto\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"es_correcta\").that.is.a(\"boolean\");\n    pm.expect(json).to.have.property(\"pregunta\").that.is.a(\"number\");\n});\n\n// Guardar opcionId\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"opcionId\", json.id);\n\n\n// Negativo: 400 - cuerpo inválido\npm.test(\"400 - Cuerpo inválido\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/opciones/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"pregunta\":{{preguntaId}},\r\n    \"texto_opcion\":\"Esto es una opcion\",\r\n    \"es_correcta\":true,\r\n    \"imagen_opcion\":null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/opciones/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "opciones",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Conseguir Opciones de una Pregunta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Opciones obtenidas\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/opciones/?pregunta_id={{preguntaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "opciones",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "pregunta_id",
+                  "value": "{{preguntaId}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Opcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Opción modificada\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"texto\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"es_correcta\").that.is.a(\"boolean\");\n    pm.expect(json).to.have.property(\"pregunta\").that.is.a(\"number\");\n});\n\n\n// Negativo: 404 - ID inexistente\npm.test(\"404 - Opción no encontrada\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/opciones/999999/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") },\n        body: { mode: \"raw\", raw: JSON.stringify({ texto: \"Test\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"texto_opcion\": \"Se cambia el texto de la opcion\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/opciones/{{opcionId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "opciones",
+                "{{opcionId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Opcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Opción eliminada\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/opciones/\" + pm.environment.get(\"opcionId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n// Negativo: 404 - ID inexistente\npm.test(\"404 - Opción no encontrada\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/opciones/999999/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/opciones/{{opcionId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "opciones",
+                "{{opcionId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "07 - AUT-API-Intentos",
+      "item": [
+        {
+          "name": "Crear Intento sin Usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Intento sin usuario creado\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"examen\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"usuario\").that.is.null;\n});\n\n// Negativo: 400 - cuerpo invalido\npm.test(\"400 - Cuerpo invalido\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/intentos/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"examen\":{{examenId}},\r\n    \"usuario\":null\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/intentos/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "intentos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Intento con Usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\npm.test(\"Status 201 - Intento con usuario creado\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"examen\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"usuario\").that.is.a(\"number\");\n});\n\n// Guardar intentoId\nconst json = pm.response.json();\nif (json.id) pm.environment.set(\"intentoId\", json.id);\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/intentos/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ examen: pm.environment.get(\"examenId\") }) }\n    }, function (err, res) {\n        pm.expect(res.code).to.be.oneOf([201, 401]);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"examen\":{{examenId}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/intentos/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "intentos",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Intento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\npm.test(\"Status 200 - Intento modificado\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"examen\").that.is.a(\"number\");\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/intentos/\" + pm.environment.get(\"intentoId\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ examen: 1 }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"fecha_fin\": \"2026-10-14T22:48:00Z\",\r\n  \"resultado\": \"5.00\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/intentos/{{intentoId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "intentos",
+                "{{intentoId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Intento",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Intento eliminado\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/intentos/\" + pm.environment.get(\"intentoId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/intentos/{{intentoId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "intentos",
+                "{{intentoId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "08 - AUT-API-Respuestas",
+      "item": [
+        {
+          "name": "Crear Respuesta de Texto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Status code\r\npm.test(\"El recurso se creó correctamente\", function () {\r\n    pm.response.to.have.status(201);\r\n});\r\n\r\n// 2. Content-Type\r\npm.test(\"Content-Type es application/json\", function () {\r\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r\n});\r\n\r\n// 3. SLA\r\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\r\n    pm.expect(pm.response.responseTime).to.be.below(800);\r\n});\r\n\r\n// 4. Contract validation\r\npm.test(\"Contrato: campos y tipos correctos\", function () {\r\n    const json = pm.response.json();\r\n    pm.expect(json).to.have.property(\"pregunta\").that.is.a(\"number\");\r\n    pm.expect(json).to.have.property(\"intento\").that.is.a(\"number\");\r\n    pm.expect(json).to.have.property(\"opcion_seleccionada\").that.is.a(\"number\");\r\n    pm.expect(json).to.have.property(\"respuesta_texto\").that.is.a(\"string\");\r\n});\r\n\r\n\r\n// Guardar respuestaId\r\nif (pm.response.code === 201) {\r\n    const recurso = pm.response.json();\r\n    pm.collectionVariables.set(\"respuestaId\", recurso.id);\r\n    pm.environment.set(\"respuestaId\", recurso.id);\r\n}\r\n\r\n\r\n\r\n\r\n\r\n\r\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"intento\":{{intentoId}},\r\n    \"pregunta\":{{preguntaId}},\r\n    \"opcion_seleccionada\":null,\r\n    \"respuesta_texto\":\"Esto es una respuesta\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/respuestas/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "respuestas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Respuesta de Opcion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 201 - Respuesta creada\", function () {\n    pm.response.to.have.status(201);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"intento\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"pregunta\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"opcion_seleccionada\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"respuesta_texto\").that.is.null;\n});\n\n\n// Negativo: 400 - cuerpo inválido\npm.test(\"400 - Cuerpo inválido\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/respuestas/\",\n        method: \"POST\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") },\n        body: { mode: \"raw\", raw: JSON.stringify({}) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(400);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"intento\":{{intentoId}},\r\n    \"pregunta\":{{preguntaId}},\r\n    \"opcion_seleccionada\":{{opcionId}},\r\n    \"respuesta_texto\":null\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/respuestas/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "respuestas",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Modificar Respuesta de Texto",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Respuesta modificada\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"intento\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"pregunta\").that.is.a(\"number\");\n});\n\n\n// Negativo: 404 - ID inexistente\npm.test(\"404 - Respuesta no encontrada\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/respuesta/999999/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\", \"Authorization\": \"Bearer \" + pm.environment.get(\"accessToken\") },\n        body: { mode: \"raw\", raw: JSON.stringify({ opcion_seleccionada: 1 }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(404);\n        done();\n    });\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"intento\":{{intentoId}},\r\n    \"pregunta\":{{preguntaId}},\r\n    \"opcion_seleccionada\":null,\r\n    \"respuesta_texto\": \"Esto es una respuesta modificada\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/respuestas/{{respuestaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "respuestas",
+                "{{respuestaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Respuesta",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Respuesta eliminada\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/respuestas/\" + pm.environment.get(\"respuestaId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/respuestas/{{respuestaId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "respuestas",
+                "{{respuestaId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "09 - AUT-API-Usuarios",
+      "item": [
+        {
+          "name": "Modificar Rol de Usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 200 - Rol de usuario modificado\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Content-Type\npm.test(\"Content-Type es application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\n});\n\n// 3. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// 4. Contract validation\npm.test(\"Contrato: campos y tipos correctos\", function () {\n    const json = pm.response.json();\n    pm.expect(json).to.have.property(\"id\").that.is.a(\"number\");\n    pm.expect(json).to.have.property(\"email\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"first_name\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"last_name\").that.is.a(\"string\");\n    pm.expect(json).to.have.property(\"rol\").that.is.a(\"string\");\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/usuarios/\" + pm.environment.get(\"usuarioId\") + \"/\",\n        method: \"PATCH\",\n        header: { \"Content-Type\": \"application/json\" },\n        body: { mode: \"raw\", raw: JSON.stringify({ rol: \"estudiante\" }) }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"rol\":\"administrador\"\r\n}\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Borrar Usuario",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// 1. Status code\npm.test(\"Status 204 - Usuario eliminado\", function () {\n    pm.response.to.have.status(204);\n});\n\n// 2. SLA\npm.test(\"Tiempo de respuesta menor a 800ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(800);\n});\n\n// Negativo: 401 - sin token\npm.test(\"401 - Sin token de autenticación\", function (done) {\n    pm.sendRequest({\n        url: pm.environment.get(\"baseUrl\") + \"/usuarios/\" + pm.environment.get(\"usuarioId\") + \"/\",\n        method: \"DELETE\",\n        header: { \"Content-Type\": \"application/json\" }\n    }, function (err, res) {\n        pm.expect(res).to.have.status(401);\n        done();\n    });\n});\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{accessToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{usuarioId}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{usuarioId}}",
+                ""
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "10 - AUT-API-SolicitudesProfesor",
+      "item": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "accessToken",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    },
+    {
+      "key": "usuarioId",
+      "value": ""
+    },
+    {
+      "key": "intentoId",
+      "value": ""
+    },
+    {
+      "key": "adminAccessToken",
+      "value": ""
+    },
+    {
+      "key": "categoriaId",
+      "value": ""
+    },
+    {
+      "key": "nivelId",
+      "value": ""
+    },
+    {
+      "key": "respuestaId",
+      "value": ""
+    }
+  ]
+}
