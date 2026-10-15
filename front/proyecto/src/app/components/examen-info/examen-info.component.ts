@@ -66,7 +66,7 @@ export class ExamenInfoComponent {
       next: (response) => {
         this.intento = response.id;
         window.location.href = `/examen/${this.slug}/intento/${this.intento}`;
-        console.log('Intento iniciado:', response);
+        
       }
     });
 

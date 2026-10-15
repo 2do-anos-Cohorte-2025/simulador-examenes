@@ -56,8 +56,45 @@ class NivelSerializer(serializers.ModelSerializer):
 class UsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = Usuario
-        fields = '__all__'
-        
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'rol',
+                  'imagen_usuario', 'is_active', 'password',
+                  'fecha_creacion', 'fecha_modificacion']
+        read_only_fields = ['id', 'fecha_creacion', 'fecha_modificacion']
+        extra_kwargs = {'password': {'write_only': True, 'required': False,
+                             'validators': [validate_password]}}
+
+    def validate(self, attrs):
+        usuario = self.context['request'].user
+        es_administrador = usuario.rol == "administrador" or usuario.is_superuser
+
+        if not es_administrador:
+            
+            for campo in ('rol', 'is_active'):
+                if campo in attrs and (
+                    self.instance is None or attrs[campo] != getattr(self.instance, campo)
+                ):
+                    raise serializers.ValidationError(
+                        {campo: "No tenés permiso para modificar este campo."}
+                    )
+        return attrs
+
+    def create(self, validated_data):
+        password = validated_data.pop('password', None)
+        usuario = Usuario(**validated_data)
+        if password:
+            usuario.set_password(password)
+        else:
+            usuario.set_unusable_password()
+        usuario.save()
+        return usuario
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        usuario = super().update(instance, validated_data)
+        if password:
+            usuario.set_password(password)
+            usuario.save()
+        return usuario
 
 
 class SolicitudProfesorSerializer(serializers.ModelSerializer):
@@ -85,45 +122,46 @@ class PreguntaSerializer(serializers.ModelSerializer):
 class IntentoExamenSerializer(serializers.ModelSerializer):
     examen_titulo = serializers.CharField(source='examen.titulo', read_only=True)
     examen_slug = serializers.CharField(source='examen.slug', read_only=True)
+    resultado = serializers.SerializerMethodField()
+
 
     class Meta:
         model = IntentoExamen
-        fields = [ 
-                  'examen', 
-                  'usuario', 
-                  'examen_titulo',
-                  'examen_slug',
-                  'fecha_inicio', 
-                  'fecha_fin',
-                  'resultado']
-        read_only_fields = [
-            'id',
-            'usuario',
-            'fecha_inicio',
-            'slug',
-            'titulo',
-        ]
+        fields = ['id', 'examen', 'usuario', 'fecha_inicio', 'examen_slug', 'examen_titulo', 'fecha_fin', 'resultado']
+        read_only_fields = ['id', 'fecha_inicio', 'resultado']
         extra_kwargs = {
-            'examen': {'required': False},
-            'usuario': {'required': False, 'allow_null': True},
+            'examen': {'required': True},  
+            'usuario': {'required': False, 'allow_null': True}
+            
         }
 
     def create(self, validated_data):
-        
-        intento_examen = IntentoExamen.objects.create(**validated_data)
+        examen = validated_data.pop('examen')
+        usuario = validated_data.pop('usuario', None)
+        intento_examen = IntentoExamen.objects.create(
+            examen=examen,
+            usuario=usuario,
+            **validated_data
+        )
         return intento_examen
 
     def update(self, instance, validated_data):
         instance.fecha_fin = validated_data.get('fecha_fin', instance.fecha_fin)
-        instance.resultado = validated_data.get('resultado', instance.resultado)
-        instance.save()
+        instance.save() 
         return instance
+
+    def get_resultado(self, obj):
+        if obj.resultado is not None:
+            return obj.resultado
+        return obj.calcular_resultado() if obj.fecha_fin else None
+
+
     
 
 class RespuestaUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model = RespuestaUsuario
-        fields = '__all__'
+        fields = ['id', 'intento', 'pregunta', 'opcion_seleccionada', 'respuesta_texto']
 
 
 
@@ -138,12 +176,21 @@ class RegistroSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Usuario
         fields = ['first_name', 'last_name', 'email', 'password', 'confirmar_password']
+        extra_kwargs = {
+            'first_name': {'required': True, 'allow_blank': False},
+            'last_name': {'required': True, 'allow_blank': False},
+            'email': {'required': True, 'allow_blank': False},
+        }
+
+    def validate_email(self, value):
+        value = value.strip().lower()
+        if Usuario.objects.filter(email__iexact=value).exists():
+            raise serializers.ValidationError("Ya existe una cuenta con ese email.")
+        return value
 
     def validate(self, attrs):
         if attrs['password'] != attrs['confirmar_password']:
             raise serializers.ValidationError({"password": "Las contraseñas no coinciden."})
-        if Usuario.objects.filter(email=attrs['email']).exists():
-            raise serializers.ValidationError({"email": "Ya existe una cuenta con ese email."})
         return attrs
 
     def create(self, validated_data):

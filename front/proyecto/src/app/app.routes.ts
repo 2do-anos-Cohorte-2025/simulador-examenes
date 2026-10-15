@@ -11,6 +11,8 @@ import { AdminSolicitudesComponent } from './views/admin-solicitudes/admin-solic
 import { AdminDashboardComponent } from './views/admin-dashboard/admin-dashboard.component';
 import { PerfilComponent } from './views/perfil/perfil.component';
 import { BuscarExamenesComponent } from './views/buscar-examen/buscar-examenes.component';
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
     { path: 'inicio', component: InicioComponent },
@@ -21,9 +23,9 @@ export const routes: Routes = [
     { path: 'quienes-somos', component: QuienesSomosComponent },
     { path: 'examen/:slug', component: ExamenVistaPreviaComponent },
     { path: 'examen/:slug/intento/:id', component: ExamenIntentoComponent },
-    { path: 'solicitud-profesor', component: SolicitudProfesorComponent },
+    { path: 'solicitud-profesor', component: SolicitudProfesorComponent, canActivate: [authGuard] },
     { path: 'buscar-examenes', component: BuscarExamenesComponent },
-    { path: 'admin-solicitudes', component: AdminSolicitudesComponent },
-    { path: 'admin', component: AdminDashboardComponent },
+    { path: 'admin-solicitudes', component: AdminSolicitudesComponent, canActivate: [adminGuard] },
+    { path: 'admin', component: AdminDashboardComponent, canActivate: [adminGuard] },
     { path: '', redirectTo: '/inicio', pathMatch: 'full' },
 ];
