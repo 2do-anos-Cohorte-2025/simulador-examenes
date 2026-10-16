@@ -92,11 +92,13 @@ class Pregunta(models.Model):
         ('verdadero_falso', 'Verdadero/Falso'),
         ('numerico', 'Numérico'),
         ('texto', 'Texto'),
+        
     ]
 
     examen = models.ForeignKey(Examen, on_delete=models.CASCADE, related_name='preguntas')
     enunciado = models.TextField()
     tipo = models.CharField(max_length=20, choices=TIPO_PREGUNTA)
+    permitir_varias_respuestas = models.BooleanField(default=False)
     puntos = models.DecimalField(max_digits=5, decimal_places=2, default=1.00)
     imagen_pregunta = models.ImageField(upload_to='preguntas/', null=True, blank=True)
 
