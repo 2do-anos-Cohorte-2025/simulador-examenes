@@ -7,7 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-
+from rest_framework.decorators import action
+from rest_framework.response import Response
 from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloCreadorModificaPregunta, SoloUsuarioOAdmin
 
 from .models import (
