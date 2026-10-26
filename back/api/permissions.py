@@ -24,10 +24,29 @@ class CualquieraPuedeLeer(BasePermission):
     def has_object_permission(self, request, view, obj):
         return True
     
-class SoloCreadorModifica(BasePermission):
-    message = 'No tienes permiso para manipular la informacion.'
+class SoloCreadorModificaExamen(BasePermission):
+    message = "No tienes permiso para crear, modificar o eliminar el examen."
+
+    def has_permission(self, request, view):
+        if request.method in SAFE_METHODS: # GET, HEAD, OPTIONS
+            return True
+        
+        return bool(request.user and request.user.is_authenticated)
+
     def has_object_permission(self, request, view, obj):
-        return obj.usuario == request.user or request.user.is_superuser
+        # Si el metodo es de lectura se permite a todo el mundo
+        if request.method in SAFE_METHODS:
+            return True
+
+        usuario = request.user
+        if not usuario or not usuario.is_authenticated:
+            return False
+
+        es_administrador = (getattr(usuario, "rol", None) == "administrador") or usuario.is_superuser
+        
+        es_propietario = obj.usuario_id == usuario.pk
+
+        return es_administrador or es_propietario
     
 class PuedeGestionarIntentoExamen(BasePermission):
     message = "No tienes permiso para acceder a este intento."

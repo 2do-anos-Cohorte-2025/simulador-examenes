@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .permissions import  CualquieraPuedeLeer, SoloCreadorModifica, SoloCreadorModificaOpcion, SoloCreadorModificaPregunta, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloCreadorModificaPregunta, SoloUsuarioOAdmin
+from .permissions import  CualquieraPuedeLeer, SoloCreadorModificaExamen, SiNoEsAdminSoloLectura, PermisoPreguntaYOpcion, SoloUsuarioOAdmin
 
 from .models import (
     Categoria,
@@ -41,12 +41,10 @@ class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
     lookup_field = 'slug'
-    permission_classes = [IsAuthenticatedOrReadOnly]
-
+    permission_classes = [SoloCreadorModificaExamen]
 
     def perform_create(self, serializer):
         serializer.save(usuario=self.request.user)
-    
 
     def get_queryset(self):
         queryset = Examen.objects.all()
