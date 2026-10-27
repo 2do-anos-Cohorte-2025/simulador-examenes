@@ -37,6 +37,14 @@ from .serializers import (
     PerfilSerializer
 )
 
+import logging
+
+logger = logging.getLogger("api")
+
+
+def _ip_origen(request):
+    return request.META.get("REMOTE_ADDR", "desconocida")
+
 class ExamenViewSet(viewsets.ModelViewSet):
     queryset = Examen.objects.all()
     serializer_class = ExamenSerializer
@@ -399,8 +407,10 @@ class LoginView(APIView):
     def post(self, request):
         email    = request.data.get('email', '').strip()
         password = request.data.get('password_hash', '').strip()
+        ip = _ip_origen(request)
 
         if not email or not password:
+            logger.warning("login_fallido motivo=campos_vacios ip=%s", ip)
             return Response(
                 {"error": "Email y contraseña son obligatorios."},
                 status=status.HTTP_400_BAD_REQUEST
@@ -409,22 +419,31 @@ class LoginView(APIView):
         try:
             user = Usuario.objects.get(email=email)
         except Usuario.DoesNotExist:
+            logger.warning("login_fallido motivo=email_inexistente email=%r ip=%s",
+                           email[:100], ip)
             return Response(
                 {"error": "Email o contraseña incorrectos."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
         if not user.check_password(password):
+            logger.warning("login_fallido motivo=password_incorrecta usuario_id=%s ip=%s",
+                           user.id, ip)
             return Response(
                 {"error": "Email o contraseña incorrectos."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
 
         if not user.is_active:
+            logger.warning("login_fallido motivo=cuenta_desactivada usuario_id=%s ip=%s",
+                           user.id, ip)
             return Response(
                 {"error": "Esta cuenta está desactivada."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
+
+        logger.info("login_exitoso usuario_id=%s rol=%s ip=%s",
+                    user.id, user.rol, ip)
 
         refresh = RefreshToken.for_user(user)
         return Response({
